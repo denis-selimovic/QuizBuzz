@@ -30,7 +30,11 @@ const userSchema = new Schema({
         required: true,
         unique: true,
         trim: true
-    }
+    },
+    classrooms: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Classroom'
+    }]
 });
 
 userSchema.pre('save', async function (next) {
