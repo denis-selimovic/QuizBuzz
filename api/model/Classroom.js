@@ -14,8 +14,7 @@ const classroomSchema = new Schema({
     students: [{
         type: Schema.Types.ObjectId,
         ref: 'Student'
-    }],
-
+    }]
 });
 
 const Classroom = mongoose.model('Classroom', classroomSchema);
