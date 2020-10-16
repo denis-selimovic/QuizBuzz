@@ -81,4 +81,9 @@ router.get("/:id/quizzes", auth, checkClassroomOwnership, async (req, res) => {
   }
 });
 
+router.get("/", auth, async (req, res) => {
+  const classrooms = await Classroom.find({});
+  res.status(200).json(classrooms);
+});
+
 module.exports = router;
