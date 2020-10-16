@@ -2,15 +2,16 @@ const express = require("express");
 const router = express.Router();
 const { auth } = require("../common/auth");
 const { validateBody } = require("../common/http");
+const User = require('../model/User');
 
-// Ovako se poziva ruta koja zahtjeva jwt
-// ako je user autentifikovan nalazi se u objektu req kao req.user
-router.get("/", auth, async (req, res) => {
-  res.status(200).json("OK");
-});
-
-router.post("/ok", validateBody(["name", "surname"]), async (req, res) => {
-  res.status(200).json("OK");
+router.post('/register', validateBody(['username', 'password', 'name', 'surname', 'email']), async (req, res) => {
+    const emailOrPasswordMatching = await User.checkForDuplicate(req.body.username, req.body.email);
+    if (emailOrPasswordMatching) {
+      return res.status(401).json({ message: 'Username or email already in use' });
+    }
+    const user = new User(req.body);
+    await user.save();
+    res.status(201).json(user);
 });
 
 module.exports = router;

@@ -61,6 +61,11 @@ userSchema.statics.findByCredentials = async (username, password) => {
     return user;
 };
 
+userSchema.statics.checkForDuplicate = async (username, email) => {
+    const users = await User.find({ $or: [ { username }, { email } ] });
+    return users.length > 0;
+}
+
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;
