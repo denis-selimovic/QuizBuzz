@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const shortid = require('shortid');
 const { Schema } = mongoose;
-const Quiz = require('Quiz');
+const Quiz = require('./Quiz');
 
 const classroomSchema = new Schema({
   code: {
@@ -26,6 +26,7 @@ const classroomSchema = new Schema({
 classroomSchema.pre('remove', async function (next) {
   const quizzes = this.quizzes.map(q => q._id);
   await Quiz.deleteMany({ _id: { $in: quizzes } });
+  next();
 });
 
 classroomSchema.statics.getClassroomByIdAndPopulate = async (
