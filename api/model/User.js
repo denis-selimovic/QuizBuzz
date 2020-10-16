@@ -71,22 +71,6 @@ userSchema.statics.findByCredentials = async (username, password) => {
   return user;
 };
 
-// userSchema.methods.checkIfOwnsClassroom = function (id) {
-//   //   if (!this.classrooms.some((item) => item._id.toString() === id.toString())) {
-//   //     throw new Error();
-//   //   }
-// };
-
-// userSchema.methods.checkIfOwnsQuiz = function (id) {
-//   //   if (
-//   //     !this.classrooms.quizzes.some(
-//   //       (item) => item._id.toString() === id.toString()
-//   //     )
-//   //   ) {
-//   //     throw new Error();
-//   //   }
-// };
-
 userSchema.statics.checkForDuplicate = async (username, email) => {
   const users = await User.find({ $or: [{ username }, { email }] });
   return users.length > 0;
