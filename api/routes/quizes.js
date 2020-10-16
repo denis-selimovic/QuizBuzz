@@ -55,6 +55,19 @@ router.patch("/:id", auth, checkQuizOwnership,
       console.log(e.message);
       res.status(400).json({ message: "Could not load item" });
     }
-  })
+  });
+
+//ova nije jos gotova
+router.get("", async (req, res) => {
+  try {
+    const code = req.query.code;
+    const quiz = await Quiz.getByCodePopulated(code);
+    //provjeri je li poceo kviz
+    res.status(200).json(quiz);
+  } catch (e) {
+    console.log(e.message);
+    res.status(400).json({ message: "Could not load item" });
+  }
+});
 
 module.exports = router;

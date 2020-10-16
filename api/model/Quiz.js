@@ -80,6 +80,10 @@ quizSchema.statics.updateQuizById = async (id, newQuiz) => {
   return quiz;
 };
 
+quizSchema.statics.getByCodePopulated = async (code) => {
+  //ovo treba napravit
+};
+
 const Quiz = mongoose.model("Quiz", quizSchema);
 
 module.exports = Quiz;
