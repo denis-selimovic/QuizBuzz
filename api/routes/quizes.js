@@ -89,7 +89,7 @@ router.delete('/:id/student', auth, checkQuizOwnership, validateBody(['id']), as
     const quiz = await Quiz.findById(req.params.id);
     await quiz.checkIfEnrolled(req.body.id, true);
     await quiz.update({ $pull: { students: { id: req.body.id } } });
-    res.status(200).json(quiz);
+    res.status(200).json({ message: 'Student removed from quiz'});
   } catch (e) {
     res.status(400).json({ message: 'Could not remove student' });
   }
