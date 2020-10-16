@@ -6,6 +6,14 @@ const { validateBody } = require("../common/http");
 const Quiz = require("../model/Quiz");
 const Classroom = require("../model/Classroom");
 
+
+router.post('/create', auth, validateBody(['name']), async (req, res) => {
+    const code = req.body.name.concat('-', Classroom.generateRandomId());
+    const classroom = new Classroom({ code });
+    await classroom.save();
+    res.status(201).json(classroom);
+});
+
 //create quiz for classroom
 //dodati auth
 router.post(
