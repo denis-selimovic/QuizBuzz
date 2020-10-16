@@ -18,7 +18,7 @@ router.post('/login', validateBody(['username', 'password']), async (req, res) =
     try {
       const user = await User.findByCredentials(req.body.username, req.body.password);
       const token = await user.generateJwt();
-      res.status(200).json({ username: user.username, name: user.name, surname: user.surname, email: user.email, token });
+      res.status(200).json({ _id: user._id, username: user.username, name: user.name, surname: user.surname, email: user.email, token });
     } catch (e) {
       res.status(403).json({ message: e.message });
     }
