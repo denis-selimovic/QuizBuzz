@@ -81,8 +81,17 @@ router.get("/:id/quizzes", auth, checkClassroomOwnership, async (req, res) => {
   }
 });
 
+router.get("/:id/students", auth, checkClassroomOwnership, async (req, res) => {
+  try {
+    const classroom = await Classroom.getClassroomByIdAndPopulate(req.params.id, { path: 'students', model: 'Student' });
+    res.status(200).json(classroom.students);
+  } catch (e) {
+    res.status(400).json({ message: 'Unable to load item' });
+  }
+});
+
 router.get("/", auth, async (req, res) => {
-  const classrooms = await Classroom.find({});
+  const classrooms = await Classroom.find({}).populate('students').populate({ path: 'quizzes', populate: { path: 'questions', model: 'Question' } });
   res.status(200).json(classrooms);
 });
 
