@@ -9,28 +9,26 @@ const quizSchema = new Schema({
     required: true,
     trim: true,
   },
-  students: {
-    type: Map,
-    of: {
-      key: {
-        type: String,
-        required: true,
-      },
-      points: [
-        {
-          amount: {
-            type: Number,
-            required: true,
-          },
-          questionId: {
-            type: String,
-            required: true,
-          },
-        },
-      ],
+  students: [{
+    id: {
+      type: String,
+      required: true
     },
-    default: {},
-  },
+    code: {
+      type: String,
+      required: true
+    },
+    points: [{
+      amount: {
+        type: Number,
+        required: true
+      },
+      questionId: {
+        type: String,
+        required: true
+      }
+    }]
+  }],
   questions: [
     {
       type: Schema.Types.ObjectId,
