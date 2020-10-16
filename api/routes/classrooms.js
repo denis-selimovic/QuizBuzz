@@ -6,6 +6,7 @@ const { checkClassroomOwnership } = require("../common/validations");
 
 const Quiz = require("../model/Quiz");
 const Classroom = require("../model/Classroom");
+const Student = require('../model/Student');
 
 router.post("/create", auth, validateBody(["name"]), async (req, res) => {
   const code = req.body.name.concat("-", Classroom.generateRandomId());
@@ -32,14 +33,10 @@ router.post(
   validateBody(["name", "date", "duration"]),
   async (req, res) => {
     try {
-      const classroom = await Classroom.getClassroomByIdAndPopulate(
-        req.params.id,
-        "quizzes"
-      );
+      const classroom = await Classroom.getClassroomByIdAndPopulate(req.params.id, "quizzes");
       const quiz = new Quiz(req.body);
       await quiz.save();
-      classroom.quizzes.push(quiz);
-      await classroom.save();
+      await classroom.addQuiz(quiz)
       res.status(201).json(quiz);
     } catch (e) {
       console.log(e.message);
@@ -47,6 +44,18 @@ router.post(
     }
   }
 );
+
+router.post('/:id/student', auth, checkClassroomOwnership, validateBody(['name', 'surname', 'email']), async (req, res) => {
+  try {
+    const classroom = await Classroom.getClassroomByIdAndPopulate(req.params.id, 'students');
+    const student = new Student(req.body);
+    await student.save();
+    await classroom.addStudent(student);
+    res.status(201).json(student);
+  } catch (e) {
+    res.status(401).json({ message: 'Unable to add student' });
+  }
+});
 
 router.get("/:id/quizzes", auth, checkClassroomOwnership, async (req, res) => {
   try {

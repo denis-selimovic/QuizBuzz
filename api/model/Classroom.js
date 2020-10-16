@@ -31,6 +31,16 @@ classroomSchema.pre("remove", async function (next) {
   next();
 });
 
+classroomSchema.methods.addStudent = async function (student) {
+  this.students.push(student);
+  await this.save();
+};
+
+classroomSchema.methods.addQuiz = async function (quiz) {
+  this.quizzes.push(quiz);
+  await this.save();
+};
+
 classroomSchema.statics.getClassroomByIdAndPopulate = async (
   id,
   collection
