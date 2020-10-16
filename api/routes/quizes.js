@@ -75,12 +75,23 @@ router.post("/:id/student", auth, checkQuizOwnership, validateBody(['id']), asyn
   try {
     await req.classroom.checkIfEnrolled(req.body.id);
     const quiz = await Quiz.findById(req.params.id);
-    await quiz.checkIfEnrolled(req.body.id);
+    await quiz.checkIfEnrolled(req.body.id, false);
     quiz.students.push({ id: req.body.id, code: shortid.generate(), points: [] });
     await quiz.save();
     res.status(200).json(quiz);
   } catch (e) {
     res.status(400).json({ message: 'Could not add student' });
+  }
+});
+
+router.delete('/:id/student', auth, checkQuizOwnership, validateBody(['id']), async (req, res) => {
+  try {
+    const quiz = await Quiz.findById(req.params.id);
+    await quiz.checkIfEnrolled(req.body.id, true);
+    await quiz.update({ $pull: { students: { id: req.body.id } } });
+    res.status(200).json(quiz);
+  } catch (e) {
+    res.status(400).json({ message: 'Could not remove student' });
   }
 });
 

@@ -61,8 +61,8 @@ quizSchema.methods.classroom = async function () {
   }).exec();
 };
 
-quizSchema.methods.checkIfEnrolled = async function (id) {
-  if (!this.students.map(s => s.id).includes(id)) {
+quizSchema.methods.checkIfEnrolled = async function (id, value) {
+  if (this.students.map(s => s.id).includes(id) === value) {
     return;
   }
   throw new Error();
