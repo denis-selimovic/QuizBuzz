@@ -40,4 +40,20 @@ router.post("/:id/answer", auth, checkQuestionOwnership, validateBody(["content"
     }
 });
 
+router.patch("/:id/answer/:aid", auth, checkQuestionOwnership,
+    partiallyValidateBody(["content", "correct"]), async (req, res) => {
+        try {
+            const question = await Question.findById(req.params.id);
+            let answer = question.answers.find(answer => answer._id.toString() === req.params.aid.toString())
+            Object.keys(req.body).forEach(key => {
+                answer[key] = req.body[key];
+            });
+            await question.save();
+            res.status(200).json(question);
+        } catch (e) {
+            console.log(e.message);
+            res.status(400).json({ message: "Could not load item" });
+        }
+    });
+
 module.exports = router;
