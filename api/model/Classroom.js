@@ -41,6 +41,19 @@ classroomSchema.methods.addQuiz = async function (quiz) {
   await this.save();
 };
 
+classroomSchema.methods.checkForDuplicate = async function (email) {
+  if (this.students.map(s => s.email).includes(email)) {
+    throw new Error();
+  }
+};
+
+classroomSchema.methods.checkIfEnrolled = async function (id) {
+  if (this.students.map(s => s._id.toString()).includes(id)) {
+    return;
+  }
+  throw new Error();
+};
+
 classroomSchema.statics.getClassroomByIdAndPopulate = async (
   id,
   collection

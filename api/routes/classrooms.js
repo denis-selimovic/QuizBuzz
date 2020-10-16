@@ -48,12 +48,25 @@ router.post(
 router.post('/:id/student', auth, checkClassroomOwnership, validateBody(['name', 'surname', 'email']), async (req, res) => {
   try {
     const classroom = await Classroom.getClassroomByIdAndPopulate(req.params.id, 'students');
+    await classroom.checkForDuplicate(req.body.email);
     const student = new Student(req.body);
     await student.save();
     await classroom.addStudent(student);
     res.status(201).json(student);
   } catch (e) {
     res.status(401).json({ message: 'Unable to add student' });
+  }
+});
+
+router.delete('/:id/student', auth, checkClassroomOwnership, validateBody(['id']), async (req, res) => {
+  try {
+    const classroom = await Classroom.getClassroomByIdAndPopulate(req.params.id, 'students');
+    await classroom.checkIfEnrolled(req.body.id);
+    const student = await Student.findById(req.params.id);
+    await student.remove();
+    res.status(201).json({ message: 'Student successfully deleted' });
+  } catch (e) {
+    res.status(401).json({ message: 'Unable to delete student' });
   }
 });
 
