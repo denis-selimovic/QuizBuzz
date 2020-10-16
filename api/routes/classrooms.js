@@ -10,6 +10,7 @@ const Classroom = require("../model/Classroom");
 //dodati auth
 router.post(
   "/:id/quiz",
+  auth,
   validateBody(["name", "date", "duration"]),
   async (req, res) => {
     try {
@@ -19,6 +20,7 @@ router.post(
       );
 
       //provjeriti da li je trenutni user vlasnik ovog classrooma
+      req.user.checkIfOwnsClassroom(classroom._id);
 
       const quiz = new Quiz(req.body);
       await quiz.save();
