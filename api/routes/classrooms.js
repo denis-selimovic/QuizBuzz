@@ -95,4 +95,13 @@ router.get("/", auth, async (req, res) => {
   res.status(200).json(classrooms);
 });
 
+router.post('/enter', validateBody(['code']),async (req, res) => {
+  try {
+    const classroom = await Classroom.findOne({ code: req.body.code }).exec();
+    res.status(200).json({ classroomId: classroom._id.toString() }) ;
+  } catch (e) {
+    res.status(400).json({ message: 'Could not load item' });
+  }
+});
+
 module.exports = router;
