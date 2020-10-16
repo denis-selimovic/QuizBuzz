@@ -66,15 +66,15 @@ userSchema.statics.findByCredentials = async (username, password) => {
   return user;
 };
 
-userSchema.methods.checkIfOwnsClassroom = async function (id) {
-  if (!user.classrooms.some((item) => item._id.toString() === id.toString())) {
+userSchema.methods.checkIfOwnsClassroom = function (id) {
+  if (!this.classrooms.some((item) => item._id.toString() === id.toString())) {
     throw new Error();
   }
 };
 
-userSchema.methods.checkIfOwnsQuiz = async function (id) {
+userSchema.methods.checkIfOwnsQuiz = function (id) {
   if (
-    !user.classrooms.quizzes.some(
+    !this.classrooms.quizzes.some(
       (item) => item._id.toString() === id.toString()
     )
   ) {
