@@ -68,9 +68,8 @@ quizSchema.pre("remove", async function (next) {
   classroom.quizzes.remove(this);
   await classroom.save();
 
-  this.questions.forEach(async (question) => {
-    await question.remove();
-  });
+  const Question = this.model("Question");
+  await Question.deleteMany({ _id: { $in: this.questions } });
   next();
 });
 

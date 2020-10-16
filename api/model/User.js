@@ -54,10 +54,10 @@ userSchema.methods.generateJwt = async function () {
   return token;
 };
 
-userSchema.methods.addClassroom = async function(classroom) {
-    this.classrooms.push(classroom);
-    await this.save();
-}
+userSchema.methods.addClassroom = async function (classroom) {
+  this.classrooms.push(classroom);
+  await this.save();
+};
 
 userSchema.statics.findByCredentials = async (username, password) => {
   const user = await User.findOne({ username });
@@ -71,21 +71,21 @@ userSchema.statics.findByCredentials = async (username, password) => {
   return user;
 };
 
-userSchema.methods.checkIfOwnsClassroom = function (id) {
-  if (!this.classrooms.some((item) => item._id.toString() === id.toString())) {
-    throw new Error();
-  }
-};
+// userSchema.methods.checkIfOwnsClassroom = function (id) {
+//   //   if (!this.classrooms.some((item) => item._id.toString() === id.toString())) {
+//   //     throw new Error();
+//   //   }
+// };
 
-userSchema.methods.checkIfOwnsQuiz = function (id) {
-  if (
-    !this.classrooms.quizzes.some(
-      (item) => item._id.toString() === id.toString()
-    )
-  ) {
-    throw new Error();
-  }
-};
+// userSchema.methods.checkIfOwnsQuiz = function (id) {
+//   //   if (
+//   //     !this.classrooms.quizzes.some(
+//   //       (item) => item._id.toString() === id.toString()
+//   //     )
+//   //   ) {
+//   //     throw new Error();
+//   //   }
+// };
 
 userSchema.statics.checkForDuplicate = async (username, email) => {
   const users = await User.find({ $or: [{ username }, { email }] });
