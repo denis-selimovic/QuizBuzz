@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const shortid = require('shortid');
 const { auth } = require("../common/auth");
 const { validateBody, partiallyValidateBody } = require("../common/http");
 const { checkQuizOwnership } = require("../common/validations");
@@ -67,6 +68,18 @@ router.get("", async (req, res) => {
   } catch (e) {
     console.log(e.message);
     res.status(400).json({ message: "Could not load item" });
+  }
+});
+
+router.post("/:id/student", auth, checkQuizOwnership, validateBody(['id']), async (req, res) => {
+  try {
+    await req.classroom.checkIfEnrolled(req.body.id);
+    const quiz = await Quiz.findById(req.params.id);
+    quiz.students.push({ id: req.body.id, code: shortid.generate(), points: [] });
+    await quiz.save();
+    res.status(200).json(quiz);
+  } catch (e) {
+    res.status(400).json({ message: 'Could not add student' });
   }
 });
 
