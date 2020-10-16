@@ -16,6 +16,7 @@ const checkQuizOwnership = async (req, res, next) => {
     const quiz = await Quiz.findById(quizId).populate("questions");
     const classroom = await quiz.classroom();
     if (classroom.quizzes.map((c) => c._id.toString()).includes(quizId)) {
+      req.classroom = classroom;
       return next();
     }
     res.status(403).json({ message: "Not authorized" });
