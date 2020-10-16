@@ -27,6 +27,13 @@ studentSchema.pre('remove', async function (next) {
     next();
 });
 
+studentSchema.statics.updateById = async (id, body) => {
+    const student = await Student.findById(id);
+    Object.keys(body).forEach(key => student[key] = body[key]);
+    await student.save();
+    return student;
+};
+
 const Student = mongoose.model('Student', studentSchema);
 
 module.exports = Student;

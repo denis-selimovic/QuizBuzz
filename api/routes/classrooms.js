@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { auth } = require("../common/auth");
-const { validateBody } = require("../common/http");
+const { validateBody, partiallyValidateBody } = require("../common/http");
 const { checkClassroomOwnership } = require("../common/validations");
 
 const Quiz = require("../model/Quiz");
@@ -64,6 +64,16 @@ router.delete('/:id/student', auth, checkClassroomOwnership, validateBody(['id']
     res.status(201).json({ message: 'Student successfully deleted' });
   } catch (e) {
     res.status(401).json({ message: 'Unable to delete student' });
+  }
+});
+
+router.patch("/:id/student/:studentId", auth, checkClassroomOwnership, partiallyValidateBody(['name', 'surname', 'email']), async (req, res) => {
+  try {
+    await req.classroom.checkIfEnrolled(req.params.studentId);
+    const student = await Student.updateById(req.params.studentId, req.body);
+    res.status(201).json(student);
+  } catch (e) {
+    res.status(403).json({ message: 'Could not update item' });
   }
 });
 
