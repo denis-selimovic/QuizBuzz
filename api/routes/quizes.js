@@ -75,6 +75,7 @@ router.post("/:id/student", auth, checkQuizOwnership, validateBody(['id']), asyn
   try {
     await req.classroom.checkIfEnrolled(req.body.id);
     const quiz = await Quiz.findById(req.params.id);
+    await quiz.checkIfEnrolled(req.body.id);
     quiz.students.push({ id: req.body.id, code: shortid.generate(), points: [] });
     await quiz.save();
     res.status(200).json(quiz);

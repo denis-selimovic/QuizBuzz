@@ -61,6 +61,13 @@ quizSchema.methods.classroom = async function () {
   }).exec();
 };
 
+quizSchema.methods.checkIfEnrolled = async function (id) {
+  if (!this.students.map(s => s.id).includes(id)) {
+    return;
+  }
+  throw new Error();
+};
+
 quizSchema.pre("remove", async function (next) {
   const classroom = await this.classroom();
   classroom.quizzes.remove(this);
