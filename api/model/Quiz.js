@@ -78,8 +78,12 @@ quizSchema.statics.updateQuizById = async (id, newQuiz) => {
   return quiz;
 };
 
-quizSchema.statics.getByCodePopulated = async (code) => {
-  //ovo treba napravit
+quizSchema.statics.getByCodePopulated = async (myCode) => {
+  const quiz = await Quiz.findOne({ "students.code": myCode }).populate("questions");
+  if (!quiz) {
+    throw new Error();
+  }
+  return quiz;
 };
 
 const Quiz = mongoose.model("Quiz", quizSchema);

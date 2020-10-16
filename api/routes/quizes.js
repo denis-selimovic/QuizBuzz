@@ -63,7 +63,7 @@ router.get("", async (req, res) => {
     const code = req.query.code;
     const quiz = await Quiz.getByCodePopulated(code);
     //provjeri je li poceo kviz
-    res.status(200).json(quiz);
+    res.status(200).json({ _id: quiz._id, name: quiz.name, date: quiz.date, duration: quiz.duration, questions: quiz.questions });
   } catch (e) {
     console.log(e.message);
     res.status(400).json({ message: "Could not load item" });
