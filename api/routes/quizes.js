@@ -17,6 +17,18 @@ router.get("/:id", auth, checkQuizOwnership, async (req, res) => {
   }
 });
 
+router.delete("/:id", auth, checkQuizOwnership, async (req, res) => {
+  try {
+    const quiz = await Quiz.getQuizByIdPopulated(req.params.id);
+
+    await quiz.remove();
+    res.status(200).json({ message: "Item successfully deleted" });
+  } catch (e) {
+    console.log(e.message);
+    res.status(400).json({ message: "Could not load item" });
+  }
+});
+
 router.post(
   "/:id/question",
   auth,
@@ -37,17 +49,5 @@ router.post(
     }
   }
 );
-
-router.delete("/:id", auth, checkQuizOwnership, async (req, res) => {
-  try {
-    const quiz = await Quiz.getQuizByIdPopulated(req.params.id);
-
-    await quiz.remove();
-    res.status(200).json({ message: "Item successfully deleted" });
-  } catch (e) {
-    console.log(e.message);
-    res.status(400).json({ message: "Could not load item" });
-  }
-});
 
 module.exports = router;

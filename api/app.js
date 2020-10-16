@@ -5,6 +5,7 @@ const app = express();
 const userRoutes = require("./routes/users");
 const quizRoutes = require("./routes/quizes");
 const classroomRoutes = require("./routes/classrooms");
+const questionRoutes = require("./routes/questions");
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -13,5 +14,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/users", userRoutes);
 app.use("/quizzes", quizRoutes);
 app.use("/classrooms", classroomRoutes);
+app.use("/questions", questionRoutes);
 
 module.exports = app;

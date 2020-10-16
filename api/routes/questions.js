@@ -1,0 +1,19 @@
+const express = require("express");
+const router = express.Router();
+const { auth } = require("../common/auth");
+const { validateBody } = require("../common/http");
+const { checkQuestionOwnership } = require("../common/validations");
+const Question = require("../model/Question");
+
+router.delete("/:id", auth, checkQuestionOwnership, async (req, res) => {
+  try {
+    const question = await Question.findById(req.params.id);
+    await question.remove();
+    res.status(200).json({ message: "Item successfully deleted!" });
+  } catch (e) {
+    console.log(e.message);
+    res.status(400).json({ message: "Could not load item" });
+  }
+});
+
+module.exports = router;
