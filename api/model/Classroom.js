@@ -23,9 +23,11 @@ const classroomSchema = new Schema({
 });
 
 classroomSchema.pre("remove", async function (next) {
-  const quizzes = this.quizzes.map((q) => q._id);
   const Quiz = this.model("Quiz");
-  await Quiz.deleteMany({ _id: { $in: quizzes } });
+  const quizzes = await Quiz.find({ _id: { $in: this.quizzes } });
+  for (const q of quizzes) {
+    await q.remove();
+  }
   next();
 });
 
