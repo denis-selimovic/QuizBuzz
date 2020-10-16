@@ -7,6 +7,7 @@ const { checkQuizOwnership } = require("../common/validations");
 
 const Question = require("../model/Question");
 const Quiz = require("../model/Quiz");
+const Student = require('../model/Student');
 
 router.get("/:id", auth, checkQuizOwnership, async (req, res) => {
   try {
@@ -92,6 +93,17 @@ router.delete('/:id/student', auth, checkQuizOwnership, validateBody(['id']), as
     res.status(200).json({ message: 'Student removed from quiz'});
   } catch (e) {
     res.status(400).json({ message: 'Could not remove student' });
+  }
+});
+
+router.get('/:id/students', auth, checkQuizOwnership, async (req, res) => {
+  try {
+    const quiz = await Quiz.findById(req.params.id);
+    const studentIds = quiz.students.map(s => s.id);
+    const students = await Student.find({ _id: { $in: studentIds } });
+    res.status(200).json(students);
+  } catch (e) {
+    res.status(400).json({ message: 'Unable to load items' });
   }
 });
 
