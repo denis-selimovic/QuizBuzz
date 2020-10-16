@@ -21,8 +21,9 @@ const studentSchema = new Schema({
 
 studentSchema.pre('remove', async function (next) {
     const Classroom = this.model('Classroom');
+    const Quiz = this.model('Quiz');
     await Classroom.updateMany({ students: this._id.toString() }, { $pull: { students: this._id.toString() } });
-    //await Quiz.updateMany({ mapKey: { $exists: true } }, { $pull: { mapKey } });
+    await Quiz.updateMany({ 'students.id': this._id.toString() }, { $pull: { students: { id: this._id.toString() } } });
     next();
 });
 
