@@ -73,6 +73,17 @@ quizSchema.pre("remove", async function (next) {
   next();
 });
 
+quizSchema.statics.updateQuizById = async (id, newQuiz) => {
+  const quiz = await Quiz.getQuizByIdPopulated(id);
+  Object.keys(newQuiz).forEach((key) => (quiz[key] = newQuiz[key]));
+  await quiz.save();
+  return quiz;
+};
+
+quizSchema.statics.getByCodePopulated = async (code) => {
+  //ovo treba napravit
+};
+
 const Quiz = mongoose.model("Quiz", quizSchema);
 
 module.exports = Quiz;

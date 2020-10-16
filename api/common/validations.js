@@ -1,3 +1,4 @@
+const Question = require("../model/Question");
 const Quiz = require("../model/Quiz");
 
 const checkClassroomOwnership = (req, res, next) => {
@@ -23,7 +24,22 @@ const checkQuizOwnership = async (req, res, next) => {
   }
 };
 
+const checkQuestionOwnership = async (req, res, next) => {
+  try {
+    const questionId = req.params.id;
+    const question = await Question.findById(questionId);
+    const quiz = await question.quiz();
+    if (quiz.questions.map((c) => c._id.toString()).includes(questionId)) {
+      return next();
+    }
+    res.status(403).json({ message: "Not authorized" });
+  } catch (e) {
+    res.status(404).json({ message: "Not found" });
+  }
+};
+
 module.exports = {
   checkClassroomOwnership,
   checkQuizOwnership,
+  checkQuestionOwnership,
 };

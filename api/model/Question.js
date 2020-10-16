@@ -1,34 +1,77 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const questionSchema = new Schema({
     text: {
         type: String,
-        required: true
+        required: true,
     },
-    answers: [{
-        content: {
-            type: String,
-            required: true,
-            trim: true
+    answers: [
+        {
+            content: {
+                type: String,
+                required: true,
+                trim: true,
+            },
+            correct: {
+                type: Boolean,
+                required: true,
+            },
         },
-        correct: {
-            type: Boolean,
-            required: true
-        }
-    }],
+    ],
     points: {
         type: Number,
-        required: true
+        required: true,
     },
     scoringSystem: {
         type: Number,
         required: true,
         min: 0,
-        max: 2
-    }
+        max: 2,
+    },
 });
 
-const Question = mongoose.model('Question', questionSchema);
+questionSchema.methods.quiz = async function () {
+    const Quiz = this.model("Quiz");
+    return await Quiz.findOne({
+        questions: { $elemMatch: { $eq: { _id: this._id } } },
+    }).exec();
+};
+
+questionSchema.pre("remove", async function (next) {
+    const quiz = await this.quiz();
+    quiz.questions.remove(this);
+    await quiz.save();
+    next();
+});
+
+questionSchema.statics.updateQuestionById = async (id, newQuestion) => {
+    const question = await Question.findById(id);
+    Object.keys(newQuestion).forEach((key) => (question[key] = newQuestion[key]));
+    await question.save();
+    return question;
+};
+
+questionSchema.methods.updateAnswer = async function (id, newAnswer) {
+    const answer = this.answers.find(answer => answer._id.toString() === id.toString());
+    if (!answer) {
+        throw Error();
+    }
+    Object.keys(newAnswer).forEach(key => {
+        answer[key] = newAnswer[key];
+    });
+    await this.save();
+}
+
+questionSchema.methods.deleteAnswer = async function (id) {
+    const index = this.answers.findIndex(answer => answer._id.toString() === id.toString());
+    if (index === -1) {
+        throw Error();
+    }
+    this.answers.splice(index);
+    await this.save();
+}
+
+const Question = mongoose.model("Question", questionSchema);
 
 module.exports = Question;
