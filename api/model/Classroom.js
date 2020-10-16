@@ -22,6 +22,10 @@ const classroomSchema = new Schema({
   ],
 });
 
+classroomSchema.pre('remove', async function (next) {
+
+});
+
 classroomSchema.statics.getClassroomByIdAndPopulate = async (
   id,
   collection
