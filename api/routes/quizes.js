@@ -23,12 +23,12 @@ router.get(
 
 router.post(
   "/:id/question",
-  /*auth,*/
+  auth,
   validateBody(["text", "points", "scoringSystem"]),
   async (req, res) => {
     try {
       const quiz = await Quiz.getQuizByIdPopulated(req.params.id);
-      //req.user.checkIfOwnsQuiz(quiz._id);
+      req.user.checkIfOwnsQuiz(quiz._id);
 
       const question = new Question({ ...req.body, answers: [] });
       await question.save();
@@ -42,20 +42,17 @@ router.post(
   }
 );
 
-router.delete(
-  "/:id",
-  /*auth,*/ async (req, res) => {
-    try {
-      const quiz = await Quiz.getQuizByIdPopulated(req.params.id);
-      //req.user.checkIfOwnsQuiz(quiz._id);
+router.delete("/:id", auth, async (req, res) => {
+  try {
+    const quiz = await Quiz.getQuizByIdPopulated(req.params.id);
+    req.user.checkIfOwnsQuiz(quiz._id);
 
-      await quiz.remove();
-      res.status(200).json({ message: "Item successfully deleted" });
-    } catch (e) {
-      console.log(e.message);
-      res.status(400).json({ message: "Could not load item" });
-    }
+    await quiz.remove();
+    res.status(200).json({ message: "Item successfully deleted" });
+  } catch (e) {
+    console.log(e.message);
+    res.status(400).json({ message: "Could not load item" });
   }
-);
+});
 
 module.exports = router;

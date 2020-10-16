@@ -8,7 +8,7 @@ const Classroom = require("../model/Classroom");
 
 router.post(
   "/:id/quiz",
-  // auth,
+  auth,
   validateBody(["name", "date", "duration"]),
   async (req, res) => {
     try {
@@ -17,7 +17,7 @@ router.post(
         "quizzes"
       );
 
-      //req.user.checkIfOwnsClassroom(classroom._id);
+      req.user.checkIfOwnsClassroom(classroom._id);
       const quiz = new Quiz({ ...req.body, questions: [], students: {} });
       await quiz.save();
       classroom.quizzes.push(quiz);
@@ -31,14 +31,14 @@ router.post(
 );
 
 //get all quizes for classroom
-router.get("/:id/quizzes", async (req, res) => {
+router.get("/:id/quizzes", auth, async (req, res) => {
   try {
     const classroom = await Classroom.getClassroomByIdAndPopulate(
       req.params.id,
       { path: "quizzes", populate: { path: "questions", model: "Question" } }
     );
 
-    //req.user.checkIfOwnsClassroom(classroom._id);
+    req.user.checkIfOwnsClassroom(classroom._id);
     res.status(200).json(classroom.quizzes);
   } catch (e) {
     console.log(e);
