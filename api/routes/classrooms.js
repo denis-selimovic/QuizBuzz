@@ -69,7 +69,8 @@ router.delete('/:id/student', auth, checkClassroomOwnership, validateBody(['id']
 
 router.patch("/:id/student/:studentId", auth, checkClassroomOwnership, partiallyValidateBody(['name', 'surname', 'email']), async (req, res) => {
   try {
-    await req.classroom.checkIfEnrolled(req.params.studentId);
+    const classroom = await Classroom.getClassroomByIdAndPopulate(req.params.id, { path: 'students', model: 'Student' });
+    await classroom.checkIfEnrolled(req.params.studentId);
     const student = await Student.updateById(req.params.studentId, req.body);
     res.status(201).json(student);
   } catch (e) {
