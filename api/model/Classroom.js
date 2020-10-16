@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { collection } = require("./User");
+const shortid = require('shortid');
 const { Schema } = mongoose;
 
 const classroomSchema = new Schema({
@@ -32,6 +32,10 @@ classroomSchema.statics.getClassroomByIdAndPopulate = async (
   }
 
   return classroom;
+};
+
+classroomSchema.statics.generateRandomId = () => {
+  return shortid.generate();
 };
 
 const Classroom = mongoose.model("Classroom", classroomSchema);
