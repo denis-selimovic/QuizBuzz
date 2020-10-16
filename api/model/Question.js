@@ -45,6 +45,13 @@ questionSchema.pre("remove", async function (next) {
   next();
 });
 
+questionSchema.statics.updateQuestionById = async (id, newQuestion) => {
+  const question = await Question.findById(id);
+  Object.keys(newQuestion).forEach((key) => (question[key] = newQuestion[key]));
+  await question.save();
+  return question;
+};
+
 const Question = mongoose.model("Question", questionSchema);
 
 module.exports = Question;
