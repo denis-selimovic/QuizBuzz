@@ -11,8 +11,13 @@ router.post('/create', auth, validateBody(['name']), async (req, res) => {
     const code = req.body.name.concat('-', Classroom.generateRandomId());
     const classroom = new Classroom({ code });
     await classroom.save();
+    const user = req.user;
+    user.classrooms.push(classroom);
+    await user.save();
     res.status(201).json(classroom);
 });
+
+router.delete('/:id', auth, )
 
 //create quiz for classroom
 //dodati auth

@@ -24,4 +24,8 @@ router.post('/login', validateBody(['username', 'password']), async (req, res) =
     }
 });
 
+router.get('/profile', auth, async (req, res) => {
+    res.status(200).json(req.user)
+});
+
 module.exports = router;

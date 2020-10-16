@@ -7,12 +7,12 @@ const auth = async (req, res, next) => {
         const decoded = await jwt.verify(token, 'thisisasecrettoken');
         const user = await User.findOne({ _id: decoded._id });
         if (!user) {
-            return res.send(401).json({ message: 'Could not authenticate user' });
+            return res.status(401).json({ message: 'Could not authenticate user' });
         }
         req.user = user;
         next();
     } catch (e) {
-        res.send(401).json({ message: 'Could not authenticate user' });
+        res.status(401).json({ message: 'Could not authenticate user' });
     }
 };
 
