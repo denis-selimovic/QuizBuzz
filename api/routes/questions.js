@@ -52,4 +52,14 @@ router.patch("/:id/answer/:aid", auth, checkQuestionOwnership,
         }
     });
 
+router.delete("/:id/answer/:aid", auth, checkQuestionOwnership, async (req, res) => {
+    try {
+        const question = await Question.findById(req.params.id);
+        await question.deleteAnswer(req.params.aid);
+        res.status(200).json(question);
+    } catch (e) {
+        console.log(e.message);
+        res.status(400).json({ message: "Could not load item" });
+    }
+});
 module.exports = router;

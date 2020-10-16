@@ -53,10 +53,22 @@ questionSchema.statics.updateQuestionById = async (id, newQuestion) => {
 };
 
 questionSchema.methods.updateAnswer = async function (id, newAnswer) {
-    let answer = this.answers.find(answer => answer._id.toString() === id.toString())
+    const answer = this.answers.find(answer => answer._id.toString() === id.toString());
+    if (!answer) {
+        throw Error();
+    }
     Object.keys(newAnswer).forEach(key => {
         answer[key] = newAnswer[key];
     });
+    await this.save();
+}
+
+questionSchema.methods.deleteAnswer = async function (id) {
+    const index = this.answers.findIndex(answer => answer._id.toString() === id.toString());
+    if (index === -1) {
+        throw Error();
+    }
+    this.answers.splice(index);
     await this.save();
 }
 
