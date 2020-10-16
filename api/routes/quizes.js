@@ -30,11 +30,7 @@ router.delete("/:id", auth, checkQuizOwnership, async (req, res) => {
 });
 
 router.post(
-  "/:id/question",
-  auth,
-  checkQuizOwnership,
-  validateBody(["text", "points", "scoringSystem"]),
-  async (req, res) => {
+  "/:id/question", auth, checkQuizOwnership, validateBody(["text", "points", "scoringSystem"]), async (req, res) => {
     try {
       const quiz = await Quiz.getQuizByIdPopulated(req.params.id);
 
