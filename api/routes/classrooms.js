@@ -62,7 +62,7 @@ router.delete('/:id/student', auth, checkClassroomOwnership, validateBody(['id']
   try {
     const classroom = await Classroom.getClassroomByIdAndPopulate(req.params.id, 'students');
     await classroom.checkIfEnrolled(req.body.id);
-    const student = await Student.findById(req.params.id);
+    const student = await Student.findOne({ _id: req.body.id }).exec();
     await student.remove();
     res.status(201).json({ message: 'Student successfully deleted' });
   } catch (e) {
