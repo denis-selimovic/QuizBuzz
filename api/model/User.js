@@ -49,6 +49,11 @@ userSchema.methods.generateJwt = async function() {
     return token;
 }
 
+userSchema.methods.addClassroom = async function(classroom) {
+    this.classrooms.push(classroom);
+    await this.save();
+}
+
 userSchema.statics.findByCredentials = async (username, password) => {
     const user = await User.findOne({ username });
     if (!user) {

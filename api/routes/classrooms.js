@@ -11,9 +11,7 @@ router.post('/create', auth, validateBody(['name']), async (req, res) => {
     const code = req.body.name.concat('-', Classroom.generateRandomId());
     const classroom = new Classroom({ code });
     await classroom.save();
-    const user = req.user;
-    user.classrooms.push(classroom);
-    await user.save();
+    await req.user.addClassroom(classroom);
     res.status(201).json(classroom);
 });
 
