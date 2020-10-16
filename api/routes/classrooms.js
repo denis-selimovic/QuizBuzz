@@ -48,8 +48,6 @@ router.post(
   }
 );
 
-//get all quizes for classroom
-//možda promijeniti rutu?
 router.get("/:id/quizzes", auth, checkClassroomOwnership, async (req, res) => {
   try {
     const classroom = await Classroom.getClassroomByIdAndPopulate(
