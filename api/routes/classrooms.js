@@ -27,10 +27,7 @@ router.delete("/:id", auth, checkClassroomOwnership, async (req, res) => {
 });
 
 router.post(
-  "/:id/quiz",
-  auth,
-  checkClassroomOwnership,
-  validateBody(["name", "date", "duration"]),
+  "/:id/quiz", auth, checkClassroomOwnership, validateBody(["name", "date", "duration"]),
   async (req, res) => {
     try {
       const classroom = await Classroom.getClassroomByIdAndPopulate(req.params.id, "quizzes");
