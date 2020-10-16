@@ -1,7 +1,3 @@
-// const partialBodyValidator = (body, validBody) => {
-//   return body.every((value) => validBody.includes(value));
-// };
-
 const validateBody = (validBody) => {
   return (req, res, next) => {
     const body = Object.keys(req.body);
