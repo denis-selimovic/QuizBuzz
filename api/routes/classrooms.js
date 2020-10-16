@@ -6,32 +6,44 @@ const { validateBody } = require("../common/http");
 const Quiz = require("../model/Quiz");
 const Classroom = require("../model/Classroom");
 
-//create quiz for classroom
-//dodati auth
 router.post(
   "/:id/quiz",
-  auth,
+  // auth,
   validateBody(["name", "date", "duration"]),
   async (req, res) => {
     try {
       const classroom = await Classroom.getClassroomByIdAndPopulate(
         req.params.id,
-        "quizes"
+        "quizzes"
       );
 
-      //provjeriti da li je trenutni user vlasnik ovog classrooma
-      req.user.checkIfOwnsClassroom(classroom._id);
-
-      const quiz = new Quiz(req.body);
+      //req.user.checkIfOwnsClassroom(classroom._id);
+      const quiz = new Quiz({ ...req.body, questions: [], students: {} });
       await quiz.save();
-      classroom.quizes.push(quiz);
+      classroom.quizzes.push(quiz);
       await classroom.save();
       res.status(201).json(quiz);
     } catch (e) {
       console.log(e.message);
-      res.status(400).message("Unable to load item");
+      res.status(400).json({ message: "Unable to load item" });
     }
   }
 );
+
+//get all quizes for classroom
+router.get("/:id/quizzes", async (req, res) => {
+  try {
+    const classroom = await Classroom.getClassroomByIdAndPopulate(
+      req.params.id,
+      { path: "quizzes", populate: { path: "questions", model: "Question" } }
+    );
+
+    //req.user.checkIfOwnsClassroom(classroom._id);
+    res.status(200).json(classroom.quizzes);
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({ message: "Unable to load item" });
+  }
+});
 
 module.exports = router;

@@ -67,14 +67,17 @@ userSchema.statics.findByCredentials = async (username, password) => {
 };
 
 userSchema.methods.checkIfOwnsClassroom = async function (id) {
-  if (!user.classrooms.some((item) => item._id === id)) {
+  if (!user.classrooms.some((item) => item._id.toString() === id.toString())) {
     throw new Error();
   }
 };
 
 userSchema.methods.checkIfOwnsQuiz = async function (id) {
-  //provjeriti da li moze ovako
-  if (!user.classrooms.quizes.some((item) => item._id === id)) {
+  if (
+    !user.classrooms.quizzes.some(
+      (item) => item._id.toString() === id.toString()
+    )
+  ) {
     throw new Error();
   }
 };

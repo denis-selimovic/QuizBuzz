@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 // Ovako se dodaje prefix za sve učitane rute kao u Springu npr @RequestMapping('users')
 app.use("/users", userRoutes);
-app.use("/quizes", quizRoutes);
+app.use("/quizzes", quizRoutes);
 app.use("/classrooms", classroomRoutes);
 
 module.exports = app;

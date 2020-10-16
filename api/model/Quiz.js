@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const Classroom = require("./Classroom");
+const Question = require("./Question");
 const { Schema } = mongoose;
 
 const quizSchema = new Schema({
@@ -53,6 +55,24 @@ quizSchema.statics.getQuizByIdPopulated = async (id) => {
 
   return quiz;
 };
+
+quizSchema.methods.classroom = async function () {
+  const Classroom = this.model("Classroom");
+  return await Classroom.findOne({
+    quizzes: { $elemMatch: { $eq: { _id: this._id } } },
+  }).exec();
+};
+
+quizSchema.pre("remove", async function (next) {
+  const classroom = await this.classroom();
+  classroom.quizzes.remove(this);
+  await classroom.save();
+
+  this.questions.forEach(async (question) => {
+    await question.remove();
+  });
+  next();
+});
 
 const Quiz = mongoose.model("Quiz", quizSchema);
 
