@@ -1,46 +1,59 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const quizSchema = new Schema({
-    name: {
+  name: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  students: {
+    type: Map,
+    of: {
+      key: {
         type: String,
         required: true,
-        trim: true
-    },
-    students: {
-        type: Map,
-        of: {
-          key: {
-              type: String,
-              required: true
+      },
+      points: [
+        {
+          amount: {
+            type: Number,
+            required: true,
           },
-          points: [{
-              amount: {
-                  type: Number,
-                  required: true
-              },
-              questionId: {
-                  type: String,
-                  required: true
-              }
-          }]
+          questionId: {
+            type: String,
+            required: true,
+          },
         },
-        default: {}
+      ],
     },
-    questions: [{
+    default: {},
+  },
+  questions: [
+    {
       type: Schema.Types.ObjectId,
-      ref: 'Question'
-    }],
-    date: {
-        type: Date,
-        required: true
+      ref: "Question",
     },
-    duration: {
-        type: Number,
-        required: true
-    }
+  ],
+  date: {
+    type: Date,
+    required: true,
+  },
+  duration: {
+    type: Number,
+    required: true,
+  },
 });
 
-const Quiz = mongoose.model('Quiz', quizSchema);
+quizSchema.statics.getQuizByIdPopulated = async (id) => {
+  const quiz = await Quiz.findById(id).populate("questions");
+  if (!quiz) {
+    throw new Error();
+  }
+
+  return quiz;
+};
+
+const Quiz = mongoose.model("Quiz", quizSchema);
 
 module.exports = Quiz;

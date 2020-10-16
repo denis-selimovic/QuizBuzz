@@ -1,22 +1,39 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const { collection } = require("./User");
 const { Schema } = mongoose;
 
 const classroomSchema = new Schema({
-    code: {
-        type: String,
-        required: true,
-        unique: true
+  code: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  quizzes: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Quiz",
     },
-    quizzes: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Quiz'
-    }],
-    students: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Student'
-    }]
+  ],
+  students: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Student",
+    },
+  ],
 });
 
-const Classroom = mongoose.model('Classroom', classroomSchema);
+classroomSchema.statucs.getClassroomByIdAndPopulate = async (
+  id,
+  collection
+) => {
+  const classroom = await Classroom.findById(id).populate(collection);
+  if (!classroom) {
+    throw new Error();
+  }
+
+  return classroom;
+};
+
+const Classroom = mongoose.model("Classroom", classroomSchema);
 
 module.exports = Classroom;
