@@ -19,6 +19,12 @@ const studentSchema = new Schema({
     }
 });
 
+studentSchema.pre('remove', async function (next) {
+    const Classroom = this.model('Classroom');
+    await Classroom.update({ 'students._id': this._id }, { $pull: { students: { _id: this._id } } } );
+    next();
+});
+
 const Student = mongoose.model('Student', studentSchema);
 
 module.exports = Student;
