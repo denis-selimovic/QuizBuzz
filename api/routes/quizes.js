@@ -41,4 +41,7 @@ router.post("/:id/question", async (req, res) => {
   }
 });
 
+//delete question
+router.delete("/:id", async (req, res) => {});
+
 module.exports = router;
