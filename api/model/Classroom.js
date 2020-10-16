@@ -22,7 +22,7 @@ const classroomSchema = new Schema({
   ],
 });
 
-classroomSchema.statucs.getClassroomByIdAndPopulate = async (
+classroomSchema.statics.getClassroomByIdAndPopulate = async (
   id,
   collection
 ) => {
