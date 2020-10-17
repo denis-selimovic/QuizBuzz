@@ -75,7 +75,7 @@ quizSchema.methods.checkIfEnrolled = async function (id, value) {
   throw new Error();
 };
 
-quizSchema.methods.generateCode = async function(id, code) {
+quizSchema.methods.generateCode = async function (id, code) {
   const studentEntry = this.students.find(s => s.id === id);
   studentEntry.code = code;
   await this.save();
@@ -134,6 +134,13 @@ quizSchema.methods.checkCode = function (code) {
     throw Error("This student can't submit this quiz");
   }
 };
+
+quizSchema.methods.checkClassroomId = async function (classroomId) {
+  const classroom = await this.classroom();
+  if (classroom._id.toString() !== classroomId) {
+    throw Error("Invalid classroom id");
+  }
+}
 
 quizSchema.methods.submitAnswers = async function (code, submitForm) {
   const index = this.students.findIndex(s => s.code === code);

@@ -151,10 +151,11 @@ router.post('/:id/send-code', auth, checkQuizOwnership, async (req, res) => {
 });
 
 //please look at this!!!!!!!!!!
-router.post("/:id/submit", validateBody(["submitForm", "date"]),
+router.post("/:id/submit", validateBody(["submitForm", "date", "classroomId"]),
   validateSubmitForm(["questionId", "selectedAnswers"]), async (req, res) => {
     try {
       let quiz = await Quiz.getQuizByIdPopulated(req.params.id);
+      await quiz.checkClassroomId(req.body.classroomId);
       quiz.checkSubmitDate(req.body.date);
       quiz.checkCode(req.query.code);
       const index = await quiz.submitAnswers(req.query.code, req.body.submitForm);
