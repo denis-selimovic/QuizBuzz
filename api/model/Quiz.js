@@ -96,8 +96,6 @@ quizSchema.statics.getByCodePopulated = async (myCode) => {
 quizSchema.methods.getProgressStatus = function () {
   const currentDate = new Date();
   const quizEndDate = new Date((this.date).getTime() + this.duration * 60000);
-  console.log(quizEndDate);
-  console.log(this.date);
   if (currentDate < this.date) return -1;
   if (currentDate > quizEndDate) return 1;
   return 0;

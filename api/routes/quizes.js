@@ -59,7 +59,6 @@ router.patch("/:id", auth, checkQuizOwnership,
     }
   });
 
-//ova nije jos gotova
 router.get("", async (req, res) => {
   try {
     const code = req.query.code;
