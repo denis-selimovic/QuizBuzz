@@ -3,7 +3,7 @@ const router = express.Router();
 const shortid = require('shortid');
 const { auth } = require("../common/auth");
 const { validateBody, partiallyValidateBody, validateSubmitForm } = require("../common/http");
-const { checkQuizOwnership } = require("../common/validations");
+const { checkQuizOwnership, checkQuizFinished } = require("../common/validations");
 const sendEmail = require('../common/email');
 
 const Question = require("../model/Question");
@@ -163,6 +163,15 @@ router.post("/:id/submit", validateBody(["submitForm", "date"]),
       console.log(e.message);
       res.status(400).json({ message: 'Unable to submit' });
     }
-  })
+  });
+
+router.get("/:id/results", auth, checkQuizOwnership, checkQuizFinished, async (req, res) => {
+  try {
+    const quiz = await Quiz.getQuizByIdPopulated(req.params.id);
+    res.status(200).json({ resultsPerStudents: quiz.students });
+  } catch (e) {
+    res.status(400).json({ message: 'Unable to get results' });
+  }
+})
 
 module.exports = router;
