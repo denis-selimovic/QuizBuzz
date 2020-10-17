@@ -62,11 +62,24 @@ quizSchema.methods.classroom = async function () {
   }).exec();
 };
 
+quizSchema.methods.getStudentById = async function (id) {
+  const Student = this.model('Student');
+  const student = await Student.findById(id);
+  const studentEntry = this.students.find(s => s.id === id);
+  return { email: student.email, code: studentEntry.code };
+};
+
 quizSchema.methods.checkIfEnrolled = async function (id, value) {
   if (this.students.map(s => s.id).includes(id) === value) {
     return;
   }
   throw new Error();
+};
+
+quizSchema.methods.generateCode = async function(id, code) {
+  const studentEntry = this.students.find(s => s.id === id);
+  studentEntry.code = code;
+  await this.save();
 };
 
 quizSchema.pre("remove", async function (next) {

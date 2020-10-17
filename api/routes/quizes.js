@@ -4,6 +4,7 @@ const shortid = require('shortid');
 const { auth } = require("../common/auth");
 const { validateBody, partiallyValidateBody } = require("../common/http");
 const { checkQuizOwnership } = require("../common/validations");
+const sendEmail = require('../common/email');
 
 const Question = require("../model/Question");
 const Quiz = require("../model/Quiz");
@@ -110,6 +111,29 @@ router.get('/:id/students', auth, checkQuizOwnership, async (req, res) => {
     res.status(200).json(students);
   } catch (e) {
     res.status(400).json({ message: 'Unable to load items' });
+  }
+});
+
+router.post("/:id/generate-code/:studentId", auth, checkQuizOwnership, async (req, res) => {
+  try {
+    const quiz = await Quiz.findById(req.params.id);
+    await quiz.checkIfEnrolled(req.params.studentId, true);
+    await quiz.generateCode(req.params.studentId, shortid.generate());
+    res.status(201).json(quiz);
+  } catch (e) {
+    res.status(400).json({ message: 'Unable to send quiz code' });
+  }
+});
+
+router.post('/:id/send-code/:studentId', auth, checkQuizOwnership, async (req, res) => {
+  try {
+    const quiz = await Quiz.findById(req.params.id);
+    await quiz.checkIfEnrolled(req.params.studentId, true);
+    const { email, code } = await quiz.getStudentById(req.params.studentId);
+    const { result, full } = await sendEmail(email, `Code for quiz ${quiz.name}`, `Your access code is ${code}`);
+    res.status(200).json({ result });
+  } catch (e) {
+    res.status(400).json({ message: 'Unable to send quiz code' });
   }
 });
 
