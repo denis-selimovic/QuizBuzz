@@ -4,6 +4,7 @@ const { auth } = require("../common/auth");
 const { validateBody, partiallyValidateBody } = require("../common/http");
 const { checkClassroomOwnership } = require("../common/validations");
 const { getBodyWithOffsetDate } = require("../common/util");
+const sendEmail = require('../common/email');
 
 const Quiz = require("../model/Quiz");
 const Classroom = require("../model/Classroom");
@@ -120,14 +121,7 @@ router.post('/:id/send-code', auth, checkClassroomOwnership, async (req, res) =>
   try {
     const classroom = await Classroom.getClassroomByIdAndPopulate(req.params.id, { path: 'students', model: 'Student' });
     const emails = classroom.students.map(s => s.email);
-    const send = require('gmail-send')({
-      user: 'quizbuzz.no.reply@gmail.com',
-      pass: '.quizBUZZ.-',
-      to: emails,
-      subject: `Code for ${classroom.code.split('-')[0]} classroom`,
-      text: `Access code is ${classroom.code}`
-    });
-    const { result, full } = await send();
+    const { result, full } = await sendEmail(emails, `Code for ${classroom.code.split('-')[0]} classroom`, `Access code is ${classroom.code}`);
     res.status(200).json(result);
   } catch (e) {
     res.status(400).json({ message: 'Could not send emails' })
@@ -139,14 +133,7 @@ router.post('/:id/send-code/:studentId', auth, checkClassroomOwnership, async (r
     const classroom = await Classroom.getClassroomByIdAndPopulate(req.params.id, { path: 'students', model: 'Student' });
     await classroom.checkIfEnrolled(req.params.studentId);
     const student = await Student.findById(req.params.studentId);
-    const send = require('gmail-send')({
-      user: 'quizbuzz.no.reply@gmail.com',
-      pass: '.quizBUZZ.-',
-      to: student.email,
-      subject: `Code for ${classroom.code.split('-')[0]} classroom`,
-      text: `Access code is ${classroom.code}`
-    });
-    const { result, full } = await send();
+    const { result, full } = await sendEmail([ student.email ], `Code for ${classroom.code.split('-')[0]} classroom`, `Access code is ${classroom.code}`);
     res.status(200).json(result);
   } catch (e) {
     res.status(400).json({ message: 'Could not send emails' })
