@@ -174,4 +174,14 @@ router.get("/:id/results", auth, checkQuizOwnership, checkQuizFinished, async (r
   }
 })
 
+router.get("/:id/student/:sid/results", auth, checkQuizOwnership, checkQuizFinished, async (req, res) => {
+  try {
+    const quiz = await Quiz.getQuizByIdPopulated(req.params.id);
+    const index = quiz.students.findIndex(s => s.id === req.params.sid);
+    res.status(200).json({ results: quiz.students[index] });
+  } catch (e) {
+    res.status(400).json({ message: 'Unable to get results' });
+  }
+})
+
 module.exports = router;
