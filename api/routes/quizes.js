@@ -64,10 +64,12 @@ router.get("", async (req, res) => {
   try {
     const code = req.query.code;
     const quiz = await Quiz.getByCodePopulated(code);
-    if (!quiz.isInProgress()) {
+    const status = quiz.getProgressStatus();
+    console.log(status);
+    if (status !== 0) {
       res.status(404).json({
-        message: "This quiz isn't in progress. Check the starting date and duration",
-        date: quiz.date, duration: quiz.duration
+        message: "This quiz isn't in progress. Check the starting date, duration and status.",
+        date: quiz.date, duration: quiz.duration, status: status
       });
     } else {
       res.status(200).json({ _id: quiz._id, name: quiz.name, date: quiz.date, duration: quiz.duration, questions: quiz.questions });
