@@ -93,6 +93,11 @@ quizSchema.statics.getByCodePopulated = async (myCode) => {
   return quiz;
 };
 
+quizSchema.methods.isInProgress = function () {
+  const currentDate = new Date();
+  return currentDate >= this.date && currentDate <= new Date(this.date.getTime() + this.date.duration * 60000);
+};
+
 const Quiz = mongoose.model("Quiz", quizSchema);
 
 module.exports = Quiz;

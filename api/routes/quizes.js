@@ -64,8 +64,14 @@ router.get("", async (req, res) => {
   try {
     const code = req.query.code;
     const quiz = await Quiz.getByCodePopulated(code);
-    //provjeri je li poceo kviz
-    res.status(200).json({ _id: quiz._id, name: quiz.name, date: quiz.date, duration: quiz.duration, questions: quiz.questions });
+    if (!quiz.isInProgress()) {
+      res.status(404).json({
+        message: "This quiz isn't in progress. Check the starting date and duration",
+        date: quiz.date, duration: quiz.duration
+      });
+    } else {
+      res.status(200).json({ _id: quiz._id, name: quiz.name, date: quiz.date, duration: quiz.duration, questions: quiz.questions });
+    }
   } catch (e) {
     console.log(e.message);
     res.status(400).json({ message: "Could not load item" });
@@ -90,7 +96,7 @@ router.delete('/:id/student', auth, checkQuizOwnership, validateBody(['id']), as
     const quiz = await Quiz.findById(req.params.id);
     await quiz.checkIfEnrolled(req.body.id, true);
     await quiz.update({ $pull: { students: { id: req.body.id } } });
-    res.status(200).json({ message: 'Student removed from quiz'});
+    res.status(200).json({ message: 'Student removed from quiz' });
   } catch (e) {
     res.status(400).json({ message: 'Could not remove student' });
   }
