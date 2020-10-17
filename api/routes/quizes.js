@@ -137,4 +137,17 @@ router.post('/:id/send-code/:studentId', auth, checkQuizOwnership, async (req, r
   }
 });
 
+router.post('/:id/send-code', auth, checkQuizOwnership, async (req, res) => {
+  try {
+    const quiz = await Quiz.findById(req.params.id);
+    for (const s of quiz.students) {
+      const { email, code } = await quiz.getStudentById(s.id);
+      await sendEmail(email, `Code for quiz ${quiz.name}`, `Your access code is ${code}`);
+    }
+    res.status(200).json({ result: 'Mails sent successfully' });
+  } catch (e) {
+    res.status(400).json({ message: 'Unable to send quiz code' });
+  }
+});
+
 module.exports = router;

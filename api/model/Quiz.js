@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 const { getBodyWithOffsetDate, offsetDate } = require("../common/util");
-const Classroom = require("./Classroom");
-const Question = require("./Question");
 const { Schema } = mongoose;
 
 const quizSchema = new Schema({

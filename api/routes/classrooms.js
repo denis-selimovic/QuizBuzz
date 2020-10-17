@@ -33,8 +33,11 @@ router.post(
   async (req, res) => {
     try {
       const classroom = await Classroom.getClassroomByIdAndPopulate(req.params.id, "quizzes");
-      const quiz = new Quiz(getBodyWithOffsetDate(req.body, 2));
+      console.log(classroom);
+      //const quiz = new Quiz(getBodyWithOffsetDate(req.body, 2));
+      const quiz = new Quiz(req.body);
       await quiz.save();
+      console.log(quiz);
       await classroom.addQuiz(quiz)
       res.status(201).json(quiz);
     } catch (e) {
