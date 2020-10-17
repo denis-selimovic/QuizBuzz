@@ -4,7 +4,7 @@ const EnterCode = (props) => {
     const [value, onChangeText] = React.useState("");
     return (
         <View>
-            <TextInput
+            {/* <TextInput
                 style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
                 onChangeText={text => onChangeText(text)}
                 value={value}>
@@ -13,7 +13,7 @@ const EnterCode = (props) => {
                 // onPress={console.log(pressed)}
                 title={props.text}
                 color="#841584"
-            />
+            /> */}
         </View >
     );
 }
