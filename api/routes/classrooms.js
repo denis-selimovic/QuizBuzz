@@ -34,8 +34,7 @@ router.post(
     try {
       const classroom = await Classroom.getClassroomByIdAndPopulate(req.params.id, "quizzes");
       console.log(classroom);
-      //const quiz = new Quiz(getBodyWithOffsetDate(req.body, 2));
-      const quiz = new Quiz(req.body);
+      const quiz = new Quiz(getBodyWithOffsetDate(req.body, 2));
       await quiz.save();
       console.log(quiz);
       await classroom.addQuiz(quiz)
