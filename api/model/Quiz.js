@@ -1,3 +1,4 @@
+const { compareSync } = require("bcryptjs");
 const mongoose = require("mongoose");
 const { getBodyWithOffsetDate, offsetDate } = require("../common/util");
 const Classroom = require("./Classroom");
@@ -109,8 +110,9 @@ quizSchema.methods.getProgressStatus = function () {
 };
 
 quizSchema.methods.checkSubmitDate = function (date) {
+  const submitDate = offsetDate(date, 2);
   const quizEndDate = new Date((this.date).getTime() + this.duration * 60000);
-  if (date > quizEndDate || date < this.date) {
+  if (submitDate > quizEndDate || submitDate < this.date) {
     throw Error("You can't submit this quiz");
   }
 };
@@ -123,14 +125,15 @@ quizSchema.methods.checkCode = function (code) {
 };
 
 quizSchema.methods.submitAnswers = async function (code, submitForm) {
-  const index = this.students.indexOf(s => s.code === code);
+  const index = this.students.findIndex(s => s.code === code);
   const Question = this.model("Question");
-  submitForm.forEach(async q => {
+  await submitForm.forEach(async q => {
     const score = await Question.scoreQuestion(q, this);
-    console.log(score);
-    //this.students[index].points.push(score);
+    this.students[index].points.push(score);
   });
+  //console.log(this.students[index]);
   //await this.save();
+  return index;
 };
 
 const Quiz = mongoose.model("Quiz", quizSchema);

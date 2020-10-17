@@ -116,11 +116,11 @@ router.get('/:id/students', auth, checkQuizOwnership, async (req, res) => {
 router.post("/:id/submit", validateBody(["submitForm", "date"]),
   validateSubmitForm(["questionId", "selectedAnswers"]), async (req, res) => {
     try {
-      const quiz = await Quiz.getQuizByIdPopulated(req.params.id);
-      //quiz.checkSubmitDate(req.body.date);
+      let quiz = await Quiz.getQuizByIdPopulated(req.params.id);
+      quiz.checkSubmitDate(req.body.date);
       quiz.checkCode(req.query.code);
-      await quiz.submitAnswers(req.query.code, req.body.submitForm);
-      res.status(200).json({ message: "yuhu" });
+      const index = await quiz.submitAnswers(req.query.code, req.body.submitForm);
+      res.status(200).json({ pointsPerQuestion: quiz.students[index].points });
     } catch (e) {
       console.log(e.message);
       res.status(400).json({ message: 'Unable to submit' });
