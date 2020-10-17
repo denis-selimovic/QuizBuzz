@@ -8,5 +8,6 @@ const offsetDate = (date, hours) => {
 }
 
 module.exports = {
-    getBodyWithOffsetDate
+    getBodyWithOffsetDate,
+    offsetDate
 };

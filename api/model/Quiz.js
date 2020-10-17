@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { getBodyWithOffsetDate } = require("../common/util");
+const { getBodyWithOffsetDate, offsetDate } = require("../common/util");
 const Classroom = require("./Classroom");
 const Question = require("./Question");
 const { Schema } = mongoose;
@@ -98,8 +98,11 @@ quizSchema.statics.getByCodePopulated = async (myCode) => {
 };
 
 quizSchema.methods.getProgressStatus = function () {
-  const currentDate = new Date();
+  const currentDate = offsetDate(new Date().getTime(), 2);
   const quizEndDate = new Date((this.date).getTime() + this.duration * 60000);
+  // console.log(currentDate);
+  // console.log(this.date);
+  // console.log(quizEndDate);
   if (currentDate < this.date) return -1;
   if (currentDate > quizEndDate) return 1;
   return 0;

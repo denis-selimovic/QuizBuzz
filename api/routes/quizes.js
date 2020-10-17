@@ -64,7 +64,6 @@ router.get("", async (req, res) => {
     const code = req.query.code;
     const quiz = await Quiz.getByCodePopulated(code);
     const status = quiz.getProgressStatus();
-    console.log(status);
     if (status !== 0) {
       res.status(404).json({
         message: "This quiz isn't in progress. Check the starting date, duration and status.",
