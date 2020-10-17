@@ -108,6 +108,31 @@ quizSchema.methods.getProgressStatus = function () {
   return 0;
 };
 
+quizSchema.methods.checkSubmitDate = function (date) {
+  const quizEndDate = new Date((this.date).getTime() + this.duration * 60000);
+  if (date > quizEndDate || date < this.date) {
+    throw Error("You can't submit this quiz");
+  }
+};
+
+quizSchema.methods.checkCode = function (code) {
+  const valid = this.students.find(s => s.code === code);
+  if (!valid) {
+    throw Error("This student can't submit this quiz");
+  }
+};
+
+quizSchema.methods.submitAnswers = async function (code, submitForm) {
+  const index = this.students.indexOf(s => s.code === code);
+  const Question = this.model("Question");
+  submitForm.forEach(async q => {
+    const score = await Question.scoreQuestion(q, this);
+    console.log(score);
+    //this.students[index].points.push(score);
+  });
+  //await this.save();
+};
+
 const Quiz = mongoose.model("Quiz", quizSchema);
 
 module.exports = Quiz;

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const shortid = require('shortid');
 const { auth } = require("../common/auth");
-const { validateBody, partiallyValidateBody } = require("../common/http");
+const { validateBody, partiallyValidateBody, validateSubmitForm } = require("../common/http");
 const { checkQuizOwnership } = require("../common/validations");
 
 const Question = require("../model/Question");
@@ -112,5 +112,19 @@ router.get('/:id/students', auth, checkQuizOwnership, async (req, res) => {
     res.status(400).json({ message: 'Unable to load items' });
   }
 });
+
+router.post("/:id/submit", validateBody(["submitForm", "date"]),
+  validateSubmitForm(["questionId", "selectedAnswers"]), async (req, res) => {
+    try {
+      const quiz = await Quiz.getQuizByIdPopulated(req.params.id);
+      //quiz.checkSubmitDate(req.body.date);
+      quiz.checkCode(req.query.code);
+      await quiz.submitAnswers(req.query.code, req.body.submitForm);
+      res.status(200).json({ message: "yuhu" });
+    } catch (e) {
+      console.log(e.message);
+      res.status(400).json({ message: 'Unable to submit' });
+    }
+  })
 
 module.exports = router;
