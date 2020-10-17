@@ -1,9 +1,4 @@
 import React, { useState } from "react";
-import {
-    TextInput,
-    View,
-    Button
-} from "react-native";
 
 const EnterCode = (props) => {
     const [value, onChangeText] = React.useState("");
