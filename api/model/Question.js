@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const { calculatePoints } = require("../common/scoring");
 
 const questionSchema = new Schema({
     text: {
@@ -70,6 +71,17 @@ questionSchema.methods.deleteAnswer = async function (id) {
     }
     this.answers.splice(index);
     await this.save();
+}
+
+questionSchema.statics.scoreQuestion = async function (q, quiz) {
+    const question = await Question.findById(q.questionId);
+    const realQuiz = await question.quiz();
+    if (realQuiz._id.toString() !== quiz._id.toString()) {
+        return null;
+    }
+
+    const amount = calculatePoints(question, q.selectedAnswers);
+    return { amount: amount, questionId: question._id };
 }
 
 const Question = mongoose.model("Question", questionSchema);
