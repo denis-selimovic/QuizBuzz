@@ -1,5 +1,6 @@
 const Question = require("../model/Question");
 const Quiz = require("../model/Quiz");
+const { offsetDate } = require("./util");
 
 const checkClassroomOwnership = (req, res, next) => {
   if (
@@ -39,8 +40,18 @@ const checkQuestionOwnership = async (req, res, next) => {
   }
 };
 
+const checkQuizFinished = async (req, res, next) => {
+  const quiz = await Quiz.findById(req.params.id);
+  const currentDate = offsetDate(new Date().getTime(), 2);
+  if (quiz.date < currentDate) {
+    return next();
+  }
+  res.status(400).json({ message: "Results not yet available" });
+}
+
 module.exports = {
   checkClassroomOwnership,
   checkQuizOwnership,
   checkQuestionOwnership,
+  checkQuizFinished
 };

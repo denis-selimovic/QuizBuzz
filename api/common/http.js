@@ -18,7 +18,23 @@ const partiallyValidateBody = (validBody) => {
   };
 };
 
+const validateSubmitForm = (validBody) => {
+  return (req, res, next) => {
+    const invalid = req.body.submitForm.some(q => {
+      const questionBody = Object.keys(q);
+      return !validBody.every((value) => questionBody.includes(value))
+    });
+
+    if (!invalid) {
+      return next();
+    }
+
+    res.status(403).json({ message: "Invalid body" });
+  };
+}
+
 module.exports = {
   validateBody,
   partiallyValidateBody,
+  validateSubmitForm
 };

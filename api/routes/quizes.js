@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const shortid = require('shortid');
 const { auth } = require("../common/auth");
-const { validateBody, partiallyValidateBody } = require("../common/http");
-const { checkQuizOwnership } = require("../common/validations");
+const { validateBody, partiallyValidateBody, validateSubmitForm } = require("../common/http");
+const { checkQuizOwnership, checkQuizFinished } = require("../common/validations");
 const sendEmail = require('../common/email');
 
 const Question = require("../model/Question");
@@ -149,5 +149,40 @@ router.post('/:id/send-code', auth, checkQuizOwnership, async (req, res) => {
     res.status(400).json({ message: 'Unable to send quiz code' });
   }
 });
+
+//please look at this!!!!!!!!!!
+router.post("/:id/submit", validateBody(["submitForm", "date", "classroomId"]),
+  validateSubmitForm(["questionId", "selectedAnswers"]), async (req, res) => {
+    try {
+      let quiz = await Quiz.getQuizByIdPopulated(req.params.id);
+      await quiz.checkClassroomId(req.body.classroomId);
+      quiz.checkSubmitDate(req.body.date);
+      quiz.checkCode(req.query.code);
+      const index = await quiz.submitAnswers(req.query.code, req.body.submitForm);
+      res.status(200).json({ pointsPerQuestion: quiz.students[index].points });
+    } catch (e) {
+      console.log(e.message);
+      res.status(400).json({ message: 'Unable to submit' });
+    }
+  });
+
+router.get("/:id/results", auth, checkQuizOwnership, checkQuizFinished, async (req, res) => {
+  try {
+    const quiz = await Quiz.getQuizByIdPopulated(req.params.id);
+    res.status(200).json({ resultsPerStudents: quiz.students });
+  } catch (e) {
+    res.status(400).json({ message: 'Unable to get results' });
+  }
+})
+
+router.get("/:id/student/:sid/results", auth, checkQuizOwnership, checkQuizFinished, async (req, res) => {
+  try {
+    const quiz = await Quiz.getQuizByIdPopulated(req.params.id);
+    const index = quiz.students.findIndex(s => s.id === req.params.sid);
+    res.status(200).json({ results: quiz.students[index] });
+  } catch (e) {
+    res.status(400).json({ message: 'Unable to get results' });
+  }
+})
 
 module.exports = router;
