@@ -7,6 +7,7 @@ import {
 
 const EnterCode = (props) => {
     const [value, onChangeText] = React.useState("");
+    const { navigation, link } = props;
     return (
         <View>
             <TextInput
@@ -16,8 +17,9 @@ const EnterCode = (props) => {
             </TextInput>
             <Button
                 // onPress={console.log(pressed)}
-                title={props.text}
+                title='Next'
                 color="#841584"
+                onPress={() => navigation.navigate(link)}
             />
         </View >
     );
