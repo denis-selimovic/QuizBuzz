@@ -32,6 +32,7 @@ router.post(
     try {
       const classroom = await Classroom.getClassroomByIdAndPopulate(req.params.id, "quizzes");
       const quiz = new Quiz(req.body);
+
       await quiz.save();
       await classroom.addQuiz(quiz)
       res.status(201).json(quiz);
@@ -106,10 +107,10 @@ router.get("/", auth, async (req, res) => {
   res.status(200).json(classrooms);
 });
 
-router.post('/enter', validateBody(['code']),async (req, res) => {
+router.post('/enter', validateBody(['code']), async (req, res) => {
   try {
     const classroom = await Classroom.findOne({ code: req.body.code }).exec();
-    res.status(200).json({ classroomId: classroom._id.toString() }) ;
+    res.status(200).json({ classroomId: classroom._id.toString() });
   } catch (e) {
     res.status(400).json({ message: 'Could not load item' });
   }
