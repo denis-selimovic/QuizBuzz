@@ -3,6 +3,7 @@ const router = express.Router();
 const { auth } = require("../common/auth");
 const { validateBody, partiallyValidateBody } = require("../common/http");
 const { checkClassroomOwnership } = require("../common/validations");
+const { getBodyWithOffsetDate } = require("../common/util");
 
 const Quiz = require("../model/Quiz");
 const Classroom = require("../model/Classroom");
@@ -31,8 +32,7 @@ router.post(
   async (req, res) => {
     try {
       const classroom = await Classroom.getClassroomByIdAndPopulate(req.params.id, "quizzes");
-      const quiz = new Quiz(req.body);
-
+      const quiz = new Quiz(getBodyWithOffsetDate(req.body, 2));
       await quiz.save();
       await classroom.addQuiz(quiz)
       res.status(201).json(quiz);

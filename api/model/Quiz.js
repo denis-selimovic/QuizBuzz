@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { getBodyWithOffsetDate } = require("../common/util");
 const Classroom = require("./Classroom");
 const Question = require("./Question");
 const { Schema } = mongoose;
@@ -80,6 +81,9 @@ quizSchema.pre("remove", async function (next) {
 
 quizSchema.statics.updateQuizById = async (id, newQuiz) => {
   const quiz = await Quiz.getQuizByIdPopulated(id);
+  if (Object.keys(newQuiz).includes("date")) {
+    newQuiz = getBodyWithOffsetDate(newQuiz, 2);
+  }
   Object.keys(newQuiz).forEach((key) => (quiz[key] = newQuiz[key]));
   await quiz.save();
   return quiz;
