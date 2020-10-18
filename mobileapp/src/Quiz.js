@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import {Button} from "@ant-design/react-native";
 
-export default function Quiz(props) {
+export default function (props) {
     const { navigation } = props;
     return (
         <View>
