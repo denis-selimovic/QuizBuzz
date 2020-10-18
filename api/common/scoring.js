@@ -43,7 +43,7 @@ const scoreBinary = (points, answers, selectedAnswers) => {
 }
 
 const scorePartially = (points, answers, selectedAnswers) => {
-    const { incorrect, numberOfCorrect } = checkAnsers(selectedAnswers, answers);
+    const { incorrect, numberOfCorrect } = checkAnswers(selectedAnswers, answers);
     if (incorrect) return 0;
     const numberOfAnswers = answers.length;
     const total = numberOfCorrect * (points / parseFloat(numberOfAnswers));
@@ -51,14 +51,14 @@ const scorePartially = (points, answers, selectedAnswers) => {
 }
 
 const scorePartiallyWithNegative = (points, answers, selectedAnswers) => {
-    const { incorrect, numberOfCorrect } = checkAnsers(selectedAnswers, answers);
+    const { incorrect, numberOfCorrect } = checkAnswers(selectedAnswers, answers);
     if (incorrect) return -points / 2.0;
     const numberOfAnswers = answers.length;
     const total = numberOfCorrect * (points / numberOfAnswers);
     return Math.round((total + Number.EPSILON) * 100) / 100;
 }
 
-const checkAnsers = (selectedAnswers, answers) => {
+const checkAnswers = (selectedAnswers, answers) => {
     if (selectedAnswers.length === 0) return 0;
     let numberOfCorrect = 0;
     let incorrect = false;
