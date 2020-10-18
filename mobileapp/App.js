@@ -4,6 +4,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from '@react-navigation/stack';
 import { AppLoading } from "expo";
 import * as Font from 'expo-font';
+//import { BASE_URL } from "@env";
+//import axios from "axios";
 
 import EnterCode from "./src/EnterCode";
 import Quiz from "./src/Quiz";
@@ -38,12 +40,13 @@ class App extends React.Component {
     this.setState({ isReady: true });
   }
 
-  sendClassroomCode = (code, callback) => {
+  sendClassroomCode = async (code, callback) => {
     //"/enter"
-    const body = { code: code };
-    console.log(body);
+    //const body = { code: code };
+    //console.log(body);
 
     //poslati zahtjev
+    //const response = await axios.post(`${BASE_URL}/classrooms/enter`, body);
 
     //ovo je odgovor sa servera
     const responseBody = { classroomId: "123" }
@@ -51,8 +54,10 @@ class App extends React.Component {
   }
 
   sendQuizCode = (code, callback, classroomId) => {
-    console.log(code);
-    console.log(classroomId);
+    // console.log("URL");
+    // console.log(BASE_URL);
+    //console.log(code);
+    //console.log(classroomId);
     callback();
   }
 
