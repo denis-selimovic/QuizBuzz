@@ -6,6 +6,6 @@ mongoose.connect(getDatabaseUri(), {
     useUnifiedTopology: true,
     useFindAndModify: false,
     useCreateIndex: true
-});
+}).catch(err => console.log(err));
 
 module.exports = mongoose.connection;
