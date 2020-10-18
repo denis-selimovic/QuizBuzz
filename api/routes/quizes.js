@@ -60,10 +60,11 @@ router.patch("/:id", auth, checkQuizOwnership,
     }
   });
 
-router.get("", async (req, res) => {
+router.get("", validateBody(['classroomId']),async (req, res) => {
   try {
     const code = req.query.code;
     const quiz = await Quiz.getByCodePopulated(code);
+    await quiz.checkClassroomId(req.body.classroomId);
     const status = quiz.getProgressStatus();
     if (status !== 0) {
       res.status(404).json({
