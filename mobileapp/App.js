@@ -1,6 +1,5 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from '@react-navigation/stack';
 import { AppLoading } from "expo";
@@ -25,18 +24,36 @@ class App extends React.Component {
 
   async componentDidMount() {
     await Font.loadAsync(
-        'antoutline',
-        // eslint-disable-next-line
-        require('@ant-design/icons-react-native/fonts/antoutline.ttf')
+      'antoutline',
+      // eslint-disable-next-line
+      require('@ant-design/icons-react-native/fonts/antoutline.ttf')
     );
 
     await Font.loadAsync(
-        'antfill',
-        // eslint-disable-next-line
-        require(`@ant-design/icons-react-native/fonts/antfill.ttf`)
+      'antfill',
+      // eslint-disable-next-line
+      require(`@ant-design/icons-react-native/fonts/antfill.ttf`)
     );
     // eslint-disable-next-line
     this.setState({ isReady: true });
+  }
+
+  sendClassroomCode = (code, callback) => {
+    //"/enter"
+    const body = { code: code };
+    console.log(body);
+
+    //poslati zahtjev
+
+    //ovo je odgovor sa servera
+    const responseBody = { classroomId: "123" }
+    callback(responseBody.classroomId);
+  }
+
+  sendQuizCode = (code, callback, classroomId) => {
+    console.log(code);
+    console.log(classroomId);
+    callback();
   }
 
   render() {
@@ -45,30 +62,23 @@ class App extends React.Component {
       return <AppLoading />;
     }
     return (
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen name="Login" >
-              {props => <EnterCode {...props} link="Classroom" buttonText="Enter classroom"/>}
-            </Stack.Screen>
-            <Stack.Screen name="Classroom">
-              {props => <EnterCode {...props} link="Quiz" buttonText="Enter quiz"/>}
-            </Stack.Screen>
-            <Stack.Screen name="Quiz">
-              {props => <Quiz {...props} />}
-            </Stack.Screen>
-          </Stack.Navigator>
-        </NavigationContainer>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Login" >
+            {props => <EnterCode {...props} link="Classroom" buttonText="Enter classroom"
+              inputPlaceholder="Classroom code" sendCode={this.sendClassroomCode} />}
+          </Stack.Screen>
+          <Stack.Screen name="Classroom">
+            {props => <EnterCode {...props} link="Quiz" buttonText="Enter quiz"
+              inputPlaceholder="Quiz key" sendCode={this.sendQuizCode} />}
+          </Stack.Screen>
+          <Stack.Screen name="Quiz">
+            {props => <Quiz {...props} />}
+          </Stack.Screen>
+        </Stack.Navigator>
+      </NavigationContainer>
     );
   }
 }
 
 export default App;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
