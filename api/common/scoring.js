@@ -38,26 +38,27 @@ const scoreBinary = (points, answers, selectedAnswers) => {
         return (a.correct && !selectedAnswers.includes(a._id.toString()))
             || (!a.correct && selectedAnswers.includes(a._id.toString()));
     });
-
     if (incorrect) return 0;
     return points;
 }
 
 const scorePartially = (points, answers, selectedAnswers) => {
-    if (selectedAnswers.length === 0) return 0;
-    let numberOfCorrect = 0;
-    answers.forEach(answer => {
-        if (answer.correct && selectedAnswers.includes(answer._id.toString())) {
-            numberOfCorrect++;
-        }
-    });
-
+    const { incorrect, numberOfCorrect } = checkAnswers(selectedAnswers, answers);
+    if (incorrect) return 0;
     const numberOfAnswers = answers.length;
     const total = numberOfCorrect * (points / parseFloat(numberOfAnswers));
     return Math.round((total + Number.EPSILON) * 100) / 100;
 }
 
 const scorePartiallyWithNegative = (points, answers, selectedAnswers) => {
+    const { incorrect, numberOfCorrect } = checkAnswers(selectedAnswers, answers);
+    if (incorrect) return -points / 2.0;
+    const numberOfAnswers = answers.length;
+    const total = numberOfCorrect * (points / numberOfAnswers);
+    return Math.round((total + Number.EPSILON) * 100) / 100;
+}
+
+const checkAnswers = (selectedAnswers, answers) => {
     if (selectedAnswers.length === 0) return 0;
     let numberOfCorrect = 0;
     let incorrect = false;
@@ -65,17 +66,11 @@ const scorePartiallyWithNegative = (points, answers, selectedAnswers) => {
         if (!answer.correct && selectedAnswers.includes(answer._id.toString())) {
             incorrect = true;
         }
-
         if (answer.correct && selectedAnswers.includes(answer._id.toString())) {
             numberOfCorrect++;
         }
     });
-
-    if (incorrect) return -points / 2.0;
-
-    const numberOfAnswers = answers.length;
-    const total = numberOfCorrect * (points / numberOfAnswers);
-    return Math.round((total + Number.EPSILON) * 100) / 100;
+    return { incorrect, numberOfCorrect };
 }
 
 module.exports = {

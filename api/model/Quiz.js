@@ -145,10 +145,10 @@ quizSchema.methods.checkClassroomId = async function (classroomId) {
 quizSchema.methods.submitAnswers = async function (code, submitForm) {
   const index = this.students.findIndex(s => s.code === code);
   const Question = this.model("Question");
-  await submitForm.forEach(async q => {
+  for (const q of submitForm) {
     const score = await Question.scoreQuestion(q, this);
     this.students[index].points.push(score);
-  });
+  }
   //console.log(this.students[index]);
   //await this.save();
   return index;
