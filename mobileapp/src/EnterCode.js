@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View, Image } from 'react-native';
 import { Button, WhiteSpace } from "@ant-design/react-native";
 import Input from '@ant-design/react-native/lib/input-item/Input';
 import style from "./styles/style";
@@ -10,6 +10,9 @@ export default function (props) {
 
     return (
         <View style={style.body}>
+            <Image source={require("../src/images/logo.png")}></Image>
+            <WhiteSpace size="xl"></WhiteSpace>
+            <WhiteSpace size="xl"></WhiteSpace>
             <Input value={code} placeholder={inputPlaceholder} onChangeText={c => setCode(c)} style={style.input}></Input>
             <WhiteSpace size="xl"></WhiteSpace>
             <Button onPress={() => navigation.navigate(link)} style={style.button}>
