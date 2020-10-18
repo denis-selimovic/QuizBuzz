@@ -47,10 +47,10 @@ class App extends React.Component {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="Login" >
-            {props => <EnterCode {...props} link="Classroom" buttonText="Enter classroom" />}
+            {props => <EnterCode {...props} link="Classroom" buttonText="Enter classroom" inputPlaceholder="Classroom code" />}
           </Stack.Screen>
           <Stack.Screen name="Classroom">
-            {props => <EnterCode {...props} link="Quiz" buttonText="Enter quiz" />}
+            {props => <EnterCode {...props} link="Quiz" buttonText="Enter quiz" inputPlaceholder="Quiz key" />}
           </Stack.Screen>
           <Stack.Screen name="Quiz">
             {props => <Quiz {...props} />}
@@ -62,12 +62,3 @@ class App extends React.Component {
 }
 
 export default App;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

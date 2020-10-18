@@ -12,8 +12,8 @@ export default (props) => {
     const renderAnswers = () => {
         return answers.map(a => {
             return (
-                <View style={styles.answer}>
-                    <Checkbox key={a._id}  defaultChecked={setChecked(a._id)} onChange={params => changeAnswer(params, a._id)}>{a.content}</Checkbox>
+                <View key={a._id} style={styles.answer}>
+                    <Checkbox key={a._id} defaultChecked={setChecked(a._id)} onChange={params => changeAnswer(params, a._id)}>{a.content}</Checkbox>
                 </View>
             );
         });
