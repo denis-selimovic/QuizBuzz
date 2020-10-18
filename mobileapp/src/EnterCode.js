@@ -6,8 +6,12 @@ import style from "./styles/style";
 
 export default function (props) {
     const { navigation, buttonText, link, inputPlaceholder, sendCode } = props;
-    const params = props.route.params ? props.route.params.params : null;
-    const [code, setCode] = useState("");
+    const [code, setCode] = useState();
+    const [params, setParams] = useState();
+
+    useState(() => {
+        props.route.params ? setParams(props.route.params.params) : setParams(null);
+    })
 
     return (
         <View style={style.body}>
