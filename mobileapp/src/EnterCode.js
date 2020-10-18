@@ -5,7 +5,8 @@ import Input from '@ant-design/react-native/lib/input-item/Input';
 import style from "./styles/style";
 
 export default function (props) {
-    const { navigation, buttonText, link, inputPlaceholder } = props;
+    const { navigation, buttonText, link, inputPlaceholder, sendCode } = props;
+    const params = props.route.params ? props.route.params.params : null;
     const [code, setCode] = useState("");
 
     return (
@@ -15,7 +16,7 @@ export default function (props) {
             <WhiteSpace size="xl"></WhiteSpace>
             <Input value={code} placeholder={inputPlaceholder} onChangeText={c => setCode(c)} style={style.input}></Input>
             <WhiteSpace size="xl"></WhiteSpace>
-            <Button onPress={() => navigation.navigate(link)} style={style.button}>
+            <Button onPress={() => sendCode(code, (params) => navigation.navigate(link, { params }), params)} style={style.button}>
                 <Text style={style.text}>{buttonText}</Text>
             </Button>
         </View>

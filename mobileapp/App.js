@@ -38,6 +38,24 @@ class App extends React.Component {
     this.setState({ isReady: true });
   }
 
+  sendClassroomCode = (code, callback) => {
+    //"/enter"
+    const body = { code: code };
+    console.log(body);
+
+    //poslati zahtjev
+
+    //ovo je odgovor sa servera
+    const responseBody = { classroomId: "123" }
+    callback(responseBody.classroomId);
+  }
+
+  sendQuizCode = (code, callback, classroomId) => {
+    console.log(code);
+    console.log(classroomId);
+    callback();
+  }
+
   render() {
     const { theme, currentTheme, isReady } = this.state;
     if (!isReady) {
@@ -47,10 +65,12 @@ class App extends React.Component {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="Login" >
-            {props => <EnterCode {...props} link="Classroom" buttonText="Enter classroom" inputPlaceholder="Classroom code" />}
+            {props => <EnterCode {...props} link="Classroom" buttonText="Enter classroom"
+              inputPlaceholder="Classroom code" sendCode={this.sendClassroomCode} />}
           </Stack.Screen>
           <Stack.Screen name="Classroom">
-            {props => <EnterCode {...props} link="Quiz" buttonText="Enter quiz" inputPlaceholder="Quiz key" />}
+            {props => <EnterCode {...props} link="Quiz" buttonText="Enter quiz"
+              inputPlaceholder="Quiz key" sendCode={this.sendQuizCode} />}
           </Stack.Screen>
           <Stack.Screen name="Quiz">
             {props => <Quiz {...props} />}
