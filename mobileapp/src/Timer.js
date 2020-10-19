@@ -18,7 +18,7 @@ class Timer extends React.Component {
 
     componentDidMount() {
         const { duration, timeCallback } = this.props;
-        this.timeout = setTimeout(timeCallback, duration * 60 * 1000 + 500);
+        this.timeout = setTimeout(timeCallback, duration * 60 * 1000);
         this.interval = setInterval(this.tickCallback, 1000);
     }
 
