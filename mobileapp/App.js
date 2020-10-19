@@ -29,13 +29,13 @@ class App extends React.Component {
       'antoutline',
       // eslint-disable-next-line
       require('@ant-design/icons-react-native/fonts/antoutline.ttf')
-    );
+    ).catch(e => console.log(e));
 
     await Font.loadAsync(
       'antfill',
       // eslint-disable-next-line
       require(`@ant-design/icons-react-native/fonts/antfill.ttf`)
-    );
+    ).catch(e => console.log(e));
     // eslint-disable-next-line
     this.setState({ isReady: true });
   }
