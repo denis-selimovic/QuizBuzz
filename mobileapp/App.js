@@ -61,11 +61,11 @@ class App extends React.Component {
       const response = await axios.get(`${BASE_URL}/quizzes?code=${code}&classroomId=${classroomId}`);
       callback({ status: 0, code, date: response.data.date, duration: response.data.duration });
     } catch (error) {
-      this.handleError();
+      this.handleError(errorCallback, callback, error, code);
     }
   }
 
-  handleError = (errorCallback, error, code) => {
+  handleError = (errorCallback, callback, error, code) => {
     if (error.response) {
       if (error.response.status === 404) {
         callback({
