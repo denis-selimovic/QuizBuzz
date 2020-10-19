@@ -29,13 +29,13 @@ class App extends React.Component {
       'antoutline',
       // eslint-disable-next-line
       require('@ant-design/icons-react-native/fonts/antoutline.ttf')
-    );
+    ).catch(e => console.log(e));
 
     await Font.loadAsync(
       'antfill',
       // eslint-disable-next-line
       require(`@ant-design/icons-react-native/fonts/antfill.ttf`)
-    );
+    ).catch(e => console.log(e));
     // eslint-disable-next-line
     this.setState({ isReady: true });
   }
@@ -97,7 +97,7 @@ class App extends React.Component {
               inputPlaceholder="Quiz key" sendCode={this.sendQuizCode} />}
           </Stack.Screen>
           <Stack.Screen name="Quiz">
-            {props => <Quiz {...props} />}
+            {props => <Quiz {...props} status={-1} code={1} date={Date.now() + 1 * 1000} duration={5 * 1000}/>}
           </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>

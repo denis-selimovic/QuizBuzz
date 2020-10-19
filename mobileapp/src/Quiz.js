@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { Button } from "@ant-design/react-native";
+import React, { useState } from 'react';
+import { View } from 'react-native';
+
 import QuizQuestions from "./QuizQuestions";
+import Timer from "./Timer";
 
 const questions = [
     {
@@ -116,9 +117,68 @@ const questions = [
 export default function (props) {
     const { status, code, date, duration } = props.route.params;
 
+    const [quizState, setQuizState] = useState(status);
+
+    const getStartTimer = () => {
+        const startDate = new Date(date);
+        return Math.round(Math.abs(startDate.valueOf() - Date.now()) / 1000);
+    }
+
+    const getEndTimer = () => {
+        const endDate = new Date(date + duration);
+        return Math.round(Math.abs(endDate.valueOf() - Date.now()) / 1000);
+    }
+
+    const getQuizTimer = () => {
+        return Math.round(duration / 1000);
+    }
+
+    const fetchQuiz = code => {
+        setQuizState(0);
+    };
+
+    const submitQuiz = code => {
+        setQuizState(1);
+    }
+
+    const fetchQuizResults = code => {
+        setQuizState(2);
+    }
+
+    const renderBeforeQuizTimer = () => {
+        if (quizState !== -1) return null;
+        return (
+            <Timer duration={getStartTimer()} timeCallback={() => fetchQuiz(code)} />
+        );
+    }
+
+    const renderQuiz = () => {
+        if (quizState !== 0) return null;
+        return (
+            <QuizQuestions questions={questions} duration={getQuizTimer()} onSubmit={() => submitQuiz(code)} readonly={false} />
+        );
+    }
+
+    const renderAfterQuizTimer = () => {
+        if (quizState !== 1) return null;
+        return (
+            <Timer duration={getEndTimer()} timeCallback={() => fetchQuizResults(code)} />
+        );
+    }
+
+    const renderResults = () => {
+        if (quizState !== 2) return null;
+        return (
+            <QuizQuestions questions={questions} duration={getQuizTimer()} onSubmit={() => submitQuiz(code)} readonly={true} />
+        );
+    }
+
     return (
         <View>
-            <QuizQuestions questions={questions} />
+            {renderBeforeQuizTimer()}
+            {renderQuiz()}
+            {renderAfterQuizTimer()}
+            {renderResults()}
         </View>
     );
 }

@@ -6,7 +6,7 @@ class Timer extends React.Component {
     constructor(props) {
         super(props);
         const { duration } = this.props;
-        this.state = { seconds: duration * 60 }
+        this.state = { seconds: duration }
         this.tickCallback = this.tickCallback.bind(this);
         this.renderTime = this.renderTime.bind(this);
     }
@@ -18,14 +18,20 @@ class Timer extends React.Component {
 
     componentDidMount() {
         const { duration, timeCallback } = this.props;
-        this.timeout = setTimeout(timeCallback, duration * 60 * 1000);
-        this.interval = setInterval(this.tickCallback, 1000);
+        if (this.state.seconds > 0) {
+            this.timeout = setTimeout(timeCallback, duration * 1000);
+            this.interval = setInterval(this.tickCallback, 1000);
+        }
+        else {
+            this.setState({ seconds: 0 });
+            timeCallback();
+        }
     }
 
 
     componentWillUnmount() {
-        clearTimeout(this.timeout);
-        clearInterval(this.interval);
+        if (this.timeout) clearTimeout(this.timeout);
+        if (this.interval) clearInterval(this.interval);
     }
 
     addZero(time) {
@@ -41,7 +47,7 @@ class Timer extends React.Component {
         const { seconds } = this.state;
         const stringHours = Math.floor(seconds / 3600);
         const stringMinutes = Math.floor((seconds - stringHours * 3600) / 60);
-        const stringSeconds = seconds - stringMinutes * 60 - stringHours * 3600;
+        const stringSeconds = Math.floor(seconds - stringMinutes * 60 - stringHours * 3600);
         return `${this.showHours(stringHours)}${this.addZero(stringMinutes)}${stringMinutes}:${this.addZero(stringSeconds)}${stringSeconds}`;
     }
 

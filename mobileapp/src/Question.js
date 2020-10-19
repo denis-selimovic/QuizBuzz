@@ -4,10 +4,11 @@ import { View, Text, StyleSheet } from 'react-native';
 import Answers from "./Answers";
 
 export default (props) => {
-    const { question } = props;
+    const { question, readonly } = props;
     const q = Object(question);
 
     const onChecked = (answerId, checked) => {
+        if (readonly) return;
         if (checked) {
             q.selectedAnswers.push(answerId);
         }
@@ -19,7 +20,7 @@ export default (props) => {
     return (
         <View style={styles.container}>
             <Text style={styles.question}>{q.text}</Text>
-            <Answers answers={q.answers} selected={q.selectedAnswers} onChecked={onChecked}/>
+            <Answers answers={q.answers} selected={q.selectedAnswers} onChecked={onChecked} readonly={readonly}/>
         </View>
     );
 };
