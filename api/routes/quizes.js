@@ -71,7 +71,7 @@ router.get("", async (req, res) => {
     }
     if (status !== 0) {
       res.status(404).json({
-        message: "This quiz isn't in progress. Check the starting date, duration and status.",
+        message: "You can't access the quiz.",
         date: quiz.date, duration: quiz.duration, status: status
       });
     } else {
