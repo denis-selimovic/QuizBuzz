@@ -22,7 +22,7 @@ export default function (props) {
             <Input value={code} placeholder={inputPlaceholder} onChangeText={c => { setCode(c); setErrorMessage(""); }}
                 style={style.input}></Input>
             <WhiteSpace size="xl"></WhiteSpace>
-            <Button onPress={() => sendCode(code, (params) => navigation.navigate(link, { params }),
+            <Button onPress={async () => await sendCode(code, (params) => navigation.navigate(link, { params }),
                 (errMsg) => { setErrorMessage(errMsg); setCode(""); }, params)}
                 style={style.button}>
                 <Text style={style.text}>{buttonText}</Text>

@@ -55,7 +55,7 @@ class App extends React.Component {
     }
   }
 
-  sendQuizCode = (code, callback, errorCallback, classroomId) => {
+  sendQuizCode = async (code, callback, errorCallback, classroomId) => {
     // console.log("URL");
     // console.log(BASE_URL);
     //console.log(code);
@@ -67,12 +67,13 @@ class App extends React.Component {
       console.log(response.data);
       //callback(response.data.classroomId);
     } catch (error) {
-      let errMsg = "Something went wrong, try that again."
-      if (error.response.status === 400) {
-        errMsg = "Invalid quiz key";
-      }
+      console.log(error.response.status);
+      // let errMsg = "Something went wrong, try that again."
+      // if (error.response.status === 400) {
+      //   errMsg = "Invalid quiz key";
+      // }
 
-      errorCallback(errMsg);
+      //errorCallback(errMsg);
     }
   }
 
