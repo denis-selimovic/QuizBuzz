@@ -6,7 +6,7 @@ import Question from "./Question";
 import Timer from "./Timer";
 
 export default (props) => {
-    const { questions, onSubmit, duration } = props;
+    const { questions, onSubmit, duration, readonly } = props;
 
     const [question, setQuestion] = useState(questions[0]);
     const [index, setIndex] = useState(1)
@@ -17,12 +17,14 @@ export default (props) => {
     }
 
     const onPressed = () => {
+        if (readonly) return;
         const submit = { date: Date.now(), submitForm: [] };
         questions.forEach(q => submit.submitForm.push({ questionId: q._id, selectedAnswers: q.selectedAnswers }));
         onSubmit();
     };
 
     const showButton = () => {
+        if (readonly) return null;
         if (index !== questions.length) return null;
         return (
             <View style={styles.btnContainer}>
@@ -31,10 +33,15 @@ export default (props) => {
         );
     }
 
+    const showTimer = () => {
+        if (readonly) return null;
+        return <Timer duration={duration} timeCallback={onPressed}/>
+    }
+
     return (
         <View style={styles.container}>
-            <Timer duration={duration} timeCallback={onPressed}/>
-            <Question question={question} />
+            {showTimer()}
+            <Question question={question} readonly={readonly} />
             <Pagination mode="button" current={index} total={questions.length} locale={{ prevText: 'Previous', nextText: 'Next' }} onChange={changeQuestion} />
             {showButton()}
         </View>

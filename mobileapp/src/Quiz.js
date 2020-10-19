@@ -119,9 +119,6 @@ export default function (props) {
 
     const [quizState, setQuizState] = useState(status);
 
-    console.log(new Date(date));
-    console.log(new Date(date + duration));
-
     const getStartTimer = () => {
         const startDate = new Date(date);
         return Math.round(Math.abs(startDate.valueOf() - Date.now()) / 1000);
@@ -158,7 +155,7 @@ export default function (props) {
     const renderQuiz = () => {
         if (quizState !== 0) return null;
         return (
-            <QuizQuestions questions={questions} duration={getQuizTimer()} onSubmit={() => submitQuiz(code)}/>
+            <QuizQuestions questions={questions} duration={getQuizTimer()} onSubmit={() => submitQuiz(code)} readonly={false}/>
         );
     }
 
@@ -169,11 +166,19 @@ export default function (props) {
         );
     }
 
+    const renderResults = () => {
+        if (quizState !== 2) return null;
+        return (
+            <QuizQuestions questions={questions} duration={getQuizTimer()} onSubmit={() => submitQuiz(code)} readonly={true}/>
+        );
+    }
+
     return (
         <View>
             {renderBeforeQuizTimer()}
             {renderQuiz()}
             {renderAfterQuizTimer()}
+            {renderResults()}
         </View>
     );
 }

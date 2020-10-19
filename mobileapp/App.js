@@ -78,7 +78,7 @@ class App extends React.Component {
               inputPlaceholder="Quiz key" sendCode={this.sendQuizCode} />}
           </Stack.Screen>
           <Stack.Screen name="Quiz">
-            {props => <Quiz {...props} status={-1} code={1} date={Date.now() + 60 * 1000} duration={120 * 1000}/>}
+            {props => <Quiz {...props} status={-1} code={1} date={Date.now() + 1 * 1000} duration={5 * 1000}/>}
           </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
