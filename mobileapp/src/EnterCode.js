@@ -7,10 +7,13 @@ import style from "./styles/style";
 export default function (props) {
     const { navigation, buttonText, link, inputPlaceholder, sendCode } = props;
     const [code, setCode] = useState();
-    const [params, setParams] = useState();
+    const [classroomId, setClassroomId] = useState();
     const [errorMessage, setErrorMessage] = useState();
+
     useEffect(() => {
-        props.route.params ? setParams(props.route.params.params) : setParams(null);
+        if (props.route.params) {
+            setClassroomId(props.route.params.classroomId)
+        }
     })
 
     return (
@@ -21,8 +24,8 @@ export default function (props) {
             <Input value={code} placeholder={inputPlaceholder} onChangeText={c => { setCode(c); setErrorMessage(""); }}
                 style={style.input}></Input>
             <WhiteSpace size="xl"></WhiteSpace>
-            <Button onPress={async () => await sendCode(code, (params) => navigation.navigate(link, { params }),
-                (errMsg) => { setErrorMessage(errMsg); setCode(""); }, params)}
+            <Button onPress={async () => await sendCode(code, (params) => navigation.navigate(link, params),
+                (errMsg) => { setErrorMessage(errMsg); setCode(""); }, classroomId)}
                 style={style.button}>
                 <Text style={style.text}>{buttonText}</Text>
             </Button>

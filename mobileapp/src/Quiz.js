@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import {Button} from "@ant-design/react-native";
+import { Button } from "@ant-design/react-native";
 import QuizQuestions from "./QuizQuestions";
 
 const questions = [
@@ -114,10 +114,11 @@ const questions = [
 ];
 
 export default function (props) {
-    const { navigation } = props;
+    const { status, code, date, duration } = props.route.params;
+
     return (
         <View>
-            <QuizQuestions questions={questions}/>
+            <QuizQuestions questions={questions} />
         </View>
     );
 }
