@@ -41,6 +41,6 @@ const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
         marginTop: 20,
-        maxHeight: 400
+        maxHeight: 380
     }
 })

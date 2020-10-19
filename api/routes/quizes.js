@@ -60,11 +60,11 @@ router.patch("/:id", auth, checkQuizOwnership,
     }
   });
 
-router.get("", validateBody(['classroomId']),async (req, res) => {
+router.get("",async (req, res) => {
   try {
     const code = req.query.code;
     const quiz = await Quiz.getByCodePopulated(code);
-    await quiz.checkClassroomId(req.body.classroomId);
+    await quiz.checkClassroomId(req.query.classroomId);
     const status = quiz.getProgressStatus();
     if (status !== 0) {
       res.status(404).json({
@@ -159,8 +159,9 @@ router.post("/:id/submit", validateBody(["submitForm", "date", "classroomId"]),
       await quiz.checkClassroomId(req.body.classroomId);
       quiz.checkSubmitDate(req.body.date);
       quiz.checkCode(req.query.code);
-      const index = await quiz.submitAnswers(req.query.code, req.body.submitForm);
-      res.status(200).json({ pointsPerQuestion: quiz.students[index].points });
+      await quiz.submitAnswers(req.query.code, req.body.submitForm);
+      const status = await quiz.getProgressStatus();
+      res.status(200).json({ status });
     } catch (e) {
       console.log(e.message);
       res.status(400).json({ message: 'Unable to submit' });
@@ -176,10 +177,10 @@ router.get("/:id/results", auth, checkQuizOwnership, checkQuizFinished, async (r
   }
 })
 
-router.get("/:id/student/:sid/results", auth, checkQuizOwnership, checkQuizFinished, async (req, res) => {
+router.get("/:code/results", checkQuizFinished, async (req, res) => {
   try {
-    const quiz = await Quiz.getQuizByIdPopulated(req.params.id);
-    const index = quiz.students.findIndex(s => s.id === req.params.sid);
+    const quiz = await Quiz.getByCodePopulated(req.params.code);
+    const index = quiz.students.findIndex(s => s.code === req.params.code);
     res.status(200).json({ results: quiz.students[index] });
   } catch (e) {
     res.status(400).json({ message: 'Unable to get results' });
