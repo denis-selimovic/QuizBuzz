@@ -32,11 +32,17 @@ class Timer extends React.Component {
         return (time < 10) ? '0' : '';
     }
 
+    showHours(hours) {
+        if (hours === 0) return '';
+        return (hours >= 10) ? `${hours}:` : `0${hours}:`;
+    }
+
     showTime() {
         const { seconds } = this.state;
-        const stringMinutes = Math.floor(seconds / 60);
-        const stringSeconds = seconds - stringMinutes * 60;
-        return `${this.addZero(stringMinutes)}${stringMinutes}:${this.addZero(stringSeconds)}${stringSeconds}`;
+        const stringHours = Math.floor(seconds / 3600);
+        const stringMinutes = Math.floor((seconds - stringHours * 3600) / 60);
+        const stringSeconds = seconds - stringMinutes * 60 - stringHours * 3600;
+        return `${this.showHours(stringHours)}${this.addZero(stringMinutes)}${stringMinutes}:${this.addZero(stringSeconds)}${stringSeconds}`;
     }
 
     renderTime() {
