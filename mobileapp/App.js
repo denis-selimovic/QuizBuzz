@@ -4,8 +4,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from '@react-navigation/stack';
 import { AppLoading } from "expo";
 import * as Font from 'expo-font';
-//import { BASE_URL } from "@env";
-//import axios from "axios";
+import { BASE_URL } from "@env";
+import axios from "axios";
 
 import EnterCode from "./src/EnterCode";
 import Quiz from "./src/Quiz";
@@ -40,25 +40,40 @@ class App extends React.Component {
     this.setState({ isReady: true });
   }
 
-  sendClassroomCode = async (code, callback) => {
-    //"/enter"
-    //const body = { code: code };
-    //console.log(body);
+  sendClassroomCode = async (code, callback, errorCallback) => {
+    try {
+      const body = { code };
+      const response = await axios.post(`${BASE_URL}/classrooms/enter`, body);
+      callback(response.data.classroomId);
+    } catch (error) {
+      let errMsg = "Something went wrong, try that again."
+      if (error.response.status === 400) {
+        errMsg = "Invalid classroom code.";
+      }
 
-    //poslati zahtjev
-    //const response = await axios.post(`${BASE_URL}/classrooms/enter`, body);
-
-    //ovo je odgovor sa servera
-    const responseBody = { classroomId: "123" }
-    callback(responseBody.classroomId);
+      errorCallback(errMsg);
+    }
   }
 
-  sendQuizCode = (code, callback, classroomId) => {
+  sendQuizCode = (code, callback, errorCallback, classroomId) => {
     // console.log("URL");
     // console.log(BASE_URL);
     //console.log(code);
     //console.log(classroomId);
-    callback();
+    //callback();
+    try {
+      const body = { classroomId };
+      const response = await axios.post(`${BASE_URL}/quizzes?code=${code}`, body);
+      console.log(response.data);
+      //callback(response.data.classroomId);
+    } catch (error) {
+      let errMsg = "Something went wrong, try that again."
+      if (error.response.status === 400) {
+        errMsg = "Invalid quiz key";
+      }
+
+      errorCallback(errMsg);
+    }
   }
 
   render() {

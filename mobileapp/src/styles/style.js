@@ -21,5 +21,9 @@ export default {
     },
     text: {
         color: "#d0efff",
+    },
+    error: {
+        fontSize: 14,
+        color: "#cc0000",
     }
 }
