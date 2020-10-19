@@ -116,7 +116,7 @@ quizSchema.methods.getProgressStatus = function () {
   // console.log(this.date);
   // console.log(quizEndDate);
   if (currentDate < this.date) return -1;
-  if (currentDate > quizEndDate) return 1;
+  if (currentDate > quizEndDate) return 2;
   return 0;
 };
 
@@ -153,6 +153,10 @@ quizSchema.methods.submitAnswers = async function (code, submitForm) {
   //await this.save();
   return index;
 };
+
+quizSchema.methods.isSubmitted = function (code) {
+  return this.students.some(s => s.code === code && s.points.length !== 0);
+}
 
 const Quiz = mongoose.model("Quiz", quizSchema);
 

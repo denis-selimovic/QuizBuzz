@@ -60,12 +60,15 @@ router.patch("/:id", auth, checkQuizOwnership,
     }
   });
 
-router.get("",async (req, res) => {
+router.get("", async (req, res) => {
   try {
     const code = req.query.code;
     const quiz = await Quiz.getByCodePopulated(code);
     await quiz.checkClassroomId(req.query.classroomId);
-    const status = quiz.getProgressStatus();
+    let status = quiz.getProgressStatus();
+    if (status === 0 && quiz.isSubmitted(code)) {
+      status = 1;
+    }
     if (status !== 0) {
       res.status(404).json({
         message: "This quiz isn't in progress. Check the starting date, duration and status.",
@@ -151,7 +154,6 @@ router.post('/:id/send-code', auth, checkQuizOwnership, async (req, res) => {
   }
 });
 
-//please look at this!!!!!!!!!!
 router.post("/:id/submit", validateBody(["submitForm", "date", "classroomId"]),
   validateSubmitForm(["questionId", "selectedAnswers"]), async (req, res) => {
     try {
