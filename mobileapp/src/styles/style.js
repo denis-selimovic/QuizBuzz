@@ -25,5 +25,8 @@ export default {
     error: {
         fontSize: 14,
         color: "#cc0000",
+        width: "60%",
+        textAlign: "center",
+        marginTop: 5
     }
 }

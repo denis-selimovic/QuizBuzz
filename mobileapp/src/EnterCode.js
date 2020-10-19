@@ -9,7 +9,6 @@ export default function (props) {
     const [code, setCode] = useState();
     const [params, setParams] = useState();
     const [errorMessage, setErrorMessage] = useState();
-
     useEffect(() => {
         props.route.params ? setParams(props.route.params.params) : setParams(null);
     })
@@ -27,6 +26,7 @@ export default function (props) {
                 style={style.button}>
                 <Text style={style.text}>{buttonText}</Text>
             </Button>
+            <WhiteSpace size="l"></WhiteSpace>
             <Text style={style.error}>{errorMessage}</Text>
         </View>
     );

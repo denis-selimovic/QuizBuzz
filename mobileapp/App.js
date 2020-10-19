@@ -47,7 +47,8 @@ class App extends React.Component {
       callback(response.data.classroomId);
     } catch (error) {
       let errMsg = "Something went wrong, try that again."
-      if (error.response.status === 400) {
+
+      if (error.response && error.response.status === 400) {
         errMsg = "Invalid classroom code.";
       }
 
@@ -56,24 +57,22 @@ class App extends React.Component {
   }
 
   sendQuizCode = async (code, callback, errorCallback, classroomId) => {
-    // console.log("URL");
-    // console.log(BASE_URL);
-    //console.log(code);
-    //console.log(classroomId);
-    //callback();
     try {
-      const body = { classroomId };
-      const response = await axios.post(`${BASE_URL}/quizzes?code=${code}`, body);
-      console.log(response.data);
-      //callback(response.data.classroomId);
+      const response = await axios.get(`${BASE_URL}/quizzes?code=${code}&classroomId=${classroomId}`);
+      let quiz = response.data;
+      quiz.questions.forEach(question => {
+        question["selectedAnswers"] = [];
+      });
+      callback(quiz);
     } catch (error) {
-      console.log(error.response.status);
-      // let errMsg = "Something went wrong, try that again."
-      // if (error.response.status === 400) {
-      //   errMsg = "Invalid quiz key";
-      // }
-
-      //errorCallback(errMsg);
+      let errMsg = "Something went wrong, try that again."
+      if (error.response && error.response.status === 400) {
+        errMsg = "Invalid quiz key";
+      }
+      if (error.response && error.response.status === 404) {
+        errMsg = error.response.data.message;
+      }
+      errorCallback(errMsg);
     }
   }
 
