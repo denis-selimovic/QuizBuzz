@@ -33,7 +33,7 @@ export default (props) => {
 
     return (
         <View style={styles.container}>
-            <Timer duration={2} timeCallback={() => console.log('Expired')}/>
+            <Timer duration={2} timeCallback={onPressed}/>
             <Question question={question} />
             <Pagination mode="button" current={index} total={questions.length} locale={{ prevText: 'Previous', nextText: 'Next' }} onChange={changeQuestion} />
             {showButton()}
