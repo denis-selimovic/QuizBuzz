@@ -120,12 +120,11 @@ export default function (props) {
     const [quizState, setQuizState] = useState(status);
 
     const getStartTimer = () => {
-        const startDate = new Date(date);
-        return Math.round(Math.abs(startDate.valueOf() - Date.now()) / 1000);
+        return Math.round(Math.abs(date.valueOf() - Date.now()) / 1000);
     }
 
     const getEndTimer = () => {
-        const endDate = new Date(date + duration);
+        const endDate = new Date(date.valueOf() + duration);
         return Math.round(Math.abs(endDate.valueOf() - Date.now()) / 1000);
     }
 
