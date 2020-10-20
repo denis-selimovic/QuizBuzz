@@ -115,7 +115,7 @@ const questions = [
 ];
 
 export default function (props) {
-    const { status, code, date, duration } = props.route.params;
+    const { status, code, date, duration, classroomId } = props.route.params;
 
     const [quizState, setQuizState] = useState(status);
 
@@ -182,3 +182,4 @@ export default function (props) {
         </View>
     );
 }
+
