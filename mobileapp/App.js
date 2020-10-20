@@ -59,7 +59,7 @@ class App extends React.Component {
   sendQuizCode = async (code, callback, errorCallback, classroomId) => {
     try {
       const response = await axios.get(`${BASE_URL}/quizzes?code=${code}&classroomId=${classroomId}`);
-      callback({ status: 0, code, date: response.data.date, duration: response.data.duration });
+      callback({ status: 0, code, date: response.data.date, duration: response.data.duration, classroomId });
     } catch (error) {
       this.handleError(errorCallback, callback, error, code);
     }

@@ -1,123 +1,15 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
+import axios from 'axios';
 
 import QuizQuestions from "./QuizQuestions";
 import Timer from "./Timer";
 
-const questions = [
-    {
-        text: 'First question',
-        answers: [
-            {
-                content: 'First answer',
-                correct: true,
-                _id: 1
-            },
-            {
-                content: 'Second answer',
-                correct: false,
-                _id: 2
-            },
-            {
-                content: 'Third answer',
-                correct: true,
-                _id: 3
-            },
-            {
-                content: 'Fourth answer',
-                correct: false,
-                _id: 4
-            }
-        ],
-        points: 1,
-        scoringSystem: 0,
-        _id: 0,
-        selectedAnswers: []
-    },
-    {
-        text: 'Second question',
-        answers: [
-            {
-                content: 'First answer',
-                correct: true,
-                _id: 5
-            },
-            {
-                content: 'Second answer',
-                correct: true,
-                _id: 6
-            },
-            {
-                content: 'Third answer',
-                correct: true,
-                _id: 7
-            },
-            {
-                content: 'Fourth answer',
-                correct: false,
-                _id: 8
-            }
-        ],
-        points: 1,
-        scoringSystem: 0,
-        _id: 1,
-        selectedAnswers: []
-    },
-    {
-        text: 'Third question',
-        answers: [
-            {
-                content: 'First answer',
-                correct: true,
-                _id: 9
-            },
-            {
-                content: 'Second answer',
-                correct: false,
-                _id: 10
-            },
-            {
-                content: 'Third answer',
-                correct: false,
-                _id: 11
-            },
-            {
-                content: 'Fourth answer',
-                correct: false,
-                _id: 12
-            },
-            {
-                content: 'First answer',
-                correct: true,
-                _id: 13
-            },
-            {
-                content: 'Second answer',
-                correct: false,
-                _id: 14
-            },
-            {
-                content: 'Third answer',
-                correct: false,
-                _id: 15
-            },
-            {
-                content: 'Fourth answer',
-                correct: false,
-                _id: 16
-            }
-        ],
-        points: 1,
-        scoringSystem: 0,
-        _id: 2,
-        selectedAnswers: []
-    }
-];
-
 export default function (props) {
-    const { status, code, date, duration } = props.route.params;
+    const { status, code, date, duration, classroomId } = props.route.params;
 
     const [quizState, setQuizState] = useState(status);
+    const [quiz, setQuiz] = useState(null);
 
     const getStartTimer = () => {
         return Math.round(Math.abs(date.valueOf() - Date.now()) / 1000);
@@ -154,7 +46,7 @@ export default function (props) {
     const renderQuiz = () => {
         if (quizState !== 0) return null;
         return (
-            <QuizQuestions questions={questions} duration={getQuizTimer()} onSubmit={() => submitQuiz(code)} readonly={false} />
+            <QuizQuestions questions={quiz.questions} duration={getQuizTimer()} onSubmit={() => submitQuiz(code)} readonly={false} />
         );
     }
 
@@ -168,7 +60,7 @@ export default function (props) {
     const renderResults = () => {
         if (quizState !== 2) return null;
         return (
-            <QuizQuestions questions={questions} duration={getQuizTimer()} onSubmit={() => submitQuiz(code)} readonly={true} />
+            <QuizQuestions questions={quiz.questions} duration={getQuizTimer()} onSubmit={() => submitQuiz(code)} readonly={true} />
         );
     }
 
