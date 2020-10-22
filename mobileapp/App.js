@@ -44,7 +44,6 @@ class App extends React.Component {
 
   sendClassroomCode = async (code, callback, errorCallback) => {
     try {
-      if (!code || code === '') code = 'RV-WP6sDbhHS';
       const body = { code };
       const response = await axios.post(`${BASE_URL}/classrooms/enter`, body);
       callback({ classroomId: response.data.classroomId });
@@ -61,7 +60,6 @@ class App extends React.Component {
 
   sendQuizCode = async (code, callback, errorCallback, classroomId) => {
     try {
-      if (!code || code === '') code = 'D5aHcftTS';
       const response = await axios.get(`${BASE_URL}/quizzes?code=${code}&classroomId=${classroomId}`);
       callback({
         status: response.data.status,
