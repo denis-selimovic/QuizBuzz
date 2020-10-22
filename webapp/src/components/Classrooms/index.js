@@ -55,7 +55,9 @@ class Classrooms extends React.Component{
             dataIndex: 'add',
             key: 'add',
             render: (text, record) => (
-                <Button type="primary">Add student</Button>
+                <Button type="primary">
+                    <Link to={{ pathname: '/student', state: { record } }}>Add student</Link>
+                </Button>
             )
         },
         {
