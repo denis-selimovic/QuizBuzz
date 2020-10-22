@@ -31,6 +31,7 @@ const tailFormItemLayout = {
 
 export default (props) => {
     const [errorMessage, setErrorMessage] = useState();
+    const [form] = Form.useForm();
 
     const logIn = async credentials => {
         try {
@@ -38,6 +39,7 @@ export default (props) => {
             const { id, username, name, surname, email, token } = response.data;
             saveUser({ id, username, name, surname, email });
             saveToken(token);
+            console.log(response);
         } catch (e) {
             handleLoginError(e);
         }
@@ -49,6 +51,8 @@ export default (props) => {
         } else {
             setErrorMessage("Something went wrong, try that again!");
         }
+
+        form.resetFields();
     }
 
     const onFinish = async credentials => {
@@ -59,16 +63,16 @@ export default (props) => {
         <Space direction="vertical" className="center">
             <Image src="/images/logo.png"></Image>
             <Card>
-                <Form {...formItemLayout} name="login" initialValues={{ remember: true }}
+                <Form form={form} {...formItemLayout} name="login" initialValues={{ remember: true }}
                     onFinish={onFinish}>
 
                     <Form.Item label="Username" name="username"
                         rules={[{ required: true, message: 'Please input your username!' }]}>
-                        <Input />
+                        <Input onChange={() => setErrorMessage("")} />
                     </Form.Item>
 
                     <Form.Item label="Password" name="password" rules={[{ required: true, message: 'Please input your password!' }]}>
-                        <Input.Password />
+                        <Input.Password onChange={() => setErrorMessage("")} />
                     </Form.Item>
 
                     <Form.Item {...tailFormItemLayout}>
