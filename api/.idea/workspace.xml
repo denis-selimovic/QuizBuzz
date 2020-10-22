@@ -19,9 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="870ed557-ec27-49e4-b3b1-ff5639a5bab2" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../mobileapp/src/Quiz.js" beforeDir="false" afterPath="$PROJECT_DIR$/../mobileapp/src/Quiz.js" afterDir="false" />
-    </list>
+    <list default="true" id="870ed557-ec27-49e4-b3b1-ff5639a5bab2" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -87,6 +85,7 @@
       <workItem from="1603216451120" duration="28000" />
       <workItem from="1603365516364" duration="400000" />
       <workItem from="1603367354314" duration="78000" />
+      <workItem from="1603367639589" duration="326000" />
     </task>
     <servers />
   </component>
