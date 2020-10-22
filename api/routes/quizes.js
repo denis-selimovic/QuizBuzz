@@ -163,7 +163,7 @@ router.post("/:id/submit", validateBody(["submitForm", "date", "classroomId"]),
       quiz.checkCode(req.query.code);
       await quiz.submitAnswers(req.query.code, req.body.submitForm);
       let status = await quiz.getProgressStatus();
-      if (status === 0 && quiz.isSubmitted(code)) {
+      if (status === 0 && quiz.isSubmitted(req.query.code)) {
         status = 1;
       }
       res.status(200).json({ status });
