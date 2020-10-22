@@ -186,7 +186,7 @@ router.get("/:code/myresults", async (req, res) => {
   try {
     const quiz = await Quiz.getByCodePopulated(req.params.code);
     const index = quiz.students.findIndex(s => s.code === req.params.code);
-    res.status(200).json({ results: quiz.students[index] });
+    res.status(200).json(quiz.students[index]);
   } catch (e) {
     res.status(400).json({ message: 'Unable to get results' });
   }
