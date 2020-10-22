@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Form, Input, Button, Space, Image, Card, Typography } from 'antd';
 import { Link as RedirectLink } from "react-router-dom";
 import "./register.css";
+import axios from "axios";
 
 const formItemLayout = {
     labelCol: {
@@ -28,15 +29,26 @@ const tailFormItemLayout = {
 
 export default function Register(props) {
     const [errorMessage, setErrorMessage] = useState();
+    const [form] = Form.useForm();
 
-    const onFinish = async credentials => {
+    const onFinish = async data => {
+        await register(data);
     };
+
+    const register = async data => {
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_LOCALHOST}/users/register`, data);
+            console.log(response);
+        } catch (error) {
+
+        }
+    }
 
     return (
         <Space direction="vertical" className="center">
             <Image src="/images/logo.png"></Image>
             <Card>
-                <Form {...formItemLayout} name="register" initialValues={{ remember: true }}
+                <Form form={form} {...formItemLayout} name="register" initialValues={{ remember: true }}
                     onFinish={onFinish}>
 
                     <Form.Item label="Username" name="username"

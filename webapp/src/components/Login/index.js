@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link as RedirectLink, withRouter } from "react-router-dom";
-import { Form, Input, Button, Space, Image, Card, Typography, message } from 'antd';
+import { Form, Input, Button, Space, Image, Card, Typography } from 'antd';
 import "./login.css";
 import axios from "axios";
 import { saveToken, saveUser } from '../../auth/utils';
