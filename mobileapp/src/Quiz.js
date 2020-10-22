@@ -48,7 +48,7 @@ export default function (props) {
     const renderQuiz = () => {
         if (quizState !== 0) return null;
         return (
-            <QuizQuestions questions={quiz.questions} duration={getQuizTimer()} onSubmit={() => submitQuiz(code)} readonly={false} />
+            <QuizQuestions questions={loadedQuiz.questions} duration={getQuizTimer()} onSubmit={(submit) => submitQuiz(code, submit)} readonly={false} />
         );
     }
 
@@ -62,7 +62,7 @@ export default function (props) {
     const renderResults = () => {
         if (quizState !== 2) return null;
         return (
-            <QuizQuestions questions={quiz.questions} duration={getQuizTimer()} onSubmit={(submit) => submitQuiz(code, submit)} readonly={true} />
+            <QuizQuestions questions={loadedQuiz.questions} duration={getQuizTimer()} onSubmit={(submit) => submitQuiz(code, submit)} readonly={true} />
         );
     }
 
