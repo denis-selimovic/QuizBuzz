@@ -36,8 +36,14 @@ export default function (props) {
     }
 
     const fetch = async code => {
-        if (loadedQuiz.questions) return;
+        if (loadedQuiz.questions) {
+            loadedQuiz.questions.forEach(q => {
+                if (!q.selectedAnswers) q.selectedAnswers = [];
+            });
+            return;
+        }
         const response = await axios.get(`${BASE_URL}/quizzes?code=${code}&classroomId=${classroomId}`);
+        response.questions.forEach(q => q.selectedAnswers = []);
         setLoadedQuiz(response);
     };
 
@@ -55,6 +61,7 @@ export default function (props) {
     const fetchQuizResults = async code => {
         await fetch(code);
         const response = await axios.get(`${BASE_URL}/quizzes/${code}/results`);
+        console.log(response);
         setResults(response);
         setQuizState(2);
     }
