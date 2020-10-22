@@ -115,7 +115,8 @@ const questions = [
 ];
 
 export default function (props) {
-    const { status, code, date, duration, classroomId } = props.route.params;
+    const { status, code, classroomId, quiz } = props.route.params;
+    const { date, duration } = props.route.params.quiz;
 
     const [quizState, setQuizState] = useState(status);
 
