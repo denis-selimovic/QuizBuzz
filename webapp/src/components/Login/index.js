@@ -35,7 +35,7 @@ export default (props) => {
     const logIn = async credentials => {
         try {
             const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/users/login`, credentials);
-            const { id, username, name, surname, email, token } = response;
+            const { id, username, name, surname, email, token } = response.data;
             saveUser({ id, username, name, surname, email });
             saveToken(token);
         } catch (e) {
@@ -43,9 +43,9 @@ export default (props) => {
         }
     }
 
-    const handleLoginError = error => {
-        if (error.response && error.response.status === 403) {
-            setErrorMessage(error.response.message);
+    const handleLoginError = e => {
+        if (e.response && e.response.status === 403) {
+            setErrorMessage(e.response.data.message);
         } else {
             setErrorMessage("Something went wrong, try that again!");
         }
