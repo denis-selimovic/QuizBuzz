@@ -11,10 +11,10 @@ function App() {
     <div className="container">
       <Router>
         <Switch>
-          <Route path="/" exact render={(props) => <Login {...props}/>} />
-          <Route path="/login" render={(props) => <Login {...props}/>} />
-          <Route path="/register" render={(props) => <Register {...props}/>} />
-          <Route path="/dashboard" exact render={(props) => <Dashboard {...props}/>} />
+          <Route path="/" exact render={(props) => <Login {...props} />} />
+          <Route path="/login" render={(props) => <Login {...props} />} />
+          <Route path="/register" exact render={(props) => <Register {...props} />} />
+          <Route path="/dashboard" exact render={(props) => <Dashboard {...props} />} />
           <Route path="*" component={() => "404 NOT FOUND"} />
         </Switch>
       </Router>
