@@ -69,14 +69,11 @@ router.get("", async (req, res) => {
     if (status === 0 && quiz.isSubmitted(code)) {
       status = 1;
     }
-    if (status !== 0) {
-      res.status(404).json({
-        message: "You can't access the quiz.",
-        date: quiz.date, duration: quiz.duration, status: status
-      });
-    } else {
-      res.status(200).json({ _id: quiz._id, name: quiz.name, date: quiz.date, duration: quiz.duration, questions: quiz.questions });
+    let response = { status };
+    if (status === 0 || status === 2) {
+      response["quiz"] = quiz;
     }
+    res.status(200).json(response);
   } catch (e) {
     console.log(e.message);
     res.status(400).json({ message: "Could not load item" });
