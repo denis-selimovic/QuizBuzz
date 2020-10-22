@@ -35,15 +35,22 @@ export default function (props) {
         return Math.round(duration / 1000);
     }
 
+    const setSelected = (quiz, code) => {
+        const student = quiz.students.find(s => s.code === code);
+        student.points.forEach(p => {
+            quiz.questions.forEach(q => {
+                if (p.questionId === q._id) q.selectedAnswers = p.selectedAnswers;
+            })
+        });
+    }
+
     const fetch = async code => {
         if (loadedQuiz.questions) {
-            loadedQuiz.questions.forEach(q => {
-                if (!q.selectedAnswers) q.selectedAnswers = [];
-            });
+            setSelected(loadedQuiz, code);
             return;
         }
         const response = await axios.get(`${BASE_URL}/quizzes?code=${code}&classroomId=${classroomId}`);
-        response.questions.forEach(q => q.selectedAnswers = []);
+        setSelected(response, code);
         setLoadedQuiz(response);
     };
 
