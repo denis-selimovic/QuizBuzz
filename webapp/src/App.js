@@ -8,7 +8,7 @@ import { ProtectedRoute } from "./auth/ProtectedRoute"
 
 function App() {
   return (
-    <div>
+    <div className="container">
       <Router>
         <Switch>
           <Route path="/" exact render={(props) => <Login {...props}/>} />
