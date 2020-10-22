@@ -45,7 +45,7 @@ class Dashboard extends React.Component {
                     </div>
                 </div>
                 <div className="main">
-                    <div className="main-left">
+                    <div className="main-container">
                         <Classrooms current={this.state.current}/>
                         <Quizzes current={this.state.current}/>
                     </div>
