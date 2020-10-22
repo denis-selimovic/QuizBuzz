@@ -20,9 +20,9 @@ function App() {
           <Route path="register" element={<Register/>} />
           <Route path="dashboard" element={<Dashboard/>} >
             <Route path="" element={<Classrooms/>}/>
-            <Route path="students" element={<StudentTable/>} />
-            <Route path="student" element={<StudentForm/>} />
-            <Route path="quiz" element={<QuizForm/>} />
+            <Route path=":id/students" element={<StudentTable/>} />
+            <Route path=":id/student" element={<StudentForm/>} />
+            <Route path=":id/quiz" element={<QuizForm/>} />
           </Route>
           <Route path="*" component={() => "404 NOT FOUND"} />
         </Routes>

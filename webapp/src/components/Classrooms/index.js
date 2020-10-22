@@ -1,25 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import './classrooms.css'
 import axios from 'axios';
 import { Table, Button, Modal } from "antd";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 import TOKEN from "../../token";
 
 
 
-class Classrooms extends React.Component{
+const Classrooms = (props) => {
 
-    state = {
-        classrooms: [],
-        tableData: [],
-        visible: false,
-        confirmLoading: false,
-        ModalText: 'Send classroom code to all students?',
-        record: null
-    }
+    const [tableData, setTableData] = useState([]);
+    const [visible, setVisible] = useState(false);
+    const [ModalText, setModalText] = useState('Send classroom code to all students?');
+    const [record, setRecord] = useState(null);
+    const navigate = useNavigate();
 
-    columns = [
+    const columns = [
         {
             title: 'Classroom',
             dataIndex: 'classroom',
@@ -39,15 +36,15 @@ class Classrooms extends React.Component{
             dataIndex: 'scode',
             key: 'scode',
             render: (text, record) => (
-                <Button onClick={e => this.sendCode(text, record)} type="primary">Send code</Button>
+                <Button onClick={e => sendCode(text, record)} type="primary">Send code</Button>
             )
         },
         {
             dataIndex: 'list',
             key: 'list',
             render: (text, record) => (
-                <Button type="primary">
-                    <Link to={{ pathname: '/students', state: { record } }}>Student list</Link>
+                <Button type="primary" onClick={e => navigate({ pathname: `${record.key}/students` })}>
+                    Student list
                 </Button>
             )
         },
@@ -56,7 +53,7 @@ class Classrooms extends React.Component{
             key: 'add',
             render: (text, record) => (
                 <Button type="primary">
-                    <Link to={{ pathname: '/student', state: { record } }}>Add student</Link>
+                    <Link to={`${record.key}/student`}>Add student</Link>
                 </Button>
             )
         },
@@ -65,66 +62,59 @@ class Classrooms extends React.Component{
             key: 'quiz',
             render: (text, record) => (
                 <Button type="primary">
-                    <Link to={{ pathname: '/quiz', state: { record } }}>Create quiz</Link>
+                    <Link to={`${record.key}/quiz`}>Create quiz</Link>
                 </Button>
             )
         }
     ]
 
-    async getClassrooms() {
+    useEffect(() => {
+        async function asyncHook () {
+            await getClassrooms();
+        }
+        asyncHook();
+    }, [])
+
+    const getClassrooms = async () => {
         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/users/my-classrooms`, {
             headers: {
                 Authorization: `Bearer ${TOKEN}`
             }
         });
-        this.setState({ classrooms: response.data });
-        this.getClassroomData();
-    }
-
-    sendCode(text, record) {
-        this.setState({ visible: true });
-        this.setState({ record });
-    }
-
-    componentDidMount() {
-        this.getClassrooms();
-    }
-
-    getClassroomData() {
+        const classrooms = response.data;
         const data = [];
-        this.state.classrooms.forEach(c => {
+        classrooms.forEach(c => {
             data.push({ key: c._id, classroom: c.code.split('-')[0], code: c.code, students: c.students.length });
         })
-        this.setState({ tableData: data })
+        setTableData(data);
     }
 
-    cancelModal = () => {
-        this.setState({ visible: false })
+    const sendCode = (text, record) => {
+        setVisible(true);
+        setRecord(record);
     }
 
-    confirmModal = async () => {
-        const { record } = this.state;
+    const cancelModal = () => {
+        setVisible(false);
+    }
+
+    const confirmModal = async () => {
         await axios.post(`${process.env.REACT_APP_BASE_URL}/classrooms/${record.key}/send-code`, {}, {
             headers: {
                 Authorization: 'Bearer ' + TOKEN
             }
         })
-        this.setState({ ModalText: 'Code successfully sent' });
-        setTimeout(() => this.setState({ visible: false }), 2000);
+        setModalText('Code successfully sent');
+        setTimeout(() => setVisible(false), 2000);
     }
 
-    render() {
-        const { current } = this.props;
-        if (current !== 'classroom') return null;
-        const { visible, confirmLoading, ModalText, tableData } = this.state;
-        return (
-            <div>
-                <Table columns={this.columns} dataSource={tableData}/>
-                <Modal visible={visible} confirmLoading={confirmLoading} onCancel={this.cancelModal} onOk={this.confirmModal}><p>{ModalText}</p></Modal>
-            </div>
-        );
-    }
-};
+    return (
+        <div>
+            <Table columns={columns} dataSource={tableData}/>
+            <Modal visible={visible} onCancel={cancelModal} onOk={confirmModal}><p>{ModalText}</p></Modal>
+        </div>
+    );
+}
 
 
 export default Classrooms;

@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {Table, Button, Modal} from "antd";
 import axios from 'axios';
 
+
 import TOKEN from "../../token";
+import {useLocation, useNavigate} from "react-router-dom";
 
-class StudentTable extends React.Component {
+const StudentTable = (props) => {
 
-    columns = [
+    const columns = [
         {
             title: 'Name',
             dataIndex: 'name',
@@ -26,27 +28,25 @@ class StudentTable extends React.Component {
             dataIndex: 'scode',
             key: 'scode',
             render: (text, record) => (
-                <Button type="primary" onClick={() => this.setState({ visible: true, record: record })} >Send classroom code</Button>
+                <Button type="primary" onClick={() => {
+                    setVisible(true);
+                    setStudent(record.key);
+                }} >Send classroom code</Button>
             )
         }
     ];
 
-    state = {
-        tableData: [],
-        visible: false,
-        ModalText: 'Send classroom code to student?',
-        record: null
-    }
+    const location = useLocation();
+    const [tableData, setTableData] = useState([]);
+    const [visible, setVisible] = useState(false);
+    const [ModalText, setModalText] = useState('Send classroom code to student?');
+    const [classroom, setClassroom] = useState(location.pathname.split('/')[2]);
+    const [student, setStudent] = useState(null);
+    const navigate = useNavigate();
 
-    componentDidMount() {
-        this.fetchStudents();
-    }
-
-    fetchStudents = async () => {
-        const { location } = this.props;
-        const { state } = location;
-        const { record } = state;
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/classrooms/${record.key}/students`, {
+    const fetchStudents = async () => {
+        console.log(classroom);
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/classrooms/${classroom}/students`, {
             headers: {
                 Authorization: 'Bearer ' + TOKEN
             }
@@ -56,33 +56,33 @@ class StudentTable extends React.Component {
         students.forEach(s => {
             data.push({ key: s._id, name: s.name, surname: s.surname, email: s.email });
         });
-        this.setState({ tableData: data });
+        setTableData(data);
     }
 
-    sendCode = async () => {
-        const { record } = this.state;
-        if (!record) {
-            this.setState({ visible: false });
-            return;
+    useEffect(() => {
+        async function asyncHook () {
+            await fetchStudents();
         }
-        await axios.post(`${process.env.REACT_APP_BASE_URL}/classrooms/${this.props.location.state.record.key}/send-code/${record.key}`, {}, {
+        asyncHook();
+    }, []);
+
+
+    const sendCode = async id => {
+        await axios.post(`${process.env.REACT_APP_BASE_URL}/classrooms/${classroom}/send-code/${student}`, {}, {
             headers: {
                 Authorization: 'Bearer ' + TOKEN
             }
         })
-        this.setState({ ModalText: 'Code successfully sent' });
-        setTimeout(() => this.setState({ visible: false }), 2000);
+        setModalText('Code successfully sent');
+        setTimeout(() => setVisible(false), 2000);
     }
 
-    render() {
-        const { tableData, ModalText, visible } = this.state;
-        return (
-            <React.Fragment>
-                <Table columns={this.columns} dataSource={tableData}/>
-                <Modal visible={visible} onOk={this.sendCode} onCancel={() => this.setState({ visible: false })} ><p>{ModalText}</p></Modal>
-            </React.Fragment>
-        );
-    }
+    return (
+        <React.Fragment>
+            <Table columns={columns} dataSource={tableData}/>
+            <Modal visible={visible} onOk={sendCode} onCancel={() => setVisible(false)} ><p>{ModalText}</p></Modal>
+        </React.Fragment>
+    );
 }
 
 export default StudentTable;
