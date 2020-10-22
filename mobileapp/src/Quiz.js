@@ -29,6 +29,7 @@ export default function (props) {
     }
 
     const fetch = async code => {
+        if (loadedQuiz.questions) return;
         const response = await axios.get(`${BASE_URL}/quizzes?code=${code}&classroomId=${classroomId}`);
         setLoadedQuiz(response);
     };
@@ -45,9 +46,7 @@ export default function (props) {
     }
 
     const fetchQuizResults = async code => {
-        if (!loadedQuiz) {
-            await fetch(code);
-        }
+        await fetch(code);
         const response = await axios.get(`${BASE_URL}/quizzes/${code}/results`);
         setResults(response);
         setQuizState(2);
