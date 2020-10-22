@@ -8,13 +8,13 @@ import { ProtectedRoute } from "./auth/ProtectedRoute"
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <Router>
         <Switch>
           <Route path="/" exact render={(props) => <Login {...props}></Login>} />
           <Route path="/login" render={(props) => <Login {...props}></Login>} />
           <Route path="/register" render={(props) => <Register {...props}></Register>} />
-          <Route path="/dashboard" exact component={Dashboard} />
+          <Route path="/dashboard" exact render={(props) => <Dashboard {...props}/>} />
           <Route path="*" component={() => "404 NOT FOUND"} />
         </Switch>
       </Router>

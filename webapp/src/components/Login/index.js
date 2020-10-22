@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link as RedirectLink } from "react-router-dom";
 import { Form, Input, Button, Space, Image, Card } from 'antd';
-import "../styles/login.css"
+import "./login.css"
 
-export default function Login(props) {
+export default function Index(props) {
     const onFinish = values => {
         console.log('Success:', values);
     };
