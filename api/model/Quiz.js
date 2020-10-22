@@ -1,4 +1,3 @@
-const { compareSync } = require("bcryptjs");
 const mongoose = require("mongoose");
 const { getBodyWithOffsetDate, offsetDate } = require("../common/util");
 const { Schema } = mongoose;
@@ -112,9 +111,6 @@ quizSchema.statics.getByCodePopulated = async (myCode) => {
 quizSchema.methods.getProgressStatus = function () {
   const currentDate = offsetDate(new Date().getTime(), 2);
   const quizEndDate = new Date((this.date).getTime() + this.duration * 60000);
-  // console.log(currentDate);
-  // console.log(this.date);
-  // console.log(quizEndDate);
   if (currentDate < this.date) return -1;
   if (currentDate > quizEndDate) return 2;
   return 0;
@@ -155,7 +151,7 @@ quizSchema.methods.submitAnswers = async function (code, submitForm) {
 };
 
 quizSchema.methods.isSubmitted = function (code) {
-  return this.students.some(s => s.code === code && s.points.length !== 0);
+  return this.students.some(s => s.code === code.toString() && s.points.length !== 0);
 }
 
 const Quiz = mongoose.model("Quiz", quizSchema);

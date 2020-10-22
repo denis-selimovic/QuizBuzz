@@ -66,17 +66,17 @@ router.get("", async (req, res) => {
     const quiz = await Quiz.getByCodePopulated(code);
     await quiz.checkClassroomId(req.query.classroomId);
     let status = quiz.getProgressStatus();
+    let response = { status, quiz: {} };
     if (status === 0 && quiz.isSubmitted(code)) {
-      status = 1;
+      response.status = 1;
     }
-    if (status !== 0) {
-      res.status(404).json({
-        message: "You can't access the quiz.",
-        date: quiz.date, duration: quiz.duration, status: status
-      });
+    if (response.status === 0 || response.status === 2) {
+      response.quiz = quiz;
     } else {
-      res.status(200).json({ _id: quiz._id, name: quiz.name, date: quiz.date, duration: quiz.duration, questions: quiz.questions });
+      response.quiz.date = quiz.date;
+      response.quiz.duration = quiz.duration
     }
+    res.status(200).json(response);
   } catch (e) {
     console.log(e.message);
     res.status(400).json({ message: "Could not load item" });
