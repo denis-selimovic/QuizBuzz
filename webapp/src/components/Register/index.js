@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, Space, Image, Card, Typography } from 'antd';
-import { Link as RedirectLink } from "react-router-dom";
+import { Link as RedirectLink, withRouter } from "react-router-dom";
 import "./register.css";
 import axios from "axios";
 
@@ -27,7 +27,7 @@ const tailFormItemLayout = {
     },
 };
 
-export default function Register(props) {
+export default withRouter(({ history }) => {
     const [errorMessage, setErrorMessage] = useState();
     const [form] = Form.useForm();
 
@@ -39,9 +39,20 @@ export default function Register(props) {
         try {
             const response = await axios.post(`${process.env.REACT_APP_LOCALHOST}/users/register`, data);
             console.log(response);
+            history.push("/login");
         } catch (error) {
-
+            handleLoginError(error);
         }
+    }
+
+    const handleLoginError = e => {
+        if (e.response && e.response.status === 401) {
+            setErrorMessage(e.response.data.message);
+        } else {
+            setErrorMessage("Something went wrong, try that again!");
+        }
+
+        form.resetFields();
     }
 
     return (
@@ -91,7 +102,7 @@ export default function Register(props) {
                     </Form.Item>
 
                     <Form.Item {...tailFormItemLayout}>
-                        <Button type="primary" htmlType="submit"> Log in </Button>
+                        <Button type="primary" htmlType="submit"> Register </Button>
                     </Form.Item>
 
                     <Typography>{errorMessage}</Typography>
@@ -100,4 +111,4 @@ export default function Register(props) {
             <RedirectLink to="/login">Already have an account? Log in.</RedirectLink>
         </Space>
     )
-}
+});
