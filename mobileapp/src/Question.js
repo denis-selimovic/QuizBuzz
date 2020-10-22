@@ -16,7 +16,7 @@ export default (props) => {
             q.selectedAnswers = q.selectedAnswers.filter(ans => ans !== answerId);
         }
     }
-
+    if(!q.selectedAnswers) return null;
     return (
         <View style={styles.container}>
             <Text style={styles.question}>{q.text}</Text>

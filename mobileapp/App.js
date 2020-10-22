@@ -11,6 +11,8 @@ import EnterCode from "./src/EnterCode";
 import Quiz from "./src/Quiz";
 
 const Stack = createStackNavigator();
+console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
+
 
 class App extends React.Component {
 
