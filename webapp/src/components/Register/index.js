@@ -26,6 +26,9 @@ const tailFormItemLayout = {
         },
     },
 };
+const errorMessageStyle = {
+    color: "#FF0000"
+};
 
 export default withRouter(({ history }) => {
     const [errorMessage, setErrorMessage] = useState();
@@ -37,9 +40,13 @@ export default withRouter(({ history }) => {
 
     const register = async data => {
         try {
-            const response = await axios.post(`${process.env.REACT_APP_LOCALHOST}/users/register`, data);
-            console.log(response);
-            history.push("/login");
+            const requestBody = {
+                name: data.name, surname: data.surname,
+                password: data.password, email: data.email, username: data.username
+            };
+            const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/users/register`, requestBody);
+            setErrorMessage("Successfully registered");
+            setTimeout(() => history.push("/login"), 2000);
         } catch (error) {
             handleLoginError(error);
         }
@@ -55,6 +62,10 @@ export default withRouter(({ history }) => {
         form.resetFields();
     }
 
+    const resetErrorMessage = () => {
+        setErrorMessage("");
+    }
+
     return (
         <Space direction="vertical" className="center">
             <Image src="/images/logo.png"></Image>
@@ -64,16 +75,16 @@ export default withRouter(({ history }) => {
 
                     <Form.Item label="Username" name="username"
                         rules={[{ required: true, message: 'Please input your username!' }]}>
-                        <Input />
+                        <Input onChange={resetErrorMessage} />
                     </Form.Item>
 
                     <Form.Item label="Email" name="email"
                         rules={[{ required: true, message: 'Please input your email!' }]}>
-                        <Input />
+                        <Input onChange={resetErrorMessage} />
                     </Form.Item>
 
                     <Form.Item label="Password" name="password" rules={[{ required: true, message: 'Please input your password!' }]}>
-                        <Input.Password />
+                        <Input.Password onChange={resetErrorMessage} />
                     </Form.Item>
 
                     <Form.Item name="confirm" label="Confirm Password" dependencies={['password']} hasFeedback
@@ -88,26 +99,25 @@ export default withRouter(({ history }) => {
                         }),
                         ]}
                     >
-                        <Input.Password />
+                        <Input.Password onChange={resetErrorMessage} />
                     </Form.Item>
 
                     <Form.Item label="Name" name="name"
                         rules={[{ required: true, message: 'Please input your name!' }]}>
-                        <Input />
+                        <Input onChange={resetErrorMessage} />
                     </Form.Item>
 
                     <Form.Item label="Surname" name="surname"
                         rules={[{ required: true, message: 'Please input your surname!' }]}>
-                        <Input />
+                        <Input onChange={resetErrorMessage} />
                     </Form.Item>
 
                     <Form.Item {...tailFormItemLayout}>
                         <Button type="primary" htmlType="submit"> Register </Button>
                     </Form.Item>
-
-                    <Typography>{errorMessage}</Typography>
                 </Form>
             </Card>
+            <Typography style={errorMessageStyle}>{errorMessage}</Typography>
             <RedirectLink to="/login">Already have an account? Log in.</RedirectLink>
         </Space>
     )
