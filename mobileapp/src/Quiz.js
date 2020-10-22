@@ -30,7 +30,7 @@ export default function (props) {
         setQuizState(0);
     };
 
-    const submitQuiz = code => {
+    const submitQuiz = (code, submit) => {
         setQuizState(1);
     }
 
@@ -62,7 +62,7 @@ export default function (props) {
     const renderResults = () => {
         if (quizState !== 2) return null;
         return (
-            <QuizQuestions questions={quiz.questions} duration={getQuizTimer()} onSubmit={() => submitQuiz(code)} readonly={true} />
+            <QuizQuestions questions={quiz.questions} duration={getQuizTimer()} onSubmit={(submit) => submitQuiz(code, submit)} readonly={true} />
         );
     }
 

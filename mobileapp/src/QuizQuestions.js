@@ -20,7 +20,7 @@ export default (props) => {
         if (readonly) return;
         const submit = { date: Date.now(), submitForm: [] };
         questions.forEach(q => submit.submitForm.push({ questionId: q._id, selectedAnswers: q.selectedAnswers }));
-        onSubmit();
+        onSubmit(submit);
     };
 
     const showButton = () => {
