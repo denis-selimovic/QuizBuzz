@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link as RedirectLink } from "react-router-dom";
+import { Link as RedirectLink, withRouter } from "react-router-dom";
 import { Form, Input, Button, Space, Image, Card, Typography } from 'antd';
 import "./login.css";
 import axios from "axios";
@@ -29,9 +29,13 @@ const tailFormItemLayout = {
     },
 };
 
-export default (props) => {
+export default withRouter(({ history }) => {
     const [errorMessage, setErrorMessage] = useState();
     const [form] = Form.useForm();
+
+    const onFinish = async credentials => {
+        await logIn(credentials);
+    };
 
     const logIn = async credentials => {
         try {
@@ -39,7 +43,7 @@ export default (props) => {
             const { id, username, name, surname, email, token } = response.data;
             saveUser({ id, username, name, surname, email });
             saveToken(token);
-            console.log(response);
+            history.push("/dashboard");
         } catch (e) {
             handleLoginError(e);
         }
@@ -54,10 +58,6 @@ export default (props) => {
 
         form.resetFields();
     }
-
-    const onFinish = async credentials => {
-        await logIn(credentials);
-    };
 
     return (
         <Space direction="vertical" className="center">
@@ -84,4 +84,4 @@ export default (props) => {
             <RedirectLink className="redirect-text" to="/register">Don't have an account? Register.</RedirectLink>
         </Space>
     );
-};
+});
