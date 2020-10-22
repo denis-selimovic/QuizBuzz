@@ -28,4 +28,8 @@ router.get('/profile', auth, async (req, res) => {
     res.status(200).json(req.user);
 });
 
+router.get('/my-classrooms', auth, async (req, res) => {
+    res.status(200).json(req.user.classrooms);
+});
+
 module.exports = router;

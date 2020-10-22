@@ -1,6 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import './dashboard.css'
 import { Menu } from "antd";
+
+import Classrooms from '../Classrooms';
+import Quizzes from '../Quizzes';
 
 const { Item } = Menu;
 
@@ -36,8 +40,13 @@ class Dashboard extends React.Component {
                     </div>
                     <div className="right-menu">
                         <div className="item">
-                            Classrooms
                         </div>
+                    </div>
+                </div>
+                <div className="main">
+                    <div className="main-container">
+                        <Classrooms current={this.state.current}/>
+                        <Quizzes current={this.state.current}/>
                     </div>
                 </div>
             </div>
