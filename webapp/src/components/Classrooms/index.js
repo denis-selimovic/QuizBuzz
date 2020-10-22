@@ -72,7 +72,7 @@ class Classrooms extends React.Component{
     ]
 
     async getClassrooms() {
-        const response = await axios.get(`https://quiz-buzz-api.herokuapp.com/users/my-classrooms`, {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/users/my-classrooms`, {
             headers: {
                 Authorization: `Bearer ${TOKEN}`
             }
@@ -104,7 +104,7 @@ class Classrooms extends React.Component{
 
     confirmModal = async () => {
         const { record } = this.state;
-        await axios.post(`https://quiz-buzz-api.herokuapp.com/classrooms/${record.key}/send-code`, {}, {
+        await axios.post(`${process.env.REACT_APP_BASE_URL}/classrooms/${record.key}/send-code`, {}, {
             headers: {
                 Authorization: 'Bearer ' + TOKEN
             }

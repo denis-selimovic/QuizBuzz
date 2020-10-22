@@ -46,7 +46,7 @@ class StudentTable extends React.Component {
         const { location } = this.props;
         const { state } = location;
         const { record } = state;
-        const response = await axios.get(`https://quiz-buzz-api.herokuapp.com/classrooms/${record.key}/students`, {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/classrooms/${record.key}/students`, {
             headers: {
                 Authorization: 'Bearer ' + TOKEN
             }
@@ -65,7 +65,7 @@ class StudentTable extends React.Component {
             this.setState({ visible: false });
             return;
         }
-        await axios.post(`https://quiz-buzz-api.herokuapp.com/classrooms/${this.props.location.state.record.key}/send-code/${record.key}`, {}, {
+        await axios.post(`${process.env.REACT_APP_BASE_URL}/classrooms/${this.props.location.state.record.key}/send-code/${record.key}`, {}, {
             headers: {
                 Authorization: 'Bearer ' + TOKEN
             }

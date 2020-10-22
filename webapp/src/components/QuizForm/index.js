@@ -37,7 +37,7 @@ const QuizForm = (props) => {
         form.date = form.date._d.valueOf();
         const classroom = props.location.state.record;
         if (!classroom) return;
-        await axios.post(`https://quiz-buzz-api.herokuapp.com/classrooms/${classroom.key}/quiz`, form, {
+        await axios.post(`${process.env.REACT_APP_BASE_URL}/classrooms/${classroom.key}/quiz`, form, {
             headers: {
                 Authorization: 'Bearer ' + TOKEN
             }
