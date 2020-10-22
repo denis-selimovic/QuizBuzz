@@ -29,7 +29,6 @@ class Dashboard extends React.Component {
     }
 
     render() {
-        const { match } = this.props;
         return (
             <div className="dashboard">
                 <div className="header">
