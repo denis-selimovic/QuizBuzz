@@ -11,9 +11,9 @@ function App() {
     <div>
       <Router>
         <Switch>
-          <Route path="/" exact render={(props) => <Login {...props}></Login>} />
-          <Route path="/login" render={(props) => <Login {...props}></Login>} />
-          <Route path="/register" render={(props) => <Register {...props}></Register>} />
+          <Route path="/" exact render={(props) => <Login {...props}/>} />
+          <Route path="/login" render={(props) => <Login {...props}/>} />
+          <Route path="/register" render={(props) => <Register {...props}/>} />
           <Route path="/dashboard" exact render={(props) => <Dashboard {...props}/>} />
           <Route path="*" component={() => "404 NOT FOUND"} />
         </Switch>

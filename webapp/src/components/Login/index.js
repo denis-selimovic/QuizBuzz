@@ -3,7 +3,7 @@ import { Link as RedirectLink } from "react-router-dom";
 import { Form, Input, Button, Space, Image, Card } from 'antd';
 import "./login.css"
 
-export default function Index(props) {
+export default (props) => {
     const onFinish = values => {
         console.log('Success:', values);
     };
