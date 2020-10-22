@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Form, Input, Button, Card } from "antd";
 import axios from 'axios';
 import './studentForm.css';
@@ -33,19 +33,17 @@ const StudentForm = (props) => {
 
     const [form] = Form.useForm();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const onFinish = async form => {
-        const classroom = props.location.state.record;
+        const classroom = location.pathname.split('/')[2];
         if (!classroom) return;
-        await axios.post(`${process.env.REACT_APP_BASE_URL}/classrooms/${classroom.key}/student`, form, {
+        await axios.post(`${process.env.REACT_APP_BASE_URL}/classrooms/${classroom}/student`, form, {
             headers: {
                 Authorization: 'Bearer ' + TOKEN
             }
         });
-        navigate({
-            pathname: '/students',
-            state: { record: classroom }
-        });
+        navigate(`/dashboard/${classroom}/students`);
     }
 
     const onFinishFailed = e => {
