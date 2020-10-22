@@ -103,7 +103,7 @@ class Classrooms extends React.Component{
             }
         })
         this.setState({ ModalText: 'Code successfully sent' });
-        setTimeout(() => this.setState({ visible: false }), 1500);
+        setTimeout(() => this.setState({ visible: false }), 2000);
     }
 
     render() {
