@@ -81,7 +81,7 @@ questionSchema.statics.scoreQuestion = async function (q, quiz) {
     }
 
     const amount = calculatePoints(question, q.selectedAnswers);
-    return { amount: amount, questionId: question._id };
+    return { amount: amount, questionId: question._id, selectedAnswers: q.selectedAnswers };
 }
 
 const Question = mongoose.model("Question", questionSchema);
