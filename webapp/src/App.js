@@ -3,7 +3,7 @@ import './App.css';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Classrooms from './components/Classrooms';
 import Login from './components/Login';
-import Register from './components/Login';
+import Register from './components/Register';
 import { ProtectedRoute } from "./auth/ProtectedRoute"
 
 function App() {
