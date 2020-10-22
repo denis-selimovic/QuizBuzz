@@ -64,7 +64,9 @@ class Classrooms extends React.Component{
             dataIndex: 'quiz',
             key: 'quiz',
             render: (text, record) => (
-                <Button type="primary">Create quiz</Button>
+                <Button type="primary">
+                    <Link to={{ pathname: '/quiz', state: { record } }}>Create quiz</Link>
+                </Button>
             )
         }
     ]
