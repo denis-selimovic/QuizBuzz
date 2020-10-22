@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import {Form, Input, Button, Card, DatePicker, Slider} from "antd";
 import axios from 'axios';
 import './quizForm.css';
@@ -33,12 +33,13 @@ const QuizForm = (props) => {
 
     const [form] = Form.useForm();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const onFinish = async form => {
         form.date = form.date._d.valueOf();
-        const classroom = props.location.state.record;
+        const classroom = location.pathname.split('/')[2];
         if (!classroom) return;
-        await axios.post(`${process.env.REACT_APP_BASE_URL}/classrooms/${classroom.key}/quiz`, form, {
+        await axios.post(`${process.env.REACT_APP_BASE_URL}/classrooms/${classroom}/quiz`, form, {
             headers: {
                 Authorization: 'Bearer ' + TOKEN
             }
