@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, Space, Image, Card, Typography } from 'antd';
-import { Link as RedirectLink, withRouter } from "react-router-dom";
+import { Link as RedirectLink, useNavigate } from "react-router-dom";
 import "./register.css";
 import axios from "axios";
 
@@ -30,9 +30,10 @@ const errorMessageStyle = {
     color: "#FF0000"
 };
 
-export default withRouter(({ history }) => {
+export default (props) => {
     const [errorMessage, setErrorMessage] = useState();
     const [form] = Form.useForm();
+    const navigate = useNavigate();
 
     const onFinish = async data => {
         await register(data);
@@ -46,7 +47,7 @@ export default withRouter(({ history }) => {
             };
             const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/users/register`, requestBody);
             setErrorMessage("Successfully registered");
-            setTimeout(() => history.push("/login"), 2000);
+            setTimeout(() => navigate("/login"), 2000);
         } catch (error) {
             handleLoginError(error);
         }
@@ -121,4 +122,4 @@ export default withRouter(({ history }) => {
             <RedirectLink to="/login">Already have an account? Log in.</RedirectLink>
         </Space>
     )
-});
+};

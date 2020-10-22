@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link as RedirectLink, withRouter } from "react-router-dom";
+import { Link as RedirectLink, useNavigate } from "react-router-dom";
 import { Form, Input, Button, Space, Image, Card, Typography } from 'antd';
 import "./login.css";
 import axios from "axios";
@@ -33,9 +33,10 @@ const errorMessageStyle = {
     color: "#FF0000"
 }
 
-export default withRouter(({ history }) => {
+export default (props) => {
     const [errorMessage, setErrorMessage] = useState();
     const [form] = Form.useForm();
+    const navigate = useNavigate();
 
     const onFinish = async credentials => {
         await logIn(credentials);
@@ -47,7 +48,7 @@ export default withRouter(({ history }) => {
             const { id, username, name, surname, email, token } = response.data;
             saveUser({ id, username, name, surname, email });
             saveToken(token);
-            history.push("/dashboard");
+            navigate("/dashboard");
         } catch (e) {
             handleLoginError(e);
         }
@@ -88,4 +89,4 @@ export default withRouter(({ history }) => {
             <RedirectLink className="redirect-text" to="/register">Don't have an account? Register.</RedirectLink>
         </Space>
     );
-});
+};

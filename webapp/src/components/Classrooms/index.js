@@ -118,10 +118,10 @@ class Classrooms extends React.Component{
         if (current !== 'classroom') return null;
         const { visible, confirmLoading, ModalText, tableData } = this.state;
         return (
-            <React.Fragment>
+            <div>
                 <Table columns={this.columns} dataSource={tableData}/>
                 <Modal visible={visible} confirmLoading={confirmLoading} onCancel={this.cancelModal} onOk={this.confirmModal}><p>{ModalText}</p></Modal>
-            </React.Fragment>
+            </div>
         );
     }
 };

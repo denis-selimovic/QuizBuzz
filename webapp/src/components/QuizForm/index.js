@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { withRouter } from 'react-router-dom';
+import React from "react";
+import { useNavigate } from 'react-router-dom';
 import {Form, Input, Button, Card, DatePicker, Slider} from "antd";
 import axios from 'axios';
 import './quizForm.css';
@@ -32,6 +32,7 @@ const tailFormItemLayout = {
 const QuizForm = (props) => {
 
     const [form] = Form.useForm();
+    const navigate = useNavigate();
 
     const onFinish = async form => {
         form.date = form.date._d.valueOf();
@@ -42,7 +43,7 @@ const QuizForm = (props) => {
                 Authorization: 'Bearer ' + TOKEN
             }
         });
-        props.history.push('/dashboard');
+        navigate('/dashboard');
     }
 
     const onFinishFailed = e => {}
@@ -77,4 +78,4 @@ const QuizForm = (props) => {
     );
 };
 
-export default withRouter(QuizForm);
+export default QuizForm;

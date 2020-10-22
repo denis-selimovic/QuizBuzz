@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { withRouter } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button, Card } from "antd";
 import axios from 'axios';
 import './studentForm.css';
@@ -32,6 +32,7 @@ const tailFormItemLayout = {
 const StudentForm = (props) => {
 
     const [form] = Form.useForm();
+    const navigate = useNavigate();
 
     const onFinish = async form => {
         const classroom = props.location.state.record;
@@ -41,8 +42,7 @@ const StudentForm = (props) => {
                 Authorization: 'Bearer ' + TOKEN
             }
         });
-        const { history } = props;
-        history.push({
+        navigate({
             pathname: '/students',
             state: { record: classroom }
         });
@@ -82,4 +82,4 @@ const StudentForm = (props) => {
     );
 }
 
-export default withRouter(StudentForm);
+export default StudentForm;
