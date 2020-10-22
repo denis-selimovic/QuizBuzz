@@ -95,9 +95,15 @@ class Classrooms extends React.Component{
         this.setState({ visible: false })
     }
 
-    confirmModal = () => {
-        console.log(this.state.record);
-        this.setState({ visible: false });
+    confirmModal = async () => {
+        const { record } = this.state;
+        await axios.post(`https://quiz-buzz-api.herokuapp.com/classrooms/${record.key}/send-code`, {}, {
+            headers: {
+                Authorization: 'Bearer ' + TOKEN
+            }
+        })
+        this.setState({ ModalText: 'Code successfully sent' });
+        setTimeout(() => this.setState({ visible: false }), 1500);
     }
 
     render() {
