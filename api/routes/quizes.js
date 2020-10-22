@@ -66,12 +66,15 @@ router.get("", async (req, res) => {
     const quiz = await Quiz.getByCodePopulated(code);
     await quiz.checkClassroomId(req.query.classroomId);
     let status = quiz.getProgressStatus();
+    let response = { status, quiz: {} };
     if (status === 0 && quiz.isSubmitted(code)) {
       status = 1;
     }
-    let response = { status };
     if (status === 0 || status === 2) {
-      response["quiz"] = quiz;
+      response.quiz = quiz;
+    } else {
+      response.quiz.date = quiz.date;
+      response.quiz.duration = quiz.duration
     }
     res.status(200).json(response);
   } catch (e) {
