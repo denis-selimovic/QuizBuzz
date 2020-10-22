@@ -5,6 +5,7 @@ import { BASE_URL } from '@env';
 
 import QuizQuestions from "./QuizQuestions";
 import Timer from "./Timer";
+import {Text} from "react-native-web";
 
 export default function (props) {
     const { status, code, classroomId, quiz } = props.route.params;
@@ -13,6 +14,7 @@ export default function (props) {
     const [quizState, setQuizState] = useState(status);
     const [loadedQuiz, setLoadedQuiz] = useState(quiz);
     const [results, setResults] = useState(null);
+
 
     useEffect(() => {
         async function hookFetch() {
@@ -37,11 +39,13 @@ export default function (props) {
 
     const setSelected = (quiz, code) => {
         const student = quiz.students.find(s => s.code === code);
-        student.points.forEach(p => {
-            quiz.questions.forEach(q => {
+        quiz.questions.forEach(q => {
+            q.selectedAnswers = [];
+            student.points.forEach(p => {
                 if (p.questionId === q._id) q.selectedAnswers = p.selectedAnswers;
-            })
+            });
         });
+        setLoadedQuiz(Object.assign({}, quiz));
     }
 
     const fetch = async code => {
@@ -51,7 +55,6 @@ export default function (props) {
         }
         const response = await axios.get(`${BASE_URL}/quizzes?code=${code}&classroomId=${classroomId}`);
         setSelected(response, code);
-        setLoadedQuiz(response);
     };
 
     const fetchQuiz = async code => {
@@ -67,9 +70,9 @@ export default function (props) {
 
     const fetchQuizResults = async code => {
         await fetch(code);
-        const response = await axios.get(`${BASE_URL}/quizzes/${code}/results`);
-        console.log(response);
-        setResults(response);
+        //const response = await axios.get(`${BASE_URL}/quizzes/${code}/results`);
+        //console.log(response);
+        //setResults(response);
         setQuizState(2);
     }
 
