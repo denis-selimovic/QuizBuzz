@@ -10,7 +10,7 @@ export default function (props) {
     const { date, duration } = props.route.params.quiz;
 
     const [quizState, setQuizState] = useState(status);
-    const [quiz, setQuiz] = useState(null);
+    const [loadedQuiz, setLoadedQuiz] = useState(quiz);
 
     const getStartTimer = () => {
         const startDate = new Date(date);
