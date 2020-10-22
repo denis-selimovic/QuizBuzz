@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link as RedirectLink, withRouter } from "react-router-dom";
-import { Form, Input, Button, Space, Image, Card, Typography } from 'antd';
+import { Form, Input, Button, Space, Image, Card, Typography, message } from 'antd';
 import "./login.css";
 import axios from "axios";
 import { saveToken, saveUser } from '../../auth/utils';
@@ -28,6 +28,10 @@ const tailFormItemLayout = {
         },
     },
 };
+
+const errorMessageStyle = {
+    color: "#FF0000"
+}
 
 export default withRouter(({ history }) => {
     const [errorMessage, setErrorMessage] = useState();
@@ -78,9 +82,9 @@ export default withRouter(({ history }) => {
                     <Form.Item {...tailFormItemLayout}>
                         <Button type="primary" htmlType="submit"> Log in </Button>
                     </Form.Item>
-                    <Typography>{errorMessage}</Typography>
                 </Form>
             </Card>
+            <Typography style={errorMessageStyle}>{errorMessage}</Typography>
             <RedirectLink className="redirect-text" to="/register">Don't have an account? Register.</RedirectLink>
         </Space>
     );

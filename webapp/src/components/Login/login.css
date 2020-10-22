@@ -5,3 +5,7 @@
   height: 70vh;
   width: 100%;
 }
+
+.error {
+  color: firebrick;
+}
