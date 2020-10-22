@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import axios from 'axios';
 import { BASE_URL } from '@env';
@@ -13,6 +13,13 @@ export default function (props) {
     const [quizState, setQuizState] = useState(status);
     const [loadedQuiz, setLoadedQuiz] = useState(quiz);
     const [results, setResults] = useState(null);
+
+    useEffect(() => {
+        async function hookFetch() {
+            await fetchQuizResults(code);
+        }
+        if (status === 2) hookFetch();
+    }, []);
 
     const getStartTimer = () => {
         const startDate = new Date(date);
