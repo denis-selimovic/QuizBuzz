@@ -182,7 +182,7 @@ router.get("/:id/results", auth, checkQuizOwnership, checkQuizFinished, async (r
   }
 })
 
-router.get("/:code/results", checkQuizFinished, async (req, res) => {
+router.get("/:code/results", async (req, res) => {
   try {
     const quiz = await Quiz.getByCodePopulated(req.params.code);
     const index = quiz.students.findIndex(s => s.code === req.params.code);

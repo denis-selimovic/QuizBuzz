@@ -70,9 +70,9 @@ export default function (props) {
 
     const fetchQuizResults = async code => {
         await fetch(code);
-        //const response = await axios.get(`${BASE_URL}/quizzes/${code}/results`);
-        //console.log(response);
-        //setResults(response);
+        const response = await axios.get(`${BASE_URL}/quizzes/${code}/results`);
+        console.log(response);
+        setResults(response);
         setQuizState(2);
     }
 
