@@ -21,10 +21,7 @@
   <component name="ChangeListManager">
     <list default="true" id="870ed557-ec27-49e4-b3b1-ff5639a5bab2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mobileapp/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/../mobileapp/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mobileapp/src/Quiz.js" beforeDir="false" afterPath="$PROJECT_DIR$/../mobileapp/src/Quiz.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mobileapp/src/QuizQuestions.js" beforeDir="false" afterPath="$PROJECT_DIR$/../mobileapp/src/QuizQuestions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mobileapp/src/Timer.js" beforeDir="false" afterPath="$PROJECT_DIR$/../mobileapp/src/Timer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/quizes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/quizes.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,6 +85,11 @@
       <workItem from="1603130571144" duration="122000" />
       <workItem from="1603132333639" duration="661000" />
       <workItem from="1603134290405" duration="624000" />
+      <workItem from="1603216451120" duration="28000" />
+      <workItem from="1603365516364" duration="400000" />
+      <workItem from="1603367354314" duration="78000" />
+      <workItem from="1603367639589" duration="326000" />
+      <workItem from="1603368368701" duration="62000" />
     </task>
     <servers />
   </component>

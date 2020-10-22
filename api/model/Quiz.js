@@ -25,7 +25,8 @@ const quizSchema = new Schema({
       questionId: {
         type: String,
         required: true
-      }
+      },
+      selectedAnswers: []
     }]
   }],
   questions: [
