@@ -1,4 +1,3 @@
-const { compareSync } = require("bcryptjs");
 const mongoose = require("mongoose");
 const { getBodyWithOffsetDate, offsetDate } = require("../common/util");
 const { Schema } = mongoose;
@@ -152,7 +151,16 @@ quizSchema.methods.submitAnswers = async function (code, submitForm) {
 };
 
 quizSchema.methods.isSubmitted = function (code) {
-  return this.students.some(s => s.code === code && s.points.length !== 0);
+  // let submitted = false;
+  // this.students.forEach(element => {
+  //   if (element.code === code && element.points.length !== 0) {
+  //     submitted = true;
+  //   }
+  // });
+  // //return submitted;
+  // console.log(submitted);
+  // return submitted
+  return this.students.some(s => s.code === code.toString() && s.points.length !== 0);
 }
 
 const Quiz = mongoose.model("Quiz", quizSchema);

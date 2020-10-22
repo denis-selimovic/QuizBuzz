@@ -68,9 +68,9 @@ router.get("", async (req, res) => {
     let status = quiz.getProgressStatus();
     let response = { status, quiz: {} };
     if (status === 0 && quiz.isSubmitted(code)) {
-      status = 1;
+      response.status = 1;
     }
-    if (status === 0 || status === 2) {
+    if (response.status === 0 || response.status === 2) {
       response.quiz = quiz;
     } else {
       response.quiz.date = quiz.date;
