@@ -59,22 +59,27 @@ class App extends React.Component {
   sendQuizCode = async (code, callback, errorCallback, classroomId) => {
     try {
       const response = await axios.get(`${BASE_URL}/quizzes?code=${code}&classroomId=${classroomId}`);
-      callback({ status: 0, code, date: response.data.date, duration: response.data.duration, classroomId });
+      let quiz;
+      if (response.data.quiz) {
+        quiz = response.data.quiz;
+      } else {
+        quiz["date"] = response.data.date;
+        quiz["duration"] = response.data.duration;
+      }
+      callback({
+        status: response.data.status,
+        code,
+        classroomId,
+        quiz
+      });
     } catch (error) {
-      this.handleError(errorCallback, callback, error, code, classroomId);
+      this.handleError(errorCallback, error);
     }
   }
 
-  handleError = (errorCallback, callback, error, code, classroomId) => {
-    if (error.response) {
-      if (error.response.status === 404) {
-        callback({
-          status: error.response.data.status, code,
-          date: error.response.data.date, duration: error.response.data.duration, classroomId
-        });
-      } else {
-        errorCallback("Invalid quiz key");
-      }
+  handleError = (errorCallback, error) => {
+    if (error.response && error.response.status === 400) {
+      errorCallback("Invalid quiz key");
     } else {
       errorCallback("Something went wrong, try that again.");
     }
