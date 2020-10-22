@@ -5,6 +5,30 @@ import "./login.css";
 import axios from "axios";
 import { saveToken, saveUser } from '../../auth/utils';
 
+const formItemLayout = {
+    labelCol: {
+        xs: { span: 24 },
+        sm: { span: 10 },
+    },
+    wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 16 },
+    },
+};
+
+const tailFormItemLayout = {
+    wrapperCol: {
+        xs: {
+            span: 30,
+            offset: 0,
+        },
+        sm: {
+            span: 30,
+            offset: 10,
+        },
+    },
+};
+
 export default (props) => {
     const [errorMessage, setErrorMessage] = useState();
 
@@ -35,7 +59,7 @@ export default (props) => {
         <Space direction="vertical" className="center">
             <Image src="/images/logo.png"></Image>
             <Card>
-                <Form name="basic" initialValues={{ remember: true }}
+                <Form {...formItemLayout} name="login" initialValues={{ remember: true }}
                     onFinish={onFinish}>
 
                     <Form.Item label="Username" name="username"
@@ -47,13 +71,13 @@ export default (props) => {
                         <Input.Password />
                     </Form.Item>
 
-                    <Form.Item>
+                    <Form.Item {...tailFormItemLayout}>
                         <Button type="primary" htmlType="submit"> Log in </Button>
                     </Form.Item>
                     <Typography>{errorMessage}</Typography>
-                    <RedirectLink to="/register">Don't have an account? Register.</RedirectLink>
                 </Form>
             </Card>
+            <RedirectLink className="redirect-text" to="/register">Don't have an account? Register.</RedirectLink>
         </Space>
     );
 };
