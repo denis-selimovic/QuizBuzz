@@ -2,6 +2,7 @@ import React from "react";
 import './classrooms.css'
 import axios from 'axios';
 import { Table, Button, Modal } from "antd";
+import { Link } from "react-router-dom";
 
 import TOKEN from "../../token";
 
@@ -45,7 +46,9 @@ class Classrooms extends React.Component{
             dataIndex: 'list',
             key: 'list',
             render: (text, record) => (
-                <Button type="primary">Student list</Button>
+                <Button type="primary">
+                    <Link to={{ pathname: '/students', state: { record } }}>Student list</Link>
+                </Button>
             )
         },
         {
