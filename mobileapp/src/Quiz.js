@@ -83,7 +83,7 @@ export default function (props) {
     const renderResults = () => {
         if (quizState !== 2) return null;
         return (
-            <QuizQuestions questions={loadedQuiz.questions} duration={getQuizTimer()} onSubmit={(submit) => submitQuiz(code, submit)} readonly={true} />
+            <QuizQuestions questions={loadedQuiz.questions} duration={getQuizTimer()} onSubmit={(submit) => submitQuiz(code, submit)} readonly={true} results={results}/>
         );
     }
 
