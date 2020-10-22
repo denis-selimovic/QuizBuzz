@@ -162,7 +162,10 @@ router.post("/:id/submit", validateBody(["submitForm", "date", "classroomId"]),
       quiz.checkSubmitDate(req.body.date);
       quiz.checkCode(req.query.code);
       await quiz.submitAnswers(req.query.code, req.body.submitForm);
-      const status = await quiz.getProgressStatus();
+      let status = await quiz.getProgressStatus();
+      if (status === 0 && quiz.isSubmitted(code)) {
+        status = 1;
+      }
       res.status(200).json({ status });
     } catch (e) {
       console.log(e.message);
