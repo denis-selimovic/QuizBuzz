@@ -60,9 +60,15 @@ export default props => {
     const createAnswers = (values) => {
         console.log(answersForm.getFieldsValue());
         const ans = answersForm.getFieldValue("answers");
-        console.log(ans);
+        values["answers"] = ans ? ans : [];
         let invalid = false;
-        ans.forEach(a => {
+        let oldAnswers = answersForm.getFieldsValue();
+        Object.keys(oldAnswers).forEach(key => {
+            if (key !== "answers") {
+                values.answers.push(oldAnswers[key]);
+            }
+        });
+        values.answers.forEach(a => {
             if (!a || !a.content) {
                 setStatusMessage("Answer can't be blank");
                 setTimeout(() => setStatusMessage(""), 2000);
@@ -73,20 +79,11 @@ export default props => {
                 a.correct = true;
             }
         });
-        if (!invalid) {
-            values["answers"] = ans ? ans : [];
-            let oldAnswers = answersForm.getFieldsValue();
-            Object.keys(oldAnswers).forEach(key => {
-                if (key != "answers") {
-                    values.answers.push(oldAnswers[key]);
-                }
-            });
-            if (values.answers.some(a => a.correct)) {
-                return values;
-            } else {
-                setStatusMessage("Question must contain one correct answer at all times!");
-                setTimeout(() => setStatusMessage(""), 2000);
-            }
+        if (values.answers.some(a => a.correct)) {
+            if (!invalid) return values;
+        } else {
+            setStatusMessage("Question must contain one correct answer at all times!");
+            setTimeout(() => setStatusMessage(""), 2000);
         }
     }
 
