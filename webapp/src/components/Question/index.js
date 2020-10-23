@@ -134,7 +134,13 @@ export default props => {
                                 <Select.Option value={2}>Partial scoring with negative points</Select.Option >
                             </Select>
                         </Form.Item>
-                        <Answers form={answersForm} oldAnswers={question.answers} removeAnswer={removeAnswer}></Answers>
+                        <Form.Item label="Answers">
+                            <Collapse>
+                                <Collapse.Panel header="Answers">
+                                    <Answers form={answersForm} oldAnswers={question.answers} removeAnswer={removeAnswer}></Answers>
+                                </Collapse.Panel>
+                            </Collapse>
+                        </Form.Item>
                         <Form.Item {...tailFormItemLayout}>
                             <Button type="primary" htmlType="submit"> {props.buttonText} </Button>
                         </Form.Item>

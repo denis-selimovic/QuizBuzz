@@ -2,6 +2,29 @@ import React, { useEffect } from "react";
 import { Form, Input, Button, Space, Switch, Typography } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
+const formItemLayout = {
+    labelCol: {
+        xs: { span: 24 },
+        sm: { span: 10 },
+    },
+    wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 16 },
+    },
+};
+const tailFormItemLayout = {
+    wrapperCol: {
+        xs: {
+            span: 30,
+            offset: 0,
+        },
+        sm: {
+            span: 30,
+            offset: 10,
+        },
+    },
+};
+
 export default (props) => {
     const { oldAnswers, form } = props;
 
@@ -23,7 +46,7 @@ export default (props) => {
                 {oldAnswers.map(a => {
                     return <Space key={a._id} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
                         <Form.Item name={[a._id, "correct"]}>
-                            <Switch checkedChildren="correct" unCheckedChildren="incorrect" defaultChecked={a.correct} />
+                            <Switch checkedChildren="correct" unCheckedChildren="incorrect" defaultChecked={a.correct} style={{ width: 100 }} />
                         </Form.Item>
                         <Form.Item name={[a._id, "content"]}>
                             <Input />
@@ -42,7 +65,7 @@ export default (props) => {
                                     name={[field.name, 'correct']}
                                     fieldKey={[field.fieldKey, 'correct']}
                                 >
-                                    <Switch checkedChildren="correct" unCheckedChildren="incorrect" defaultChecked />
+                                    <Switch checkedChildren="correct" unCheckedChildren="incorrect" defaultChecked style={{ width: 100 }} />
                                 </Form.Item>
                                 <Form.Item
                                     {...field}

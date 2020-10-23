@@ -110,7 +110,6 @@ export default (props) => {
                 <Card className="form" style={formStyle}>
                     <Form form={form} {...formItemLayout} name="register"
                         onFinish={onFinish}>
-
                         <Form.Item label="Name" name="name"
                             rules={[{ required: true, message: 'Please input your name!' }]}>
                             <Input />
@@ -136,7 +135,6 @@ export default (props) => {
                     <Question question={{}} buttonText="Add question" adding addQuestion={addQuestion}></Question>
                 </Card>
             </div>
-            {/* mislim da treba ovo kao form mozda prikazat da jedan submit submita cijeli kviz */}
             <Card className="questions">
                 <Divider>Questions</Divider>
                 {quiz.questions && quiz.questions.map((question, index) => {
