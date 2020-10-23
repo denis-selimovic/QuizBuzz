@@ -32,4 +32,9 @@ router.get('/my-classrooms', auth, async (req, res) => {
     res.status(200).json(req.user.classrooms);
 });
 
+router.get('/my-quizzes', auth, async (req, res) => {
+    const quizzes = await User.getQuizzes(req.user._id);
+    res.status(200).json(quizzes);
+});
+
 module.exports = router;

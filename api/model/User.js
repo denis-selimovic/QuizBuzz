@@ -76,6 +76,13 @@ userSchema.statics.checkForDuplicate = async (username, email) => {
   return users.length > 0;
 };
 
+userSchema.statics.getQuizzes = async (id) => {
+  const user = await User.findById(id).populate({ path: 'classrooms', populate: { path: 'quizzes', model: 'Quiz' } });
+  const quizzes = [];
+  user.classrooms.forEach(c => quizzes.push(...c.quizzes));
+  return quizzes;
+}
+
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
