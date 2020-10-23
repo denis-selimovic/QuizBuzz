@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Form, Input, Button, Card, DatePicker, Slider, Typography, message } from "antd";
+import { useNavigate, useParams } from 'react-router-dom';
+import { Form, Input, Button, Card, DatePicker, Slider, Typography, InputNumber } from "antd";
 import axios from 'axios';
 import './quizEdit.css';
 import moment from "moment";
@@ -40,7 +40,7 @@ export default (props) => {
     const { id } = useParams();
     const [quiz, setQuiz] = useState({});
     const [statusMessage, setStatusMessage] = useState("");
-
+    const [value, setValue] = useState(0);
 
     useEffect(() => {
         async function fetchQuiz() {
@@ -55,6 +55,7 @@ export default (props) => {
     }, []);
 
     useEffect(() => {
+        setValue(quiz.duration);
         form.setFieldsValue({
             name: quiz.name,
             date: moment(quiz.date),
@@ -74,6 +75,13 @@ export default (props) => {
         setQuiz(response.data);
         setStatusMessage("Quiz successfully edited!");
         setTimeout(() => navigate("/dashboard/quizzes"), 2000);
+    }
+
+    const onDurationChange = value => {
+        if (value > 240) value = 240;
+        if (value < 1) value = 1;
+        form.setFieldsValue({ duration: value });
+        setValue(value);
     }
 
     return (
