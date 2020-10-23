@@ -2,13 +2,9 @@ import React, { useEffect, useState } from "react";
 // import { useNavigate, useParams } from 'react-router-dom';
 import { Form, Input, Button, Card, DatePicker, Slider, Typography, InputNumber, Select, Collapse, Checkbox } from "antd";
 import { useForm } from "antd/lib/form/Form";
-import { Option } from "antd/lib/mentions";
-// import axios from 'axios';
-// import './quizEdit.css';
-// import moment from "moment";
-
-// import TOKEN from "../../token";
-// import { getBaseUrl } from "../../common/config";
+import axios from 'axios';
+import { getBaseUrl } from "../../common/config";
+import TOKEN from "../../token";
 
 const formItemLayout = {
     labelCol: {
@@ -34,8 +30,9 @@ const tailFormItemLayout = {
 };
 
 export default props => {
-    const { question } = props;
+    const [question, setQuestion] = useState(props.question);
     const [form] = useForm();
+    const [statusMessage, setStatusMessage] = useState();
 
     useEffect(() => {
         form.setFieldsValue({
@@ -43,14 +40,21 @@ export default props => {
             points: question.points,
             scoringSystem: question.scoringSystem
         });
-    }, []);
+    }, [question]);
 
-    const onFinish = values => {
-        console.log(values);
-    }
-
-    const onCheck = (e, answer) => {
-        console.log(answer);
+    const onFinish = async values => {
+        try {
+            const response = await axios.patch(`${getBaseUrl()}/questions/${question._id}`, values, {
+                headers: {
+                    Authorization: `Bearer ${TOKEN}`
+                }
+            });
+            setQuestion(response.data);
+            setStatusMessage("Question successfully updated!");
+            setTimeout(() => setStatusMessage(""), 2000);
+        } catch (e) {
+            setStatusMessage("Something went wrong!");
+        }
     }
 
     return (
@@ -74,7 +78,7 @@ export default props => {
                             <Select.Option value={2}>Partial scoring with negative points</Select.Option >
                         </Select>
                     </Form.Item>
-                    <Form.Item label="Answers" name="answers">
+                    {/* <Form.Item label="Answers" name="answers">
                         <Collapse>
                             <Collapse.Panel>
                                 {question.answers.map(answer => {
@@ -84,10 +88,11 @@ export default props => {
                                 })}
                             </Collapse.Panel>
                         </Collapse>
-                    </Form.Item>
+                    </Form.Item> */}
                     <Form.Item {...tailFormItemLayout}>
-                        <Button type="primary" htmlType="submit"> Ovo dugme je samo za test </Button>
+                        <Button type="primary" htmlType="submit"> Update question </Button>
                     </Form.Item>
+                    <Typography>{statusMessage}</Typography>
                 </Form>
             </Card>
         </div>

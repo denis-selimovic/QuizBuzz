@@ -106,7 +106,7 @@ export default (props) => {
                     </Form.Item>
 
                     <Form.Item {...tailFormItemLayout}>
-                        <Button type="primary" htmlType="submit"> Edit quiz </Button>
+                        <Button type="primary" htmlType="submit"> Update quiz </Button>
                     </Form.Item>
                 </Form>
                 <Typography style={greenText}>{statusMessage}</Typography>
@@ -114,7 +114,7 @@ export default (props) => {
             {/* mislim da treba ovo kao form mozda prikazat da jedan submit submita cijeli kviz */}
             <Card className="questions">
                 {quiz.questions && quiz.questions.map(question => {
-                    return <Question key={question._id} question={question}></Question>
+                    return <Question key={question._id} question={question} quizId={id}></Question>
                 })}
             </Card>
         </div>
