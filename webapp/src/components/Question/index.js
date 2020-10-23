@@ -68,11 +68,18 @@ export default props => {
             answers = answers.concat(newAnswers);
         }
 
-        Object.keys(oldAnswers).forEach(key => {
-            if (key !== "answers") {
-                answers.push(oldAnswers[key]);
-            }
-        });
+        if (Object.keys(oldAnswers).length === 0) {
+            question.answers.forEach(answer => {
+                delete answer._id;
+                answers.push(answer);
+            });
+        } else {
+            Object.keys(oldAnswers).forEach(key => {
+                if (key !== "answers") {
+                    answers.push(oldAnswers[key]);
+                }
+            });
+        }
 
         answers.forEach(answer => {
             if (!answer || !answer.content || answer.content === "") {
