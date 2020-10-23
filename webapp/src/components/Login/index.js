@@ -4,6 +4,7 @@ import { Form, Input, Button, Space, Image, Card, Typography } from 'antd';
 import "./login.css";
 import axios from "axios";
 import { saveToken, saveUser } from '../../auth/utils';
+import { getBaseUrl } from "../../common/config"
 
 const formItemLayout = {
     labelCol: {
@@ -44,7 +45,7 @@ export default (props) => {
 
     const logIn = async credentials => {
         try {
-            const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/users/login`, credentials);
+            const response = await axios.post(`${getBaseUrl()}/users/login`, credentials);
             const { id, username, name, surname, email, token } = response.data;
             saveUser({ id, username, name, surname, email });
             saveToken(token);

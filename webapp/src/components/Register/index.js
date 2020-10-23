@@ -3,6 +3,7 @@ import { Form, Input, Button, Space, Image, Card, Typography } from 'antd';
 import { Link as RedirectLink, useNavigate } from "react-router-dom";
 import "./register.css";
 import axios from "axios";
+import { getBaseUrl } from '../../common/config';
 
 const formItemLayout = {
     labelCol: {
@@ -45,7 +46,7 @@ export default (props) => {
                 name: data.name, surname: data.surname,
                 password: data.password, email: data.email, username: data.username
             };
-            const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/users/register`, requestBody);
+            const response = await axios.post(`${getBaseUrl()}/users/register`, requestBody);
             setErrorMessage("Successfully registered");
             setTimeout(() => navigate("/login"), 2000);
         } catch (error) {

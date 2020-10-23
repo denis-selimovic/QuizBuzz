@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import './classrooms.css'
 import axios from 'axios';
 import { Table, Button, Modal } from "antd";
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import TOKEN from "../../token";
+import { getBaseUrl } from "../../common/config";
 
 
 
@@ -69,14 +70,14 @@ const Classrooms = (props) => {
     ]
 
     useEffect(() => {
-        async function asyncHook () {
+        async function asyncHook() {
             await getClassrooms();
         }
         asyncHook();
     }, [])
 
     const getClassrooms = async () => {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/users/my-classrooms`, {
+        const response = await axios.get(`${getBaseUrl()}/users/my-classrooms`, {
             headers: {
                 Authorization: `Bearer ${TOKEN}`
             }
@@ -99,7 +100,7 @@ const Classrooms = (props) => {
     }
 
     const confirmModal = async () => {
-        await axios.post(`${process.env.REACT_APP_BASE_URL}/classrooms/${record.key}/send-code`, {}, {
+        await axios.post(`${getBaseUrl()}/classrooms/${record.key}/send-code`, {}, {
             headers: {
                 Authorization: 'Bearer ' + TOKEN
             }
@@ -110,7 +111,7 @@ const Classrooms = (props) => {
 
     return (
         <div>
-            <Table columns={columns} dataSource={tableData}/>
+            <Table columns={columns} dataSource={tableData} />
             <Modal visible={visible} onCancel={cancelModal} onOk={confirmModal}><p>{ModalText}</p></Modal>
         </div>
     );

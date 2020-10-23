@@ -1,10 +1,11 @@
 import React from "react";
-import {useLocation, useNavigate} from 'react-router-dom';
-import {Form, Input, Button, Card, DatePicker, Slider} from "antd";
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Form, Input, Button, Card, DatePicker, Slider } from "antd";
 import axios from 'axios';
 import './quizForm.css';
 
 import TOKEN from "../../token";
+import { getBaseUrl } from "../../common/config";
 
 const formItemLayout = {
     labelCol: {
@@ -39,7 +40,7 @@ const QuizForm = (props) => {
         form.date = form.date._d.valueOf();
         const classroom = location.pathname.split('/')[2];
         if (!classroom) return;
-        await axios.post(`${process.env.REACT_APP_BASE_URL}/classrooms/${classroom}/quiz`, form, {
+        await axios.post(`${getBaseUrl()}/classrooms/${classroom}/quiz`, form, {
             headers: {
                 Authorization: 'Bearer ' + TOKEN
             }
@@ -47,7 +48,7 @@ const QuizForm = (props) => {
         navigate('/dashboard');
     }
 
-    const onFinishFailed = e => {}
+    const onFinishFailed = e => { }
 
     const dateValidation = current => current && current < Date.now()
 
@@ -55,19 +56,19 @@ const QuizForm = (props) => {
         <div className="form-container">
             <Card className="form">
                 <Form form={form} {...formItemLayout} name="register" initialValues={{ remember: true }}
-                      onFinish={onFinish} onFinishFailed={onFinishFailed}>
+                    onFinish={onFinish} onFinishFailed={onFinishFailed}>
 
                     <Form.Item label="Name" name="name"
-                               rules={[{ required: true, message: 'Please input your name!' }]}>
+                        rules={[{ required: true, message: 'Please input your name!' }]}>
                         <Input />
                     </Form.Item>
 
                     <Form.Item label="Date" name="date" rules={[{ required: true, message: 'Please set quiz date!' }]}>
-                        <DatePicker showTime disabledTime={dateValidation} disabledDate={dateValidation}/>
+                        <DatePicker showTime disabledTime={dateValidation} disabledDate={dateValidation} />
                     </Form.Item>
 
                     <Form.Item label="Duration (min)" name="duration" rules={[{ required: true, message: 'Please set quiz duration!' }]}>
-                        <Slider min={1} max={240}/>
+                        <Slider min={1} max={240} />
                     </Form.Item>
 
                     <Form.Item {...tailFormItemLayout}>

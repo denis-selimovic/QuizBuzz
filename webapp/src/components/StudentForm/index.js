@@ -3,8 +3,10 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Form, Input, Button, Card } from "antd";
 import axios from 'axios';
 import './studentForm.css';
+import { getBaseUrl } from "../../common/config"
 
 import TOKEN from "../../token";
+import { getBaseUrl } from "../../common/config";
 
 const formItemLayout = {
     labelCol: {
@@ -38,7 +40,7 @@ const StudentForm = (props) => {
     const onFinish = async form => {
         const classroom = location.pathname.split('/')[2];
         if (!classroom) return;
-        await axios.post(`${process.env.REACT_APP_BASE_URL}/classrooms/${classroom}/student`, form, {
+        await axios.post(`${getBaseUrl()}/classrooms/${classroom}/student`, form, {
             headers: {
                 Authorization: 'Bearer ' + TOKEN
             }
@@ -54,20 +56,20 @@ const StudentForm = (props) => {
         <div className="form-container">
             <Card className="form">
                 <Form form={form} {...formItemLayout} name="register" initialValues={{ remember: true }}
-                      onFinish={onFinish} onFinishFailed={onFinishFailed}>
+                    onFinish={onFinish} onFinishFailed={onFinishFailed}>
 
                     <Form.Item label="Email" name="email"
-                               rules={[{ required: true, message: 'Please input your email!' }]}>
+                        rules={[{ required: true, message: 'Please input your email!' }]}>
                         <Input />
                     </Form.Item>
 
                     <Form.Item label="Name" name="name"
-                               rules={[{ required: true, message: 'Please input your name!' }]}>
+                        rules={[{ required: true, message: 'Please input your name!' }]}>
                         <Input />
                     </Form.Item>
 
                     <Form.Item label="Surname" name="surname"
-                               rules={[{ required: true, message: 'Please input your surname!' }]}>
+                        rules={[{ required: true, message: 'Please input your surname!' }]}>
                         <Input />
                     </Form.Item>
 

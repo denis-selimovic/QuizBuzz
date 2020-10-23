@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {Table, Button, Modal} from "antd";
+import { Table, Button, Modal } from "antd";
 import axios from 'axios';
 
 
 import TOKEN from "../../token";
-import {useLocation, useNavigate} from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getBaseUrl } from "../../common/config";
 
 const StudentTable = (props) => {
 
@@ -46,7 +47,7 @@ const StudentTable = (props) => {
 
     const fetchStudents = async () => {
         console.log(classroom);
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/classrooms/${classroom}/students`, {
+        const response = await axios.get(`${getBaseUrl()}/classrooms/${classroom}/students`, {
             headers: {
                 Authorization: 'Bearer ' + TOKEN
             }
@@ -60,7 +61,7 @@ const StudentTable = (props) => {
     }
 
     useEffect(() => {
-        async function asyncHook () {
+        async function asyncHook() {
             await fetchStudents();
         }
         asyncHook();
@@ -68,7 +69,7 @@ const StudentTable = (props) => {
 
 
     const sendCode = async id => {
-        await axios.post(`${process.env.REACT_APP_BASE_URL}/classrooms/${classroom}/send-code/${student}`, {}, {
+        await axios.post(`${getBaseUrl()}/classrooms/${classroom}/send-code/${student}`, {}, {
             headers: {
                 Authorization: 'Bearer ' + TOKEN
             }
@@ -79,7 +80,7 @@ const StudentTable = (props) => {
 
     return (
         <React.Fragment>
-            <Table columns={columns} dataSource={tableData}/>
+            <Table columns={columns} dataSource={tableData} />
             <Modal visible={visible} onOk={sendCode} onCancel={() => setVisible(false)} ><p>{ModalText}</p></Modal>
         </React.Fragment>
     );
