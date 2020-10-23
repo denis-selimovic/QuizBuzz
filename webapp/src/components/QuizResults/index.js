@@ -36,6 +36,7 @@ export default (props) => {
         })
         const { results, questions } = response.data;
         const questionData = {};
+        return console.log(results);
         for (let i = 0; i < questions; ++i) {
             fixedColumns.push({ title: `Question ${i + 1}`, key: `question-${i + 1}`, dataIndex: `question-${i + 1}`, fixed: undefined, width: 120 });
             questionData[`question-${i + 1}`] = 0;
