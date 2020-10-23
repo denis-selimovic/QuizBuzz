@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Table } from "antd";
+import { Table, Button } from "antd";
+import { CSVLink } from "react-csv";
 import axios from 'axios';
 import { getBaseUrl } from "../../common/config";
 import TOKEN from "../../token";
@@ -25,6 +26,7 @@ const fixedColumns = [
 export default (props) => {
 
     const [data, setData] = useState([]);
+    const [csvData, setCsvData] = useState([]);
     const [columns, setColumns] = useState([]);
     const { id } = useParams();
 
@@ -37,11 +39,12 @@ export default (props) => {
         const { results, questions } = response.data;
         const questionData = {};
         for (let i = 0; i < questions; ++i) {
-            fixedColumns.push({ title: `Question ${i + 1}`, key: `question-${i + 1}`, dataIndex: `question-${i + 1}`, fixed: undefined, width: 120 });
+            fixedColumns.push({ title: `Question ${i + 1}`, key: `question-${i + 1}`, dataIndex: `question-${i + 1}`, fixed: undefined, width: 80 });
             questionData[`question-${i + 1}`] = 0;
         }
         fixedColumns.push({ key: 'total', title: 'Total', fixed: 'right', width: 120, dataIndex: 'total' })
         const tableData = [];
+        const tableCsv = [];
         results.forEach(r => {
             let total = 0;
             let i = 0;
@@ -50,10 +53,12 @@ export default (props) => {
                questionData[`question-${i + 1}`] = p.amount;
                ++i;
             });
-            tableData.push({ ...questionData, key: r.id, name: r.name, surname: r.surname, total });
+            tableCsv.push({ name: r.name, surname: r.surname, ...questionData, total });
+            tableData.push({ key: r.id, name: r.name, surname: r.surname, ...questionData, total });
         });
         setColumns(fixedColumns);
         setData(tableData);
+        setCsvData(tableCsv);
     };
 
     useEffect(() => {
@@ -64,6 +69,11 @@ export default (props) => {
     }, []);
 
     return (
-        <Table columns={columns} dataSource={data} scroll={{ x: 1000 }} style={{ width: 1200 }}/>
+        <React.Fragment>
+            <Table columns={columns} dataSource={data} scroll={{ x: 1000 }} style={{ width: 1200 }}/>
+            <Button style={{ backgroundColor: 'green', color: 'white', border: '0 green' }}>
+                <CSVLink data={csvData}>Export CSV</CSVLink>
+            </Button>
+        </React.Fragment>
     );
 }
