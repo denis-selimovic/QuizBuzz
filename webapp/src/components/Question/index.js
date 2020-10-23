@@ -58,7 +58,9 @@ export default props => {
     }
 
     const createAnswers = (values) => {
+        console.log(answersForm.getFieldsValue());
         const ans = answersForm.getFieldValue("answers");
+        console.log(ans);
         let invalid = false;
         ans.forEach(a => {
             if (!a || !a.content) {
@@ -79,7 +81,12 @@ export default props => {
                     values.answers.push(oldAnswers[key]);
                 }
             });
-            return values;
+            if (values.answers.some(a => a.correct)) {
+                return values;
+            } else {
+                setStatusMessage("Question must contain one correct answer at all times!");
+                setTimeout(() => setStatusMessage(""), 2000);
+            }
         }
     }
 
@@ -134,13 +141,7 @@ export default props => {
                                 <Select.Option value={2}>Partial scoring with negative points</Select.Option >
                             </Select>
                         </Form.Item>
-                        <Form.Item label="Answers">
-                            <Collapse>
-                                <Collapse.Panel header="Answers">
-                                    <Answers form={answersForm} oldAnswers={question.answers} removeAnswer={removeAnswer}></Answers>
-                                </Collapse.Panel>
-                            </Collapse>
-                        </Form.Item>
+                        <Answers form={answersForm} oldAnswers={question.answers} removeAnswer={removeAnswer}></Answers>
                         <Form.Item {...tailFormItemLayout}>
                             <Button type="primary" htmlType="submit"> {props.buttonText} </Button>
                         </Form.Item>
