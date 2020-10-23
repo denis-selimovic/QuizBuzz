@@ -49,6 +49,7 @@ export default props => {
 
     const onFinish = async values => {
         values = createAnswers(values);
+        if (!values) return;
         if (props.adding) {
             await props.addQuestion(values, () => { form.resetFields(); answersForm.resetFields(); });
         } else {
@@ -58,20 +59,28 @@ export default props => {
 
     const createAnswers = (values) => {
         const ans = answersForm.getFieldValue("answers");
+        let invalid = false;
         ans.forEach(a => {
+            if (!a || !a.content) {
+                setStatusMessage("Answer can't be blank");
+                setTimeout(() => setStatusMessage(""), 2000);
+                invalid = true;
+                return;
+            }
             if (a.correct === undefined) {
                 a.correct = true;
             }
         });
-        values["answers"] = ans ? ans : [];
-        let oldAnswers = answersForm.getFieldsValue();
-        Object.keys(oldAnswers).forEach(key => {
-            if (key != "answers") {
-                values.answers.push(oldAnswers[key]);
-            }
-        });
-
-        return values;
+        if (!invalid) {
+            values["answers"] = ans ? ans : [];
+            let oldAnswers = answersForm.getFieldsValue();
+            Object.keys(oldAnswers).forEach(key => {
+                if (key != "answers") {
+                    values.answers.push(oldAnswers[key]);
+                }
+            });
+            return values;
+        }
     }
 
     const updateQuestion = async values => {
