@@ -94,8 +94,18 @@ export default props => {
         setRecord(null);
     }
 
-    const confirmModal = () => {
-        setModalText('Code successfully sent');
+    const confirmModal = async () => {
+        if (!record) return setVisible(false);
+        try {
+            await axios.post(`${process.env.REACT_APP_BASE_URL}/quizzes/${record.key}/send-code`, {}, {
+                headers: {
+                    Authorization: 'Bearer ' + TOKEN
+                }
+            });
+            setModalText('Code successfully sent');
+        } catch (e) {
+            setModalText('Code could not be sent');
+        }
         setTimeout(cancelModal, 2000);
     }
 
