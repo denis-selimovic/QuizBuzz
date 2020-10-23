@@ -7,6 +7,7 @@ import moment from "moment";
 
 import TOKEN from "../../token";
 import { getBaseUrl } from "../../common/config";
+import Question from "../Question";
 
 const formItemLayout = {
     labelCol: {
@@ -86,7 +87,6 @@ export default (props) => {
 
     return (
         <div className="form-container">
-            <Typography className="titleText">Editing</Typography>
             <Card className="form">
                 <Form form={form} {...formItemLayout} name="register"
                     onFinish={onFinish}>
@@ -110,6 +110,12 @@ export default (props) => {
                     </Form.Item>
                 </Form>
                 <Typography style={greenText}>{statusMessage}</Typography>
+            </Card>
+
+            <Card className="questions">
+                {quiz.questions && quiz.questions.map(question => {
+                    return <Question key={question._id} question={question}></Question>
+                })}
             </Card>
         </div>
     );
