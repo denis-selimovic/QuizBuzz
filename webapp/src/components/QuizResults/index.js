@@ -37,7 +37,7 @@ export default (props) => {
                 Authorization: 'Bearer ' + TOKEN
             }
         })
-        console.log(response.data.resultsPerStudents);
+        console.log(response.data);
     };
 
     useEffect(() => {
