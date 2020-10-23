@@ -48,8 +48,8 @@ export default props => {
     }, [question]);
 
     const onFinish = async values => {
-        values = createAnswers(values);
-        if (!values) return;
+        let data = createAnswers(values);
+        if (data === null) return;
         if (props.adding) {
             await props.addQuestion(values, () => { form.resetFields(); answersForm.resetFields(); });
         } else {
@@ -58,33 +58,52 @@ export default props => {
     }
 
     const createAnswers = (values) => {
-        console.log(answersForm.getFieldsValue());
-        const ans = answersForm.getFieldValue("answers");
-        values["answers"] = ans ? ans : [];
-        let invalid = false;
+        let answers = [];
+        let newAnswers = answersForm.getFieldValue("answers");
         let oldAnswers = answersForm.getFieldsValue();
+        let invalid = false;
+        let hasCorrect = false;
+
+        if (newAnswers) {
+            answers = answers.concat(newAnswers);
+        }
+
         Object.keys(oldAnswers).forEach(key => {
             if (key !== "answers") {
-                values.answers.push(oldAnswers[key]);
+                answers.push(oldAnswers[key]);
             }
         });
-        values.answers.forEach(a => {
-            if (!a || !a.content) {
-                setStatusMessage("Answer can't be blank");
-                setTimeout(() => setStatusMessage(""), 2000);
+
+        answers.forEach(answer => {
+            if (!answer || !answer.content || answer.content === "") {
                 invalid = true;
                 return;
             }
-            if (a.correct === undefined) {
-                a.correct = true;
+
+            if (answer.correct === undefined) {
+                answer.correct = true;
             }
-        });
-        if (values.answers.some(a => a.correct)) {
-            if (!invalid) return values;
-        } else {
-            setStatusMessage("Question must contain one correct answer at all times!");
+
+            if (answer.correct) {
+                hasCorrect = true;
+            }
+        })
+
+        if (invalid && !hasCorrect) {
+            setStatusMessage("Answer can't be blank and question must contain one correct answer at all times");
+            setTimeout(() => setStatusMessage(""), 3000);
+        } else if (invalid) {
+            setStatusMessage("Answer can't be blank");
             setTimeout(() => setStatusMessage(""), 2000);
+        } else if (!hasCorrect) {
+            setStatusMessage("Question must contain one correct answer at all times");
+            setTimeout(() => setStatusMessage(""), 2000);
+        } else {
+            values["answers"] = answers;
+            return values;
         }
+
+        return null;
     }
 
     const updateQuestion = async values => {
@@ -138,7 +157,13 @@ export default props => {
                                 <Select.Option value={2}>Partial scoring with negative points</Select.Option >
                             </Select>
                         </Form.Item>
-                        <Answers form={answersForm} oldAnswers={question.answers} removeAnswer={removeAnswer}></Answers>
+                        <Form.Item label="Answers">
+                            <Collapse>
+                                <Collapse.Panel header="Answers">
+                                    <Answers form={answersForm} oldAnswers={question.answers} removeAnswer={removeAnswer}></Answers>
+                                </Collapse.Panel>
+                            </Collapse>
+                        </Form.Item>
                         <Form.Item {...tailFormItemLayout}>
                             <Button type="primary" htmlType="submit"> {props.buttonText} </Button>
                         </Form.Item>
