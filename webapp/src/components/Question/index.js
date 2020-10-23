@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-// import { useNavigate, useParams } from 'react-router-dom';
 import { Form, Input, Button, Card, DatePicker, Slider, Typography, InputNumber, Select, Collapse, Checkbox } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import axios from 'axios';
 import { getBaseUrl } from "../../common/config";
 import TOKEN from "../../token";
+import Answers from "../Answers";
 
 const formItemLayout = {
     labelCol: {
@@ -32,6 +32,7 @@ const tailFormItemLayout = {
 export default props => {
     const [question, setQuestion] = useState(props.question);
     const [form] = useForm();
+    const [answersForm] = useForm();
     const [statusMessage, setStatusMessage] = useState();
 
     useEffect(() => {
@@ -44,11 +45,26 @@ export default props => {
     }, [question]);
 
     const onFinish = async values => {
+        values = createAnswers(values);
         if (props.adding) {
-            await props.addQuestion(values, () => form.resetFields());
+            await props.addQuestion(values, () => { form.resetFields(); answersForm.resetFields(); });
         } else {
             await updateQuestion(values);
         }
+    }
+
+    const createAnswers = (values) => {
+        if (props.adding) {
+            question["answers"] = [];
+        }
+        values["answers"] = answersForm.getFieldValue("answers").concat(question.answers);
+        values.answers.forEach(a => {
+            if (a.correct === undefined) {
+                a["correct"] = true;
+            }
+            delete a._id;
+        });
+        return values;
     }
 
     const updateQuestion = async values => {
@@ -88,6 +104,7 @@ export default props => {
                                 <Select.Option value={2}>Partial scoring with negative points</Select.Option >
                             </Select>
                         </Form.Item>
+                        <Answers form={answersForm}></Answers>
                         <Form.Item {...tailFormItemLayout}>
                             <Button type="primary" htmlType="submit"> {props.buttonText} </Button>
                         </Form.Item>
@@ -98,15 +115,3 @@ export default props => {
         </Collapse>
     );
 }
-
-{/* <Form.Item label="Answers" name="answers">
-                        <Collapse>
-                            <Collapse.Panel>
-                                {question.answers.map(answer => {
-                                    return <div key={answer._id}>
-                                        <Checkbox key={answer._id} onChange={(e) => onCheck(e, answer)}>{answer.content}</Checkbox>
-                                    </div>
-                                })}
-                            </Collapse.Panel>
-                        </Collapse>
-                    </Form.Item> */}
