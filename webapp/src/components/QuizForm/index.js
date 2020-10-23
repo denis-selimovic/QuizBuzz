@@ -39,7 +39,6 @@ const QuizForm = (props) => {
 
     const onFinish = async form => {
         form.date = form.date._d.valueOf();
-        return console.log(form);
         const classroom = location.pathname.split('/')[2];
         if (!classroom) return;
         await axios.post(`${getBaseUrl()}/classrooms/${classroom}/quiz`, form, {

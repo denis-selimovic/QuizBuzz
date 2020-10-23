@@ -93,7 +93,8 @@ export default (props) => {
                     </Form.Item>
 
                     <Form.Item label="Duration (min)" name="duration" rules={[{ required: true, message: 'Please set quiz duration!' }]}>
-                        <Slider min={1} max={240} />
+                        <Slider min={1} max={240} onChange={onDurationChange} value={value} />
+                        <InputNumber onChange={onDurationChange} value={value} min={1} max={240} />
                     </Form.Item>
 
                     <Form.Item {...tailFormItemLayout}>
