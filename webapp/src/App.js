@@ -8,6 +8,7 @@ import StudentTable from "./components/StudentTable";
 import StudentForm from "./components/StudentForm";
 import QuizForm from "./components/QuizForm";
 import Classrooms from "./components/Classrooms";
+import Quizzes from './components/Quizzes'
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
             <Route path=":id/students" element={<StudentTable/>} />
             <Route path=":id/student" element={<StudentForm/>} />
             <Route path=":id/quiz" element={<QuizForm/>} />
+            <Route path="quizzes" element={<Quizzes/>}/>
           </Route>
           <Route path="*" component={() => "404 NOT FOUND"} />
         </Routes>

@@ -56,14 +56,14 @@ export default props => {
             key: 'edit',
             dataIndex: 'edit',
             render: (text, record) => (
-                <Button type="primary" onClick={() => navigate(`${record.key}/quiz-edit`)}>Students</Button>
+                <Button type="primary" onClick={() => navigate(`${record.key}/quiz-edit`)}>Edit</Button>
             )
         },
         {
             key: 'results',
             dataIndex: 'results',
             render: (text, record) => (
-                <Button type="primary" onClick={() => navigate(`${record.key}/quiz-results`)}>Students</Button>
+                <Button type="primary" onClick={() => navigate(`${record.key}/quiz-results`)}>Results</Button>
             )
         }
     ];

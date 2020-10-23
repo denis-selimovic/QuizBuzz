@@ -1,5 +1,5 @@
-import React from "react";
-import { Outlet } from "react-router-dom";
+import React, { useState } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 import './dashboard.css'
 import { Menu } from "antd";
 
@@ -11,41 +11,44 @@ const menuStyle = {
     fontSize: '16px'
 }
 
-class Dashboard extends React.Component {
+export default (props) => {
 
-    state = {
-        current: 'classroom'
+    const [current, setCurrent] = useState('classroom');
+    const navigate = useNavigate();
+
+    const handleClick = e => {
+        if (current === e.key) return;
+        setCurrent(e.key);
+        switch (e.key) {
+            case 'quiz':
+                navigate('/dashboard/quizzes');
+                break;
+            case 'classroom':
+                navigate('/dashboard');
+                break;
+            default:
+                break;
+        }
     }
 
-    constructor(props) {
-        super(props);
-    }
-
-    handleClick = e => {
-        this.setState({ current: e.key });
-    }
-
-    render() {
-        return (
-            <div className="dashboard">
-                <div className="header">
-                    <div className="left-menu">
-                        <Menu selectedKeys={[this.state.current]} onClick={this.handleClick} mode={`horizontal`} theme={`dark`} style={menuStyle}>
-                            <Item key={`classroom`}>Classrooms</Item>
-                            <Item key={`quiz`}>Quizzes</Item>
-                        </Menu>
-                    </div>
-                    <div className="right-menu">
-                    </div>
+    return (
+        <div className="dashboard">
+            <div className="header">
+                <div className="left-menu">
+                    <Menu selectedKeys={[current]} onClick={handleClick} mode={`horizontal`} theme={`dark`} style={menuStyle}>
+                        <Item key={`classroom`}>Classrooms</Item>
+                        <Item key={`quiz`}>Quizzes</Item>
+                    </Menu>
                 </div>
-                <div className="main">
-                    <div className="main-container">
-                        <Outlet/>
-                    </div>
+                <div className="right-menu">
                 </div>
             </div>
-        );
-    }
+            <div className="main">
+                <div className="main-container">
+                    <Outlet/>
+                </div>
+            </div>
+        </div>
+    );
 }
 
-export default Dashboard;
