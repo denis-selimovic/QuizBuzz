@@ -4,9 +4,7 @@ import { Form, Input, Button, Card } from "antd";
 import axios from 'axios';
 import './studentForm.css';
 import { getBaseUrl } from "../../common/config"
-
 import TOKEN from "../../token";
-import { getBaseUrl } from "../../common/config";
 
 const formItemLayout = {
     labelCol: {
