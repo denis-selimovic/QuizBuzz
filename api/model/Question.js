@@ -69,7 +69,7 @@ questionSchema.methods.deleteAnswer = async function (id) {
     if (index === -1) {
         throw Error();
     }
-    this.answers.splice(index);
+    this.answers.splice(index, 1);
     await this.save();
 }
 
