@@ -35,6 +35,7 @@ export default props => {
     const [statusMessage, setStatusMessage] = useState();
 
     useEffect(() => {
+        if (!question.text) return;
         form.setFieldsValue({
             text: question.text,
             points: question.points,
@@ -43,6 +44,14 @@ export default props => {
     }, [question]);
 
     const onFinish = async values => {
+        if (props.adding) {
+            await props.addQuestion(values, () => form.resetFields());
+        } else {
+            await updateQuestion(values);
+        }
+    }
+
+    const updateQuestion = async values => {
         try {
             const response = await axios.patch(`${getBaseUrl()}/questions/${question._id}`, values, {
                 headers: {
@@ -58,27 +67,39 @@ export default props => {
     }
 
     return (
-        <div>
-            <Card>
-                <Form form={form} {...formItemLayout}
-                    onFinish={onFinish}>
-                    <Form.Item label="Text" name="text"
-                        rules={[{ required: true, message: 'Please input the text of the question!' }]}>
-                        <Input />
-                    </Form.Item>
-                    <Form.Item label="Points" name="points"
-                        rules={[{ required: true, message: 'Please input the number of points!' }]}>
-                        <InputNumber min={0}></InputNumber>
-                    </Form.Item>
-                    <Form.Item label="Scoring system" name="scoringSystem"
-                        rules={[{ required: true, message: 'Please choose the scoring system' }]}>
-                        <Select>
-                            <Select.Option value={0}>Binary scoring</Select.Option >
-                            <Select.Option value={1}>Partial scoring</Select.Option >
-                            <Select.Option value={2}>Partial scoring with negative points</Select.Option >
-                        </Select>
-                    </Form.Item>
-                    {/* <Form.Item label="Answers" name="answers">
+        <Collapse bordered={false}>
+            <Collapse.Panel header={!props.adding && `Question ${props.index + 1}`}>
+                <Card>
+                    <Form form={form} {...formItemLayout}
+                        onFinish={onFinish}>
+                        <Form.Item label="Text" name="text"
+                            rules={[{ required: true, message: 'Please input the text of the question!' }]}>
+                            <Input />
+                        </Form.Item>
+                        <Form.Item label="Points" name="points"
+                            rules={[{ required: true, message: 'Please input the number of points!' }]}>
+                            <InputNumber min={0}></InputNumber>
+                        </Form.Item>
+                        <Form.Item label="Scoring system" name="scoringSystem"
+                            rules={[{ required: true, message: 'Please choose the scoring system' }]}>
+                            <Select>
+                                <Select.Option value={0}>Binary scoring</Select.Option >
+                                <Select.Option value={1}>Partial scoring</Select.Option >
+                                <Select.Option value={2}>Partial scoring with negative points</Select.Option >
+                            </Select>
+                        </Form.Item>
+                        <Form.Item {...tailFormItemLayout}>
+                            <Button type="primary" htmlType="submit"> {props.buttonText} </Button>
+                        </Form.Item>
+                        <Typography>{statusMessage}</Typography>
+                    </Form>
+                </Card>
+            </Collapse.Panel>
+        </Collapse>
+    );
+}
+
+{/* <Form.Item label="Answers" name="answers">
                         <Collapse>
                             <Collapse.Panel>
                                 {question.answers.map(answer => {
@@ -89,12 +110,3 @@ export default props => {
                             </Collapse.Panel>
                         </Collapse>
                     </Form.Item> */}
-                    <Form.Item {...tailFormItemLayout}>
-                        <Button type="primary" htmlType="submit"> Update question </Button>
-                    </Form.Item>
-                    <Typography>{statusMessage}</Typography>
-                </Form>
-            </Card>
-        </div>
-    );
-}

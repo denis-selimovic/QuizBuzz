@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
-import { Form, Input, Button, Card, DatePicker, Slider, Typography, InputNumber } from "antd";
+import { Form, Input, Button, Card, DatePicker, Slider, Typography, InputNumber, Divider } from "antd";
 import axios from 'axios';
 import './quizEdit.css';
 import moment from "moment";
@@ -33,6 +33,9 @@ const tailFormItemLayout = {
 };
 const greenText = {
     color: "#00FF00"
+}
+const formStyle = {
+    marginBottom: "2"
 }
 
 export default (props) => {
@@ -75,7 +78,7 @@ export default (props) => {
         });
         setQuiz(response.data);
         setStatusMessage("Quiz successfully edited!");
-        setTimeout(() => navigate("/dashboard/quizzes"), 2000);
+        setTimeout(() => setStatusMessage(""), 2000);
     }
 
     const onDurationChange = value => {
@@ -85,36 +88,60 @@ export default (props) => {
         setValue(value);
     }
 
+    const addQuestion = async (values, callback) => {
+        try {
+            const response = await axios.post(`${getBaseUrl()}/quizzes/${id}/question`, values, {
+                headers: {
+                    Authorization: `Bearer ${TOKEN}`
+                }
+            });
+            setQuiz(response.data);
+            setStatusMessage("Question successfully added!");
+            setTimeout(() => setStatusMessage(""), 2000);
+            callback();
+        } catch (e) {
+            setStatusMessage("Something went wrong!");
+            setTimeout(() => setStatusMessage(""), 2000);
+        }
+    }
+
     return (
         <div className="form-container">
-            <Card className="form">
-                <Form form={form} {...formItemLayout} name="register"
-                    onFinish={onFinish}>
+            <div className="col1">
+                <Card className="form" style={formStyle}>
+                    <Form form={form} {...formItemLayout} name="register"
+                        onFinish={onFinish}>
 
-                    <Form.Item label="Name" name="name"
-                        rules={[{ required: true, message: 'Please input your name!' }]}>
-                        <Input />
-                    </Form.Item>
+                        <Form.Item label="Name" name="name"
+                            rules={[{ required: true, message: 'Please input your name!' }]}>
+                            <Input />
+                        </Form.Item>
 
-                    <Form.Item label="Date" name="date" rules={[{ required: true, message: 'Please set quiz date!' }]}>
-                        <DatePicker showTime disabledTime={dateValidation} disabledDate={dateValidation} />
-                    </Form.Item>
+                        <Form.Item label="Date" name="date" rules={[{ required: true, message: 'Please set quiz date!' }]}>
+                            <DatePicker showTime disabledTime={dateValidation} disabledDate={dateValidation} />
+                        </Form.Item>
 
-                    <Form.Item label="Duration (min)" name="duration" rules={[{ required: true, message: 'Please set quiz duration!' }]}>
-                        <Slider min={1} max={240} onChange={onDurationChange} value={value} />
-                        <InputNumber onChange={onDurationChange} value={value} min={1} max={240} />
-                    </Form.Item>
+                        <Form.Item label="Duration (min)" name="duration" rules={[{ required: true, message: 'Please set quiz duration!' }]}>
+                            <Slider min={1} max={240} onChange={onDurationChange} value={value} />
+                            <InputNumber onChange={onDurationChange} value={value} min={1} max={240} />
+                        </Form.Item>
 
-                    <Form.Item {...tailFormItemLayout}>
-                        <Button type="primary" htmlType="submit"> Update quiz </Button>
-                    </Form.Item>
-                </Form>
-                <Typography style={greenText}>{statusMessage}</Typography>
-            </Card>
+                        <Form.Item {...tailFormItemLayout}>
+                            <Button type="primary" htmlType="submit"> Update quiz </Button>
+                        </Form.Item>
+                    </Form>
+                    <Typography style={greenText}>{statusMessage}</Typography>
+                </Card>
+                <Divider>New Question</Divider>
+                <Card className="newQuestion">
+                    <Question question={{}} buttonText="Add question" adding addQuestion={addQuestion}></Question>
+                </Card>
+            </div>
             {/* mislim da treba ovo kao form mozda prikazat da jedan submit submita cijeli kviz */}
             <Card className="questions">
-                {quiz.questions && quiz.questions.map(question => {
-                    return <Question key={question._id} question={question} quizId={id}></Question>
+                <Divider>Questions</Divider>
+                {quiz.questions && quiz.questions.map((question, index) => {
+                    return <Question key={question._id} question={question} buttonText="Update question" index={index}></Question>
                 })}
             </Card>
         </div>
