@@ -111,7 +111,7 @@ export default (props) => {
                 </Form>
                 <Typography style={greenText}>{statusMessage}</Typography>
             </Card>
-
+            {/* mislim da treba ovo kao form mozda prikazat da jedan submit submita cijeli kviz */}
             <Card className="questions">
                 {quiz.questions && quiz.questions.map(question => {
                     return <Question key={question._id} question={question}></Question>

@@ -86,7 +86,7 @@ export default props => {
                         </Collapse>
                     </Form.Item>
                     <Form.Item {...tailFormItemLayout}>
-                        <Button type="primary" htmlType="submit"> Edit quiz </Button>
+                        <Button type="primary" htmlType="submit"> Ovo dugme je samo za test </Button>
                     </Form.Item>
                 </Form>
             </Card>
