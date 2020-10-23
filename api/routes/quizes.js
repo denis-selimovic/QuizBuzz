@@ -110,9 +110,13 @@ router.delete('/:id/student', auth, checkQuizOwnership, validateBody(['id']), as
 router.get('/:id/students', auth, checkQuizOwnership, async (req, res) => {
   try {
     const quiz = await Quiz.findById(req.params.id);
-    const studentIds = quiz.students.map(s => s.id);
-    const students = await Student.find({ _id: { $in: studentIds } });
-    res.status(200).json(students);
+    const students = await quiz.studentsList();
+    const results = [];
+    quiz.students.forEach(s => {
+      const mappedStudent = students.find(st => st._id.toString() === s.id);
+      results.push({ id: s.id, code: s.code, name: mappedStudent.name, surname: mappedStudent.surname, email: mappedStudent.email });
+    });
+    res.status(200).json(results);
   } catch (e) {
     res.status(400).json({ message: 'Unable to load items' });
   }
