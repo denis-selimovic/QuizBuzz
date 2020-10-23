@@ -6,7 +6,7 @@ import axios from 'axios';
 import { getBaseUrl } from "../../common/config";
 import TOKEN from "../../token";
 
-const fixedColumns = [
+const fixed = [
     {
         title: 'Name',
         key: 'name',
@@ -38,6 +38,7 @@ export default (props) => {
         })
         const { results, questions } = response.data;
         const questionData = {};
+        const fixedColumns = fixed.slice(0, 2);
         for (let i = 0; i < questions; ++i) {
             fixedColumns.push({ title: `Question ${i + 1}`, key: `question-${i + 1}`, dataIndex: `question-${i + 1}`, fixed: undefined, width: 80 });
             questionData[`question-${i + 1}`] = 0;
