@@ -173,16 +173,16 @@ router.post("/:id/submit", validateBody(["submitForm", "date", "classroomId"]),
     }
   });
 
-router.get("/:id/results", auth, checkQuizOwnership, checkQuizFinished, async (req, res) => {
+router.get("/:id/results", auth, checkQuizOwnership,  async (req, res) => {
   try {
     const quiz = await Quiz.getQuizByIdPopulated(req.params.id);
     const students = await quiz.studentsList();
+    const results = [];
     quiz.students.forEach(s => {
-      const mappedStudent = students.find(st => st._id === s.id);
-      s.name = mappedStudent.name;
-      s.surname = mappedStudent.surname;
+      const mappedStudent = students.find(st => st._id.toString() === s.id);
+      results.push({ id: s.id, code: s.code, points: s.points, name: mappedStudent.name, surname: mappedStudent.surname, email: mappedStudent.email });
     });
-    res.status(200).json({ results: quiz.students, questions: quiz.questions.length  });
+    res.status(200).json({ results, questions: quiz.questions.length  });
   } catch (e) {
     res.status(400).json({ message: 'Unable to get results' });
   }
