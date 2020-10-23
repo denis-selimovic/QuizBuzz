@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Form, Input, Button, Card, DatePicker, Slider } from "antd";
+import { Form, Input, Button, Card, DatePicker, Slider, InputNumber } from "antd";
 import axios from 'axios';
 import './quizForm.css';
 
@@ -35,9 +35,11 @@ const QuizForm = (props) => {
     const [form] = Form.useForm();
     const navigate = useNavigate();
     const location = useLocation();
+    const [value, setValue] = useState(0);
 
     const onFinish = async form => {
         form.date = form.date._d.valueOf();
+        return console.log(form);
         const classroom = location.pathname.split('/')[2];
         if (!classroom) return;
         await axios.post(`${getBaseUrl()}/classrooms/${classroom}/quiz`, form, {
@@ -51,6 +53,13 @@ const QuizForm = (props) => {
     const onFinishFailed = e => { }
 
     const dateValidation = current => current && current < Date.now()
+
+    const onDurationChange = value => {
+        if (value > 240) value = 240;
+        if (value < 1) value = 1;
+        form.setFieldsValue({ duration: value });
+        setValue(value);
+    }
 
     return (
         <div className="form-container">
@@ -68,7 +77,8 @@ const QuizForm = (props) => {
                     </Form.Item>
 
                     <Form.Item label="Duration (min)" name="duration" rules={[{ required: true, message: 'Please set quiz duration!' }]}>
-                        <Slider min={1} max={240} />
+                        <Slider min={1} max={240} onChange={onDurationChange} value={value} />
+                        <InputNumber onChange={onDurationChange} value={value} min={1} max={240} />
                     </Form.Item>
 
                     <Form.Item {...tailFormItemLayout}>
