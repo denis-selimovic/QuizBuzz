@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Form, Input, Button, Space, Switch, Typography } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
@@ -6,6 +6,7 @@ export default (props) => {
     const { oldAnswers, form } = props;
 
     useEffect(() => {
+        form.resetFields();
         oldAnswers.forEach(a => {
             let fieldsValue = {};
             fieldsValue[a._id] = {
@@ -14,7 +15,7 @@ export default (props) => {
             }
             form.setFieldsValue(fieldsValue);
         });
-    });
+    }, [oldAnswers]);
 
     return (
         <Form form={form}>
@@ -27,7 +28,7 @@ export default (props) => {
                         <Form.Item name={[a._id, "content"]}>
                             <Input />
                         </Form.Item>
-                        <MinusCircleOutlined onClick={() => oldAnswers.remove(a)} />
+                        <MinusCircleOutlined onClick={() => props.removeAnswer(a._id)} />
                     </Space>
                 })}
             </Form.Item>

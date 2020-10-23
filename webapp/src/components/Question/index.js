@@ -48,7 +48,7 @@ export default props => {
     }, [question]);
 
     const onFinish = async values => {
-        //values = createAnswers(values);
+        values = createAnswers(values);
         if (props.adding) {
             await props.addQuestion(values, () => { form.resetFields(); answersForm.resetFields(); });
         } else {
@@ -57,30 +57,40 @@ export default props => {
     }
 
     const createAnswers = (values) => {
-        values["answers"] = answersForm.getFieldValue("answers").concat(question.answers);
-        values.answers.forEach(a => {
+        const ans = answersForm.getFieldValue("answers");
+        ans.forEach(a => {
             if (a.correct === undefined) {
-                a["correct"] = true;
+                a.correct = true;
             }
-            delete a._id;
+        });
+        values["answers"] = ans ? ans : [];
+        let oldAnswers = answersForm.getFieldsValue();
+        Object.keys(oldAnswers).forEach(key => {
+            if (key != "answers") {
+                values.answers.push(oldAnswers[key]);
+            }
         });
         return values;
     }
 
     const updateQuestion = async values => {
-        console.log(answersForm.getFieldsValue());
-        // try {
-        //     const response = await axios.patch(`${getBaseUrl()}/questions/${question._id}`, values, {
-        //         headers: {
-        //             Authorization: `Bearer ${TOKEN}`
-        //         }
-        //     });
-        //     setQuestion(response.data);
-        //     setStatusMessage("Question successfully updated!");
-        //     setTimeout(() => setStatusMessage(""), 2000);
-        // } catch (e) {
-        //     setStatusMessage("Something went wrong!");
-        // }
+        try {
+            const response = await axios.patch(`${getBaseUrl()}/questions/${question._id}`, values, {
+                headers: {
+                    Authorization: `Bearer ${TOKEN}`
+                }
+            });
+            setQuestion(response.data);
+            setStatusMessage("Question successfully updated!");
+            setTimeout(() => setStatusMessage(""), 2000);
+        } catch (e) {
+            setStatusMessage("Something went wrong!");
+        }
+    }
+
+    const removeAnswer = async answerId => {
+        console.log(answerId);
+        //TODOOOO
     }
 
     return (
@@ -105,7 +115,7 @@ export default props => {
                                 <Select.Option value={2}>Partial scoring with negative points</Select.Option >
                             </Select>
                         </Form.Item>
-                        <Answers form={answersForm} oldAnswers={question.answers}></Answers>
+                        <Answers form={answersForm} oldAnswers={question.answers} removeAnswer={removeAnswer}></Answers>
                         <Form.Item {...tailFormItemLayout}>
                             <Button type="primary" htmlType="submit"> {props.buttonText} </Button>
                         </Form.Item>
