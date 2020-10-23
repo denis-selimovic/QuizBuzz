@@ -36,7 +36,6 @@ export default (props) => {
         })
         const { results, questions } = response.data;
         const questionData = {};
-        return console.log(results);
         for (let i = 0; i < questions; ++i) {
             fixedColumns.push({ title: `Question ${i + 1}`, key: `question-${i + 1}`, dataIndex: `question-${i + 1}`, fixed: undefined, width: 120 });
             questionData[`question-${i + 1}`] = 0;
@@ -51,7 +50,7 @@ export default (props) => {
                questionData[`question-${i + 1}`] = p.amount;
                ++i;
             });
-            tableData.push({ ...questionData, key: r._id, name: 'Denis', surname: 'Selimovic', total });
+            tableData.push({ ...questionData, key: r.id, name: r.name, surname: r.surname, total });
         });
         setColumns(fixedColumns);
         setData(tableData);
