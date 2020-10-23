@@ -9,6 +9,9 @@ import StudentForm from "./components/StudentForm";
 import QuizForm from "./components/QuizForm";
 import Classrooms from "./components/Classrooms";
 import Quizzes from './components/Quizzes'
+import QuizEdit from './components/QuizEddit';
+import QuizResults from './components/QuizResults';
+import QuizStudentTable from './components/QuizStudentTable';
 
 
 function App() {
@@ -25,6 +28,9 @@ function App() {
             <Route path=":id/student" element={<StudentForm/>} />
             <Route path=":id/quiz" element={<QuizForm/>} />
             <Route path="quizzes" element={<Quizzes/>}/>
+            <Route path=":id/quiz-students" element={<QuizStudentTable/>}/>
+            <Route path=":id/quiz-results" element={<QuizResults/>}/>
+            <Route path=":id/quiz-edit" element={<QuizEdit/>}/>
           </Route>
           <Route path="*" component={() => "404 NOT FOUND"} />
         </Routes>
