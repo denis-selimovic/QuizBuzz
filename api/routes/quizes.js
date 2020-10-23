@@ -176,6 +176,12 @@ router.post("/:id/submit", validateBody(["submitForm", "date", "classroomId"]),
 router.get("/:id/results", auth, checkQuizOwnership, checkQuizFinished, async (req, res) => {
   try {
     const quiz = await Quiz.getQuizByIdPopulated(req.params.id);
+    const students = await quiz.students();
+    quiz.students.forEach(s => {
+      const mappedStudent = students.find(st => st._id === s.id);
+      s.name = mappedStudent.name;
+      s.surname = mappedStudent.surname;
+    });
     res.status(200).json({ results: quiz.students, questions: quiz.questions.length  });
   } catch (e) {
     res.status(400).json({ message: 'Unable to get results' });

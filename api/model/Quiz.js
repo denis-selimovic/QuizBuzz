@@ -61,6 +61,12 @@ quizSchema.methods.classroom = async function () {
   }).exec();
 };
 
+quizSchema.methods.students = async function () {
+  const Student = this.model('Student');
+  const students = this.students.map(s => s.id);
+  return await Student.find({ _id: { $in: students } });
+}
+
 quizSchema.methods.getStudentById = async function (id) {
   const Student = this.model('Student');
   const student = await Student.findById(id);

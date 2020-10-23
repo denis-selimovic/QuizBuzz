@@ -19,10 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="870ed557-ec27-49e4-b3b1-ff5639a5bab2" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/routes/quizes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/quizes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../webapp/src/components/QuizResults/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../webapp/src/components/QuizResults/index.js" afterDir="false" />
-    </list>
+    <list default="true" id="870ed557-ec27-49e4-b3b1-ff5639a5bab2" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -98,6 +95,7 @@
       <workItem from="1603390395223" duration="22000" />
       <workItem from="1603439043583" duration="788000" />
       <workItem from="1603452443018" duration="427000" />
+      <workItem from="1603452975685" duration="32000" />
     </task>
     <servers />
   </component>
