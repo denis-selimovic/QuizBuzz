@@ -17,7 +17,6 @@ export default (props) => {
     const navigate = useNavigate();
 
     const handleClick = e => {
-        if (current === e.key) return;
         setCurrent(e.key);
         switch (e.key) {
             case 'quiz':
