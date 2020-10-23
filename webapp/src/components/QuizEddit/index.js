@@ -40,7 +40,6 @@ const formStyle = {
 
 export default (props) => {
     const [form] = Form.useForm();
-    const navigate = useNavigate();
     const { id } = useParams();
     const [quiz, setQuiz] = useState({});
     const [statusMessage, setStatusMessage] = useState("");

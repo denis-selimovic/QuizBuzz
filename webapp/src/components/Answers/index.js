@@ -1,16 +1,36 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button, Space, Switch } from 'antd';
+import { Form, Input, Button, Space, Switch, Typography } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
 export default (props) => {
-    const { answers, setAnswers, form } = props;
+    const { oldAnswers, form } = props;
 
-    const onFinish = values => {
-        console.log(values);
-    }
+    useEffect(() => {
+        oldAnswers.forEach(a => {
+            let fieldsValue = {};
+            fieldsValue[a._id] = {
+                "correct": a.correct,
+                "content": a.content
+            }
+            form.setFieldsValue(fieldsValue);
+        });
+    });
 
     return (
-        <Form form={form} onFinish={onFinish}>
+        <Form form={form}>
+            <Form.Item>
+                {oldAnswers.map(a => {
+                    return <Space key={a._id} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
+                        <Form.Item name={[a._id, "correct"]}>
+                            <Switch checkedChildren="correct" unCheckedChildren="incorrect" defaultChecked={a.correct} />
+                        </Form.Item>
+                        <Form.Item name={[a._id, "content"]}>
+                            <Input />
+                        </Form.Item>
+                        <MinusCircleOutlined onClick={() => oldAnswers.remove(a)} />
+                    </Space>
+                })}
+            </Form.Item>
             <Form.List name="answers">
                 {(answers, { add, remove }) => (
                     <>
