@@ -46,7 +46,7 @@ export default (props) => {
                 name: data.name, surname: data.surname,
                 password: data.password, email: data.email, username: data.username
             };
-            const response = await axios.post(`${getBaseUrl()}/users/register`, requestBody);
+            await axios.post(`${getBaseUrl()}/users/register`, requestBody);
             setErrorMessage("Successfully registered");
             setTimeout(() => navigate("/login"), 2000);
         } catch (error) {

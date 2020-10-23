@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button, Card, DatePicker, Slider, Typography, InputNumber, Select, Collapse, Checkbox } from "antd";
+import { Form, Input, Button, Card, Typography, InputNumber, Select, Collapse } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import axios from 'axios';
 import { getBaseUrl } from "../../common/config";

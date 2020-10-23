@@ -4,7 +4,7 @@ import axios from 'axios';
 
 
 import TOKEN from "../../token";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { getBaseUrl } from "../../common/config";
 
 const StudentTable = (props) => {
@@ -43,7 +43,6 @@ const StudentTable = (props) => {
     const [ModalText, setModalText] = useState('Send classroom code to student?');
     const [classroom, setClassroom] = useState(location.pathname.split('/')[2]);
     const [student, setStudent] = useState(null);
-    const navigate = useNavigate();
 
     const fetchStudents = async () => {
         console.log(classroom);

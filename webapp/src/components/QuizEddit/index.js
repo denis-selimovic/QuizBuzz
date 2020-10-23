@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Form, Input, Button, Card, DatePicker, Slider, Typography, InputNumber, Divider } from "antd";
 import axios from 'axios';
 import './quizEdit.css';

@@ -1,29 +1,6 @@
 import React, { useEffect } from "react";
-import { Form, Input, Button, Space, Switch, Typography } from 'antd';
+import { Form, Input, Button, Space, Switch } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-
-const formItemLayout = {
-    labelCol: {
-        xs: { span: 24 },
-        sm: { span: 10 },
-    },
-    wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 },
-    },
-};
-const tailFormItemLayout = {
-    wrapperCol: {
-        xs: {
-            span: 30,
-            offset: 0,
-        },
-        sm: {
-            span: 30,
-            offset: 10,
-        },
-    },
-};
 
 export default (props) => {
     const { oldAnswers, form } = props;
