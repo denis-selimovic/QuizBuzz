@@ -70,6 +70,7 @@ export default props => {
                 values.answers.push(oldAnswers[key]);
             }
         });
+
         return values;
     }
 
@@ -82,15 +83,24 @@ export default props => {
             });
             setQuestion(response.data);
             setStatusMessage("Question successfully updated!");
-            setTimeout(() => setStatusMessage(""), 2000);
         } catch (e) {
             setStatusMessage("Something went wrong!");
         }
+        setTimeout(() => setStatusMessage(""), 2000);
     }
 
     const removeAnswer = async answerId => {
-        console.log(answerId);
-        //TODOOOO
+        try {
+            const response = await axios.delete(`${getBaseUrl()}/questions/${question._id}/answer/${answerId}`, {
+                headers: {
+                    Authorization: `Bearer ${TOKEN}`
+                }
+            });
+            setQuestion(response.data);
+        } catch (e) {
+            setStatusMessage("Something went wrong!");
+        }
+        setTimeout(() => setStatusMessage(""), 2000);
     }
 
     return (
