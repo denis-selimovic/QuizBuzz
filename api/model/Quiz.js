@@ -100,7 +100,7 @@ quizSchema.pre("remove", async function (next) {
 quizSchema.statics.updateQuizById = async (id, newQuiz) => {
   const quiz = await Quiz.getQuizByIdPopulated(id);
   if (Object.keys(newQuiz).includes("date")) {
-    newQuiz = getBodyWithOffsetDate(newQuiz, 2);
+    newQuiz = getBodyWithOffsetDate(newQuiz, 0);
   }
   Object.keys(newQuiz).forEach((key) => (quiz[key] = newQuiz[key]));
   await quiz.save();
