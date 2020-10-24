@@ -50,7 +50,7 @@ REACT_APP_LOCALHOST=
 __NODE_ENV=PRODUCTION npm start__
 * Experiment with the app!
 
-## Mobile application
+### Mobile application
 * Make sure you have yarn installed on your machine 
 * Make sure you have expo app installed on your mobile phone
 * Navigate to the mobileapp foler and run __yarn install__ to install the dependencies
