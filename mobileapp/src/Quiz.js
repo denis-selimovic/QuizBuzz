@@ -5,11 +5,11 @@ import { BASE_URL } from '@env';
 
 import QuizQuestions from "./QuizQuestions";
 import Timer from "./Timer";
-import {Text} from "react-native-web";
 
 export default function (props) {
     const { status, code, classroomId, quiz } = props.route.params;
     const { date, duration } = props.route.params.quiz;
+
 
     const [quizState, setQuizState] = useState(status);
     const [loadedQuiz, setLoadedQuiz] = useState(quiz);
@@ -29,12 +29,13 @@ export default function (props) {
     }
 
     const getEndTimer = () => {
-        const endDate = new Date(date + duration);
+        const end = new Date(date);
+        const endDate = new Date(end.valueOf() + duration * 60 * 1000);
         return Math.round(Math.abs(endDate.valueOf() - Date.now()) / 1000);
     }
 
     const getQuizTimer = () => {
-        return Math.round(duration / 1000);
+        return Math.round(duration * 60);
     }
 
     const setSelected = (quiz, code) => {
@@ -54,7 +55,8 @@ export default function (props) {
             return;
         }
         const response = await axios.get(`${BASE_URL}/quizzes?code=${code}&classroomId=${classroomId}`);
-        setSelected(response, code);
+        const { quiz } = Object(response.data);
+        setSelected(quiz, code);
     };
 
     const fetchQuiz = async code => {
@@ -64,14 +66,14 @@ export default function (props) {
 
     const submitQuiz = async (code, submit) => {
         submit.classroomId = classroomId;
-        await axios.post(`${BASE_URL}/quizzes/${loadedQuiz._id}/submit`, submit);
+        await axios.post(`${BASE_URL}/quizzes/${loadedQuiz._id}/submit?code=${code}`, submit);
         setQuizState(1);
     }
 
     const fetchQuizResults = async code => {
         await fetch(code);
         //const response = await axios.get(`${BASE_URL}/quizzes/${code}/results`);
-        //setResults(response);
+        //setResults(response.data);
         setQuizState(2);
     }
 
