@@ -15,7 +15,7 @@ view the results of each quiz and download them in a csv format. Students use th
 
 ## Check out the application
 * Web application is available [here](#).
-* The API can be accessed via [this link](#)
+* The API can be accessed via [this link](https://quiz-buzz-api.herokuapp.com)
 * Mobile application can be tried out locally using the expo app on your phone
 
 ## Start the application locally
@@ -38,7 +38,7 @@ PORT=8080
 * Experiment with the API!
 
 ### Web Application
-* Navigat to the webapp folder and run __npm install__ to install the application dependencies
+* Navigate to the webapp folder and run __npm install__ to install the application dependencies
 * Create a .env file with the following content:
 
 ```javascript
