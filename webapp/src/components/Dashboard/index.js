@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import './dashboard.css'
 import { Menu } from "antd";
+import { logout } from "../../auth/utils";
 
 const { Item } = Menu;
 
@@ -25,6 +26,10 @@ export default (props) => {
             case 'classroom':
                 navigate('/dashboard');
                 break;
+            case 'logout':
+                logout();
+                navigate('/login');
+                break;
             default:
                 break;
         }
@@ -37,6 +42,7 @@ export default (props) => {
                     <Menu selectedKeys={[current]} onClick={handleClick} mode={`horizontal`} theme={`dark`} style={menuStyle}>
                         <Item key={`classroom`}>Classrooms</Item>
                         <Item key={`quiz`}>Quizzes</Item>
+                        <Item key={`logout`}>Log out</Item>
                     </Menu>
                 </div>
                 <div className="right-menu">
@@ -44,7 +50,7 @@ export default (props) => {
             </div>
             <div className="main">
                 <div className="main-container">
-                    <Outlet/>
+                    <Outlet />
                 </div>
             </div>
         </div>
