@@ -59,7 +59,7 @@ __NODE_ENV=PRODUCTION npm start__
 ```javascript
 BASE_URL=https://quiz-buzz-api.herokuapp.com
 ```
-* Run npm start 
+* Run __npm start__ 
 * Use the expo app to scan the QR code that pops up in your browser. 
 * Experiment with the app!
 
