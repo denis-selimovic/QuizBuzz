@@ -24,14 +24,14 @@ view the results of each quiz and download them in a csv format. Students use th
 * Make sure you have Node and MongoDB installed on your machine
 * Clone the github repository
 * Navigate to the api folder and run __npm install__ to install the application dependencies
-* In the api folder create a .env file with the following content: 
+* In the api folder create a .env file with the following environment variables set: 
 
 ```javascript
-QUIZ_BUZZ_MAIL=quizbuzz.no.reply@gmail.com
-QUIZ_BUZZ_PASS=.quizBUZZ.-
-MONGODB_HOST=mongodb+srv://quizbuzz:.QUIZbuzz.-@cluster0.1pwfc.mongodb.net/quiz-api-db?retryWrites=true&w=majority
-MONGODB_LOCALHOST=mongodb://localhost/quiz-api-db
-PORT=8080
+QUIZ_BUZZ_MAIL=
+QUIZ_BUZZ_PASS=
+MONGODB_HOST=
+MONGODB_LOCALHOST=
+PORT=
 ```
 * We change the port to 8080 because the web application runs on port 3000 which would also be the default port here
 * Run __npm start__
@@ -39,11 +39,11 @@ PORT=8080
 
 ### Web Application
 * Navigate to the webapp folder and run __npm install__ to install the application dependencies
-* Create a .env file with the following content:
+* Create a .env file with the following environment variables set:
 
 ```javascript
-REACT_APP_BASE_URL=https://quiz-buzz-api.herokuapp.com
-REACT_APP_LOCALHOST=http://localhost:8080
+REACT_APP_BASE_URL=
+REACT_APP_LOCALHOST=
 ```
 * Run __npm start__ to start the application
 * You may choose to run the application locally but connect to our deployed API in which case you should run the application with 
