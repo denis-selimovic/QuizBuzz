@@ -54,10 +54,10 @@ __NODE_ENV=PRODUCTION npm start__
 * Make sure you have yarn installed on your machine 
 * Make sure you have expo app installed on your mobile phone
 * Navigate to the mobileapp foler and run __yarn install__ to install the dependencies
-* Create a .env file with the following content:
+* Create a .env file with the following environment variables set:
 
 ```javascript
-BASE_URL=https://quiz-buzz-api.herokuapp.com
+BASE_URL=
 ```
 * Run __npm start__ 
 * Use the expo app to scan the QR code that pops up in your browser. 
