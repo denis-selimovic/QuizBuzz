@@ -4,7 +4,7 @@ import { Form, Input, Button, Card } from "antd";
 import axios from 'axios';
 import './studentForm.css';
 import { getBaseUrl } from "../../common/config"
-import TOKEN from "../../token";
+import { getToken } from "../../auth/utils";
 
 const formItemLayout = {
     labelCol: {
@@ -40,7 +40,7 @@ const StudentForm = (props) => {
         if (!classroom) return;
         await axios.post(`${getBaseUrl()}/classrooms/${classroom}/student`, form, {
             headers: {
-                Authorization: 'Bearer ' + TOKEN
+                Authorization: `Bearer ${getToken()}`
             }
         });
         navigate(`/dashboard/${classroom}/students`);

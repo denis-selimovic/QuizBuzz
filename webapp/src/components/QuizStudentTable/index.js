@@ -3,7 +3,7 @@ import { Table, Modal, Button } from "antd";
 import axios from 'axios';
 import { getBaseUrl } from "../../common/config";
 import { useParams, useNavigate } from "react-router-dom";
-import TOKEN from "../../token";
+import { getToken } from "../../auth/utils";
 
 export default (props) => {
 
@@ -54,7 +54,7 @@ export default (props) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        async function hook () {
+        async function hook() {
             await fetchStudents();
         }
         hook();
@@ -63,7 +63,7 @@ export default (props) => {
     const fetchStudents = async () => {
         const response = await axios.get(`${getBaseUrl()}/quizzes/${id}/students`, {
             headers: {
-                Authorization: 'Bearer '+ TOKEN
+                Authorization: `Bearer ${getToken()}`
             }
         });
         const students = response.data;
@@ -75,13 +75,13 @@ export default (props) => {
 
     const sendCode = async () => {
         try {
-            await axios.post(`${getBaseUrl()}/quizzes/${id}/send-code/${record.key}`,{}, {
+            await axios.post(`${getBaseUrl()}/quizzes/${id}/send-code/${record.key}`, {}, {
                 headers: {
-                    Authorization: 'Bearer ' + TOKEN
+                    Authorization: `Bearer ${getToken()}`
                 }
             });
             setText('Code successfully sent');
-        } catch (e){
+        } catch (e) {
             setText('Could not send code');
         }
         setTimeout(closeModal, 2000);
@@ -89,14 +89,14 @@ export default (props) => {
 
     const generateCode = async () => {
         try {
-            await axios.post(`${getBaseUrl()}/quizzes/${id}/generate-code/${record.key}`,{}, {
+            await axios.post(`${getBaseUrl()}/quizzes/${id}/generate-code/${record.key}`, {}, {
                 headers: {
-                    Authorization: 'Bearer ' + TOKEN
+                    Authorization: `Bearer ${getToken()}`
                 }
             });
             setText('Code successfully generated');
             navigate(`/dashboard/quizzes`);
-        } catch (e){
+        } catch (e) {
             setText('Could not generate new code');
         }
         setTimeout(closeModal, 2000);
@@ -131,7 +131,7 @@ export default (props) => {
 
     return (
         <React.Fragment>
-            <Table dataSource={data} columns={columns}/>
+            <Table dataSource={data} columns={columns} />
             <Modal visible={visible} onOk={onOk} onCancel={closeModal}><p>{text}</p></Modal>
         </React.Fragment>
     );

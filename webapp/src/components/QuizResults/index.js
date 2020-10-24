@@ -4,7 +4,7 @@ import { Table, Button } from "antd";
 import { CSVLink } from "react-csv";
 import axios from 'axios';
 import { getBaseUrl } from "../../common/config";
-import TOKEN from "../../token";
+import { getToken } from "../../auth/utils";
 
 const fixed = [
     {
@@ -33,7 +33,7 @@ export default (props) => {
     const fetchResults = async () => {
         const response = await axios.get(`${getBaseUrl()}/quizzes/${id}/results`, {
             headers: {
-                Authorization: 'Bearer ' + TOKEN
+                Authorization: `Bearer ${getToken()}`
             }
         })
         const { results, questions } = response.data;
@@ -50,9 +50,9 @@ export default (props) => {
             let total = 0;
             let i = 0;
             r.points.forEach(p => {
-               total += p.amount;
-               questionData[`question-${i + 1}`] = p.amount;
-               ++i;
+                total += p.amount;
+                questionData[`question-${i + 1}`] = p.amount;
+                ++i;
             });
             tableCsv.push({ name: r.name, surname: r.surname, ...questionData, total });
             tableData.push({ key: r.id, name: r.name, surname: r.surname, ...questionData, total });
@@ -63,7 +63,7 @@ export default (props) => {
     };
 
     useEffect(() => {
-        async function asyncHook () {
+        async function asyncHook() {
             await fetchResults();
         }
         asyncHook();
@@ -71,7 +71,7 @@ export default (props) => {
 
     return (
         <React.Fragment>
-            <Table columns={columns} dataSource={data} scroll={{ x: 1000 }} style={{ width: 1200 }}/>
+            <Table columns={columns} dataSource={data} scroll={{ x: 1000 }} style={{ width: 1200 }} />
             <Button style={{ backgroundColor: 'green', color: 'white', border: '0 green' }}>
                 <CSVLink data={csvData}>Export CSV</CSVLink>
             </Button>

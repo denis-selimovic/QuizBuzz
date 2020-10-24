@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Form, Input, Button, Space, Switch } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import Question from "../Question";
 
 export default (props) => {
     const { oldAnswers, form } = props;

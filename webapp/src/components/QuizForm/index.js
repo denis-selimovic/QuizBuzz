@@ -3,9 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Form, Input, Button, Card, DatePicker, Slider, InputNumber } from "antd";
 import axios from 'axios';
 import './quizForm.css';
-
-import TOKEN from "../../token";
 import { getBaseUrl } from "../../common/config";
+import { getToken } from "../../auth/utils";
 
 const formItemLayout = {
     labelCol: {
@@ -43,7 +42,7 @@ const QuizForm = (props) => {
         if (!classroom) return;
         await axios.post(`${getBaseUrl()}/classrooms/${classroom}/quiz`, form, {
             headers: {
-                Authorization: 'Bearer ' + TOKEN
+                Authorization: `Bearer ${getToken()}`
             }
         });
         navigate('/dashboard');

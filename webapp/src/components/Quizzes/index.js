@@ -3,8 +3,7 @@ import './quizzes.css';
 import { Button, Modal, Table } from "antd";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-
-import TOKEN from "../../token";
+import { getToken } from "../../auth/utils";
 
 export default props => {
 
@@ -69,7 +68,7 @@ export default props => {
     ];
 
     useEffect(() => {
-        async function asyncHook () {
+        async function asyncHook() {
             await fetchQuizzes();
         }
         asyncHook();
@@ -78,13 +77,13 @@ export default props => {
     const fetchQuizzes = async () => {
         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/users/my-quizzes`, {
             headers: {
-                Authorization: 'Bearer ' + TOKEN
+                Authorization: `Bearer ${getToken()}`
             }
         });
         const quizzes = response.data;
         const data = [];
         quizzes.forEach(q => {
-           data.push({ key: q._id, name: q.name, num: q.students.length, date: q.date, duration: q.duration });
+            data.push({ key: q._id, name: q.name, num: q.students.length, date: q.date, duration: q.duration });
         });
         setTableData(data);
     }
@@ -99,7 +98,7 @@ export default props => {
         try {
             await axios.post(`${process.env.REACT_APP_BASE_URL}/quizzes/${record.key}/send-code`, {}, {
                 headers: {
-                    Authorization: 'Bearer ' + TOKEN
+                    Authorization: `Bearer ${getToken()}`
                 }
             });
             setModalText('Code successfully sent');
@@ -111,7 +110,7 @@ export default props => {
 
     return (
         <React.Fragment>
-            <Table columns={columns} dataSource={tableData}/>
+            <Table columns={columns} dataSource={tableData} />
             <Modal visible={visible} onCancel={cancelModal} onOk={confirmModal}><p>{ModalText}</p></Modal>
         </React.Fragment>
     );

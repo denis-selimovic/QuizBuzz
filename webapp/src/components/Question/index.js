@@ -3,8 +3,8 @@ import { Form, Input, Button, Card, Typography, InputNumber, Select, Collapse } 
 import { useForm } from "antd/lib/form/Form";
 import axios from 'axios';
 import { getBaseUrl } from "../../common/config";
-import TOKEN from "../../token";
 import Answers from "../Answers";
+import { getToken } from "../../auth/utils";
 
 const formItemLayout = {
     labelCol: {
@@ -117,7 +117,7 @@ export default props => {
         try {
             const response = await axios.patch(`${getBaseUrl()}/questions/${question._id}`, values, {
                 headers: {
-                    Authorization: `Bearer ${TOKEN}`
+                    Authorization: `Bearer ${getToken()}`
                 }
             });
             setQuestion(response.data);
@@ -132,7 +132,7 @@ export default props => {
         try {
             const response = await axios.delete(`${getBaseUrl()}/questions/${question._id}/answer/${answerId}`, {
                 headers: {
-                    Authorization: `Bearer ${TOKEN}`
+                    Authorization: `Bearer ${getToken()}`
                 }
             });
             setQuestion(response.data);

@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button, Modal } from "antd";
 import axios from 'axios';
-
-
-import TOKEN from "../../token";
 import { useLocation } from "react-router-dom";
 import { getBaseUrl } from "../../common/config";
+import { getToken } from "../../auth/utils";
 
 const StudentTable = (props) => {
 
@@ -48,7 +46,7 @@ const StudentTable = (props) => {
         console.log(classroom);
         const response = await axios.get(`${getBaseUrl()}/classrooms/${classroom}/students`, {
             headers: {
-                Authorization: 'Bearer ' + TOKEN
+                Authorization: `Bearer ${getToken()}`
             }
         })
         const students = response.data;
@@ -70,7 +68,7 @@ const StudentTable = (props) => {
     const sendCode = async id => {
         await axios.post(`${getBaseUrl()}/classrooms/${classroom}/send-code/${student}`, {}, {
             headers: {
-                Authorization: 'Bearer ' + TOKEN
+                Authorization: `Bearer ${getToken()}`
             }
         })
         setModalText('Code successfully sent');

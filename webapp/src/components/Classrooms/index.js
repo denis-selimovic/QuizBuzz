@@ -3,11 +3,8 @@ import './classrooms.css'
 import axios from 'axios';
 import { Table, Button, Modal } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-
-import TOKEN from "../../token";
 import { getBaseUrl } from "../../common/config";
-
-
+import { getToken } from "../../auth/utils";
 
 const Classrooms = (props) => {
 
@@ -79,7 +76,7 @@ const Classrooms = (props) => {
     const getClassrooms = async () => {
         const response = await axios.get(`${getBaseUrl()}/users/my-classrooms`, {
             headers: {
-                Authorization: `Bearer ${TOKEN}`
+                Authorization: `Bearer ${getToken()}`
             }
         });
         const classrooms = response.data;
@@ -102,7 +99,7 @@ const Classrooms = (props) => {
     const confirmModal = async () => {
         await axios.post(`${getBaseUrl()}/classrooms/${record.key}/send-code`, {}, {
             headers: {
-                Authorization: 'Bearer ' + TOKEN
+                Authorization: `Bearer ${getToken()}`
             }
         })
         setModalText('Code successfully sent');

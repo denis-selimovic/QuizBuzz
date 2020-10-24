@@ -4,10 +4,9 @@ import { Form, Input, Button, Card, DatePicker, Slider, Typography, InputNumber,
 import axios from 'axios';
 import './quizEdit.css';
 import moment from "moment";
-
-import TOKEN from "../../token";
 import { getBaseUrl } from "../../common/config";
 import Question from "../Question";
+import { getToken } from "../../auth/utils";
 
 const formItemLayout = {
     labelCol: {
@@ -49,7 +48,7 @@ export default (props) => {
         async function fetchQuiz() {
             const response = await axios.get(`${getBaseUrl()}/quizzes/${id}`, {
                 headers: {
-                    Authorization: `Bearer ${TOKEN}`
+                    Authorization: `Bearer ${getToken()}`
                 }
             });
             setQuiz(response.data);
@@ -72,7 +71,7 @@ export default (props) => {
         values.date = values.date._d.valueOf();
         const response = await axios.patch(`${getBaseUrl()}/quizzes/${id}`, values, {
             headers: {
-                Authorization: `Bearer ${TOKEN}`
+                Authorization: `Bearer ${getToken()}`
             }
         });
         setQuiz(response.data);
@@ -91,7 +90,7 @@ export default (props) => {
         try {
             const response = await axios.post(`${getBaseUrl()}/quizzes/${id}/question`, values, {
                 headers: {
-                    Authorization: `Bearer ${TOKEN}`
+                    Authorization: `Bearer ${getToken()}`
                 }
             });
             setQuiz(response.data);
