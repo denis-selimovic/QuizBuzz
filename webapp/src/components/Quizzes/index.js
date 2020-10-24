@@ -3,6 +3,7 @@ import './quizzes.css';
 import { Button, Modal, Table } from "antd";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import { DeleteOutlined } from '@ant-design/icons';
 import { getToken } from "../../auth/utils";
 
 export default props => {
@@ -64,6 +65,13 @@ export default props => {
             render: (text, record) => (
                 <Button type="primary" onClick={() => navigate(`/dashboard/${record.key}/quiz-results`)}>Results</Button>
             )
+        },
+        {
+            key: 'delete',
+            dataIndex: 'delete',
+            render: (text, record) => (
+                <DeleteOutlined onClick={() => deleteQuiz(record.key)} />
+            )
         }
     ];
 
@@ -91,6 +99,16 @@ export default props => {
     const cancelModal = () => {
         setVisible(false);
         setRecord(null);
+    }
+
+    const deleteQuiz = async (id) => {
+        await axios.delete(`${process.env.REACT_APP_BASE_URL}/quizzes/${id}`, {
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
+        });
+
+        await fetchQuizzes();
     }
 
     const confirmModal = async () => {
