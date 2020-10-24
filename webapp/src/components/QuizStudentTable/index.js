@@ -4,6 +4,7 @@ import axios from 'axios';
 import { getBaseUrl } from "../../common/config";
 import { useParams, useNavigate } from "react-router-dom";
 import { getToken } from "../../auth/utils";
+import AddStudent from '../AddStudent';
 
 export default (props) => {
 
@@ -129,8 +130,14 @@ export default (props) => {
         if (type === 2) sendCode();
     }
 
+    const onSubmit = student => {
+        const tableData = [ ...data, student ];
+        setData(tableData);
+    };
+
     return (
         <React.Fragment>
+            <AddStudent id={id} onSubmit={onSubmit}/>
             <Table dataSource={data} columns={columns} />
             <Modal visible={visible} onOk={onOk} onCancel={closeModal}><p>{text}</p></Modal>
         </React.Fragment>
