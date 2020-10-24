@@ -122,6 +122,19 @@ router.get('/:id/students', auth, checkQuizOwnership, async (req, res) => {
   }
 });
 
+router.get('/:id/not-enrolled', auth, checkQuizOwnership, async (req, res) => {
+  try {
+    const quiz = await Quiz.findById(req.params.id);
+    const quizStudents = quiz.students.map(s => s.id);
+    const classroom = await quiz.classroom();
+    const students = classroom.students.map(s => s.toString()).filter(s => !quizStudents.includes(s));
+    const studentsList = await Student.find({ _id: { $in: students } });
+    res.status(200).json(studentsList);
+  } catch (e) {
+    res.status(400).json({ message: 'Could not load items' })
+  }
+});
+
 router.post("/:id/generate-code/:studentId", auth, checkQuizOwnership, async (req, res) => {
   try {
     const quiz = await Quiz.findById(req.params.id);
