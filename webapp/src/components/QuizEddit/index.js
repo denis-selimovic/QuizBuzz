@@ -103,6 +103,23 @@ export default (props) => {
         }
     }
 
+    const deleteQuestion = async questionId => {
+        try {
+            await axios.delete(`${getBaseUrl()}/questions/${questionId}`, {
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            });
+            const index = quiz.questions.findIndex(q => q._id === questionId);
+            let questions = quiz.questions;
+            questions.splice(index, 1);
+            setQuiz({ ...quiz, questions: questions })
+        } catch (e) {
+            setStatusMessage("Something went wrong!");
+            setTimeout(() => setStatusMessage(""), 2000);
+        }
+    }
+
     return (
         <div className="form-container">
             <div className="col1">
@@ -137,7 +154,8 @@ export default (props) => {
             <Card className="questions">
                 <Divider>Questions</Divider>
                 {quiz.questions && quiz.questions.map((question, index) => {
-                    return <Question key={question._id} question={question} buttonText="Update question" index={index}></Question>
+                    return <Question key={question._id} question={question}
+                        buttonText="Update question" index={index} deleteQuestion={deleteQuestion}></Question>
                 })}
             </Card>
         </div>

@@ -5,6 +5,7 @@ import axios from 'axios';
 import { getBaseUrl } from "../../common/config";
 import Answers from "../Answers";
 import { getToken } from "../../auth/utils";
+import { DeleteOutlined } from '@ant-design/icons';
 
 const formItemLayout = {
     labelCol: {
@@ -176,6 +177,7 @@ export default props => {
                         </Form.Item>
                         <Typography>{statusMessage}</Typography>
                     </Form>
+                    {!props.adding && <DeleteOutlined onClick={() => props.deleteQuestion(question._id)} />}
                 </Card>
             </Collapse.Panel>
         </Collapse>
