@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { getBodyWithOffsetDate, offsetDate } = require("../common/util");
 const { Schema } = mongoose;
 
 const quizSchema = new Schema({
@@ -99,9 +98,9 @@ quizSchema.pre("remove", async function (next) {
 
 quizSchema.statics.updateQuizById = async (id, newQuiz) => {
   const quiz = await Quiz.getQuizByIdPopulated(id);
-  if (Object.keys(newQuiz).includes("date")) {
-    newQuiz = getBodyWithOffsetDate(newQuiz, 0);
-  }
+  // if (Object.keys(newQuiz).includes("date")) {
+  //   newQuiz = getBodyWithOffsetDate(newQuiz, 0);
+  // }
   Object.keys(newQuiz).forEach((key) => (quiz[key] = newQuiz[key]));
   await quiz.save();
   return quiz;
@@ -116,7 +115,7 @@ quizSchema.statics.getByCodePopulated = async (myCode) => {
 };
 
 quizSchema.methods.getProgressStatus = function () {
-  const currentDate = offsetDate(new Date().getTime(), 2);
+  const currentDate = new Date();//offsetDate(new Date().getTime(), 2);
   const quizEndDate = new Date((this.date).getTime() + this.duration * 60000);
   if (currentDate < this.date) return -1;
   if (currentDate > quizEndDate) return 2;
@@ -124,7 +123,7 @@ quizSchema.methods.getProgressStatus = function () {
 };
 
 quizSchema.methods.checkSubmitDate = function (date) {
-  const submitDate = offsetDate(date, 2);
+  const submitDate = date;//offsetDate(date, 2);
   const quizEndDate = new Date((this.date).getTime() + this.duration * 60000);
   if (submitDate > quizEndDate || submitDate < this.date) {
     throw Error("You can't submit this quiz");
