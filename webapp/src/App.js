@@ -19,18 +19,18 @@ function App() {
     <div className="container">
       <Router>
         <Routes>
-          <Route path="/" element={<Login/>}/>
-          <Route path="login" element={<Login/>} />
-          <Route path="register" element={<Register/>} />
-          <Route path="dashboard" element={<Dashboard/>} >
-            <Route path="" element={<Classrooms/>}/>
-            <Route path=":id/students" element={<StudentTable/>} />
-            <Route path=":id/student" element={<StudentForm/>} />
-            <Route path=":id/quiz" element={<QuizForm/>} />
-            <Route path="quizzes" element={<Quizzes/>}/>
-            <Route path=":id/quiz-students" element={<QuizStudentTable/>}/>
-            <Route path=":id/quiz-results" element={<QuizResults/>}/>
-            <Route path=":id/quiz-edit" element={<QuizEdit/>}/>
+          <Route path="/" element={<Login />} />
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="dashboard" element={<Dashboard />} >
+            <Route path="" element={<Classrooms />} />
+            <Route path=":id/students" element={<StudentTable />} />
+            <Route path=":id/student" element={<StudentForm />} />
+            <Route path=":id/quiz" element={<QuizForm />} />
+            <Route path="quizzes" element={<Quizzes />} />
+            <Route path=":id/quiz-students" element={<QuizStudentTable />} />
+            <Route path=":id/quiz-results" element={<QuizResults />} />
+            <Route path=":id/quiz-edit" element={<QuizEdit />} />
           </Route>
           <Route path="*" component={() => "404 NOT FOUND"} />
         </Routes>
