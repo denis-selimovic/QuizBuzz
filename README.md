@@ -6,12 +6,12 @@ their students. Codes are generated for each classroom. Every student gets a uni
 view the results of each quiz and download them in a csv format. Students use the mobile app to access the quizzes. 
 
 ## Stack
-* The web application is made using ReactJS. 
-* The mobile application is developed with React Native. 
-* QuizBuzz REST API is developed using NodeJS. 
-* QuizBuzz uses MongoDB
-* Web application and backend is deployed to Heroku Platform 
-* Backend connects to the MongoDB Atlas 
+* The web application is made using __ReactJS__. 
+* The mobile application is developed with __React Native__. 
+* QuizBuzz REST API is developed using __NodeJS__. 
+* QuizBuzz uses __MongoDB__.
+* Web application and server are deployed to __Heroku Platform__.
+* Backend connects to the __MongoDB Atlas__ cloud database.
 
 ## Check out the application
 * Web application is available [here](#).
