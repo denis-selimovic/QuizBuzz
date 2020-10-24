@@ -5,6 +5,7 @@ import { Table, Button, Modal } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { getBaseUrl } from "../../common/config";
 import { getToken } from "../../auth/utils";
+import ClassroomForm from '../ClassroomForm';
 
 const Classrooms = (props) => {
 
@@ -106,9 +107,15 @@ const Classrooms = (props) => {
         setTimeout(() => setVisible(false), 2000);
     }
 
+    const onClassroomCreated = classroom => {
+        const data = [ ...tableData, classroom ];
+        setTableData(data);
+    };
+
     return (
         <div>
             <Table columns={columns} dataSource={tableData} />
+            <ClassroomForm onSubmit={onClassroomCreated} />
             <Modal visible={visible} onCancel={cancelModal} onOk={confirmModal}><p>{ModalText}</p></Modal>
         </div>
     );
