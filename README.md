@@ -14,7 +14,7 @@ view the results of each quiz and download them in a csv format. Students use th
 * Backend connects to the __MongoDB Atlas__ cloud database.
 
 ## Check out the application
-* Web application is available [here](#).
+* Web application is available [here](https://quizbuzz-app.herokuapp.com/).
 * The API can be accessed via [this link](https://quiz-buzz-api.herokuapp.com)
 * Mobile application can be tried out locally using the expo app on your phone
 
